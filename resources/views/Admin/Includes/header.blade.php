@@ -10,7 +10,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <!-- App favicon -->
-    <link rel="shortcut icon" href="{{URL::asset('package_assets/images/construction_inventory_old.png')}}">
+    <link rel="shortcut icon" href="{{ !empty(App\Helpers\Helpers\Helper::getVisualImages()->favicon_image_path) && Storage::exists(App\Helpers\Helpers\Helper::getVisualImages()->favicon_image_path) ? url('/').Storage::url(App\Helpers\Helpers\Helper::getVisualImages()->favicon_image_path) : URL::asset('package_assets/images/construction_inventory_old.png') }}">
 
     <!-- third party css -->
     <link href="{{URL::asset('package_assets/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css')}}" rel="stylesheet" type="text/css" />

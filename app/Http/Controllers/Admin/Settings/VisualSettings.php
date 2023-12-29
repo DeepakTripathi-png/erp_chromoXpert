@@ -34,37 +34,16 @@ class VisualSettings extends Controller
             'favicon_image_path' => 'max:2048',
         ]);
 
-        $id = $request->id;
-
-        if ($request->has('logo_image_path')){
-            $input['logo_image_path'] = $this->verifyAndUpload($request, 'logo_image_path', 'images/visuals');
-            $original_name = $request->file('logo_image_path')->getClientOriginalName();
-            $input['logo_image_name'] = $original_name;
+        $input = [];
+        if(!empty($request->file())){
+            $input = array_merge($input, $this->uploadFiles($request->file(), 'images/visuals'));
         }
 
-        if ($request->has('mini_logo_image_path')){
-            $input['mini_logo_image_path'] = $this->verifyAndUpload($request, 'mini_logo_image_path', 'images/visuals');
-            $original_name = $request->file('mini_logo_image_path')->getClientOriginalName();
-            $input['mini_logo_image_name'] = $original_name;
-        }
-
-        if ($request->has('logo_email_image_path')){
-            $input['logo_email_image_path'] = $this->verifyAndUpload($request, 'logo_email_image_path', 'images/visuals');
-            $original_name = $request->file('logo_email_image_path')->getClientOriginalName();
-            $input['logo_email_image_name'] = $original_name;
-        }
-
-        if ($request->has('favicon_image_path')){
-            $input['favicon_image_path'] = $this->verifyAndUpload($request, 'favicon_image_path', 'images/visuals');
-            $original_name = $request->file('favicon_image_path')->getClientOriginalName();
-            $input['favicon_image_name'] = $original_name;
-        }
-
-        if(!empty($id)){
+        if(!empty($request->id)){
             if (!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'visual_setting_edit')){
                 $input['modified_by'] = auth()->guard('master_admins')->user()->id;
                 $input['modified_ip_address'] = $request->ip();
-                Visual_setting::where('id', $id)->update($input);
+                Visual_setting::where('id', $request->id)->update($input);
                 return redirect('admin/visual-setting')->with('success', 'Visual Settings updated successfully!');
             } else {
                 return redirect()->back()->with('error', 'Sorry, You Have No Permission For This Request!');

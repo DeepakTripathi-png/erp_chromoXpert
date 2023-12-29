@@ -2,20 +2,17 @@
 @section('content')
 <div class="content-page">
     <div class="content">
-
-        <!-- Start Content-->
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
                     <div class="mb-2 justify-content-between d-flex align-items-center">
                         <h4 class="header-title ">Visual Settings</h4>
                     </div>
-
-
                     <div class="card department-card">
                         <div class="card-body">
                             <form action="{{ route('visual.settings.store') }}" method="post" id="visual_settings_form" enctype="multipart/form-data">
                                 @csrf
+                                <input type="hidden" id="id" name="id" value="{{ !empty($visual_settings->id) ? $visual_settings->id : '' }}">
                                 <div class="row">
                                     <div class="col-lg-3">
                                         <div class="mt-1">
