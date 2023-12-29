@@ -1,200 +1,158 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Admin</title>
-    <!-- Tell the browser to be responsive to screen width -->
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <!-- Bootstrap 3.3.7 -->
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <meta charset="utf-8" />
+    <title>Construction Inventory | Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="{{URL::asset('ims_assets/images/construction_inventory_old.png')}}">
 
-    <link rel="stylesheet"
-        href="{{ URL::asset('admin_panel/commonarea/bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
-    <!-- Font Awesome -->
-    <link rel="stylesheet"
-        href="{{ URL::asset('admin_panel/commonarea/bower_components/font-awesome/css/font-awesome.min.css') }}">
-    <!-- Ionicons -->
-    <link rel="stylesheet"
-        href="{{ URL::asset('admin_panel/commonarea/bower_components/Ionicons/css/ionicons.min.css') }}">
-    <!-- Theme style -->
-    <link rel="stylesheet" href="{{ URL::asset('admin_panel/commonarea/dist/css/AdminLTE.min.css') }}">
+    <!-- third party css -->
+    <link href="{{URL::asset('ims_assets/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css')}}" rel="stylesheet" type="text/css" />
+    <link href="{{URL::asset('ims_assets/libs/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css')}}" rel="stylesheet" type="text/css" />
+    <link href="{{URL::asset('ims_assets/libs/datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css')}}" rel="stylesheet" type="text/css" />
+    <link href="{{URL::asset('ims_assets/libs/datatables.net-select-bs5/css/select.bootstrap5.min.css')}}" rel="stylesheet" type="text/css" />
+    <!-- third party css end -->
 
-    <link rel="stylesheet" href="{{ URL::asset('admin_panel/commonarea/bower_components/jvectormap/jquery-jvectormap.css') }}">
+    <!-- App css -->
+    <link rel="stylesheet" href="{{URL::asset('ims_assets/css/app.min.css')}}"/>
+    <link rel="stylesheet" href="{{URL::asset('ims_assets/css/style.css')}}"/>
 
-    <!-- <link rel="shortcut icon" href="{{ URL::asset('frontend/assets/images/favicon.ico') }}" type="image/x-icon"> -->
+    <!-- icons -->
+    <link rel="stylesheet" href="{{URL::asset('ims_assets/css/icons.min.css')}}" />
 
-    <!-- Favicon -->
-    
-    <link rel="icon" href="{{ !empty($favicon_image->favicon_image_path) ? $favicon_image->favicon_image_path : URL::asset('admin_panel/commonarea/dist/img/favicon.png') }}" type="image/png" sizes="16x16">
+    <!-- Toastr Css -->
+    <link rel="stylesheet" href="{{URL::asset('ims_assets/libs/toastr/build/toastr.min.css')}}" />
 
-    <link rel="stylesheet" href="{{ URL::asset('admin_panel/commonarea/dist/css/login.css') }}">
-
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-    <!-- jquery -->
-    <link rel="stylesheet" href="{{ URL::asset('admin_panel/js/jquery.toast.min.css') }}">
-
-    <script src="{{ URL::asset('admin_panel/js/jquery.validate.min.js') }}"></script>
-
-    <!-- Google Font -->
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <!-- Custom Css -->
     <style>
-        .checkbox input[type="checkbox"],
-        .checkbox-inline input[type="checkbox"],
-        .radio input[type="radio"],
-        .radio-inline input[type="radio"] {
-            position: relative !important;
-            margin-left: 0px !important;
-        }
-
-        .admin-login-page-icon {
-            height: 75px;
-            object-fit: cover;
-            padding: 6px;
-            margin-bottom: 30px;
-        }
-
-        a {
-            color: #2f4e9b;
-        }
-
-        a:hover,
-        a:active,
-        a:focus {
-            outline: none;
-            text-decoration: none;
-            color: #264080;
-        }
-        #loginForm .login-input-div{
-            margin-bottom: 30px !important;
-        }
-        #loginForm .login-input-div.last-div{
-            margin-bottom: 0px !important;
-        }
-        .success-bg{
-            background-color: #5da954;
-        }
-        .error-bg{
-            background-color: #e53e3e;
-        }
-        #loginForm .message{
-            padding: 5px;
-            width: 100%;
-            color: #fff;
+        .pass-show{
             position: absolute;
-            top: 0;
+            top: 4px;
+            font-size: 16px;
+            right: 15px;
+            cursor: pointer;
+        }
+
+        .input-box{
+            position: relative;
         }
     </style>
 </head>
-<body class="hold-transition login-page">
-    @include('admin.includes.notifications')
-    <div class="container" id="container">
-        <div class="form-container sign-in-container">
-            <form action="{{ url('login-action') }}" method="post" id="loginForm">
-                @csrf
-                <div class="col-md-12">
-                    @php $logo_image = App\Models\Master\Visual_setting::where('status','active')->select('logo_image_path','logo_image_name')->first(); @endphp
-                    <img src="{{ !empty($logo_image->logo_image_path) && Storage::exists($logo_image->logo_image_path) ? url('/').Storage::url($logo_image->logo_image_path) : URL::asset('admin_panel/commonarea/dist/img/avatar5.png') }}" class="admin-login-page-icon" alt="{{ !empty($logo_image->logo_image_name) ? $logo_image->logo_image_name : 'Logo' }}">
-                </div>
-                <div class="col-md-12">
-                    <div class="login-input-div">
-                        <div class="inputBox">
-                            <input type="text" name="email" id="email">
-                            <span class="user">Email</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="login-input-div for-pass last-div">
-                        <div class="inputBox">
-                            <input type="password" name="password" id="password">
-                            <span>Password</span>
-                            <div class="pass-show"><i class="fa fa-eye"></i></div>
-                        </div>
-                    </div>
-                </div>
-                  
-                <div class="col-md-12">
-                    <div class="pad-10px mb-10px">
-                        <a href="{{ route('forget.password.get') }}">Forgot your password?</a>
-                    </div>
-                </div>
 
-                <div class="col-md-12">
-                    <button type="submit" class="login-btn submit">Sign In</button>
+<body class="loading authentication-bg authentication-bg-pattern">
+    <div class="account-pages my-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-6 col-xl-4">
+                    <div class="text-center">
+                        <a href="">
+                            <img src="{{URL::asset('ims_assets/images/construction_inventory.png')}}" alt="" height="35" class="mx-auto">
+                        </a>
+                        <p class="text-muted mt-2 mb-2">Constuction Inventory</p>
+                    </div>
+                    <div class="card">
+
+                        <div class="card-body p-4">
+                            <div class="text-center mb-4">
+                                <h4 class="text-uppercase mt-0">Sign In</h4>
+                            </div>
+
+                            <form action="{{ url('login-action') }}" method="post" id="loginForm">
+                                @csrf
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email address</label>
+                                    <input class="form-control" type="email" id="email" name="email" placeholder="Enter your email">
+                                    @if($errors->has('email'))
+                                        <span class="text-danger"><b>* {{$errors->first('email')}}</b></span>
+                                    @endif
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">Password</label>
+                                    <div class="input-box">
+                                        <input class="form-control" type="password" id="password" name="password" placeholder="Enter your password">
+                                        <div class="pass-show"><i class="fa fa-eye"></i></div>
+                                    </div>
+                                    @if($errors->has('password'))
+                                        <span class="text-danger"><b>* {{$errors->first('password')}}</b></span>
+                                    @endif
+                                </div>
+
+                                <div class="mb-3 d-grid text-center">
+                                    <button class="btn btn-primary" type="submit"> Log In </button>
+                                </div>
+                            </form>
+
+
+                            <div class="row mt-3">
+                                <div class="col-12 text-center">
+                                    <p> <a href="{{ url('/forget-password') }}" class="text-muted ms-1"><i class="fa fa-lock me-1"></i>Forgot your password?</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                @if (Session::has('error'))
-                    <div class="message error-bg">
-                        {{ Session::get('error') }}
-                    </div>
-                @endif     
-                @if (Session::has('success'))
-                    <div class="message success-bg">
-                        {{ Session::get('success') }}
-                    </div>
-                @endif 
-            </form>
+            </div>
         </div>
     </div>
-<script src="{{ URL::asset('admin_panel/js/jquery.validate.js')}}"></script>
-<script src="{{ URL::asset('admin_panel/js/jquery.toast.min.js')}}"></script>
-<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
-<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
 
-<script>
-    $(".pass-show").on('click', function() {
-      var passwordId = $(this).siblings();
-      if (passwordId.attr("type") === "password") {
-        passwordId.attr("type", "text");
-        $(this).find("i").removeClass("fa-eye")
-        $(this).find("i").addClass("fa-eye-slash")
-      } else {
-        passwordId.attr("type", "password");
-        $(this).find("i").addClass("fa-eye")
-        $(this).find("i").removeClass("fa-eye-slash")
-      }
-    })
-</script>
-    
-<script>
-    $('#email').keyup(function() {
-        this.value = this.value.toLowerCase();
-    });
-</script>
+    <!-- Vendor -->
+    <script src="{{ URL::asset('ims_assets/libs/jquery/jquery.min.js') }}"></script>
+    <script src="{{ URL::asset('ims_assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ URL::asset('ims_assets/libs/simplebar/simplebar.min.js') }}"></script>
+    <script src="{{ URL::asset('ims_assets/libs/node-waves/waves.min.js') }}"></script>
+    <script src="{{ URL::asset('ims_assets/libs/waypoints/lib/jquery.waypoints.min.js') }}"></script>
+    <script src="{{ URL::asset('ims_assets/libs/jquery.counterup/jquery.counterup.min.js') }}"></script>
+    <script src="{{ URL::asset('ims_assets/libs/feather-icons/feather.min.js') }}"></script>
 
-<script>
-    $(document).ready(function () {
-        $("#loginForm").validate({
-            rules: {
-                email: {
-                    required: true,
-                    email: true,
-                },
-                password: {
-                    required: true,
-                },
-            },
-            messages: {
-                email: {
-                    required: "* Please enter your email.",
-                    email : "* Please enter valid email."
-                },
-                password: {
-                    required: "* Please enter password.",
-                },
-            },
-            submitHandler: function (form) {
-                form.submit();
+    <!-- App js -->
+    <script src="{{ URL::asset('ims_assets/js/app.min.js') }}"></script>
+
+    <!-- Toaster Js -->
+    <script src="{{ URL::asset('ims_assets/libs/toastr/build/toastr.min.js') }}"></script>
+
+    <!-- Custom Js -->
+    <script>
+        $(".pass-show").on('click', function() {
+            var passwordId = $(this).siblings();
+            if (passwordId.attr("type") === "password") {
+                passwordId.attr("type", "text");
+                $(this).find("i").removeClass("fa-eye")
+                $(this).find("i").addClass("fa-eye-slash")
+            } else {
+                passwordId.attr("type", "password");
+                $(this).find("i").addClass("fa-eye")
+                $(this).find("i").removeClass("fa-eye-slash")
             }
-        });
-    });
-</script>
+        })
+    </script>
 
+    <script>
+        toastr.options = {
+            "closeButton": true,
+            "progressBar": true,
+            "positionClass": "toast-bottom-right",
+        }
+
+        @if(Session::has('success'))
+            toastr.success("{{ Session::get('success') }}");
+        @endif
+
+        @if(Session::has('info'))
+            toastr.info("{{ Session::get('info') }}");
+        @endif
+
+        @if(Session::has('warning'))
+            toastr.warning("{{ Session::get('warning') }}");
+        @endif
+
+        @if(Session::has('error'))
+            toastr.error("{{ Session::get('error') }}");
+        @endif
+    </script>
 </body>
-
 </html>

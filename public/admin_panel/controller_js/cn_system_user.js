@@ -1,5 +1,5 @@
 $(function () {
-    var table = $('#arm_data_table').DataTable({
+    var table = $('#cims_data_table').DataTable({
         processing: true,
         serverSide: true,
         

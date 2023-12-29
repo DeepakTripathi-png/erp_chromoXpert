@@ -12,6 +12,8 @@ class Master_admin extends Authenticatable
     use HasFactory, Notifiable;
     protected $guard = 'master_admins';
     protected $fillable = [
+        'user_type',
+        'user_id',
         'user_name',
         'email',
         'password',

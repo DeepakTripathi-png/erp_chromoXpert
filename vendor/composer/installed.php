@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'laravel/laravel',
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
-        'reference' => NULL,
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'reference' => '5122caa23d76f67f91c905678b84949a47e02b79',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -397,15 +397,6 @@
                 0 => '*',
             ),
         ),
-        'laravel/cashier' => array(
-            'pretty_version' => 'v14.14.0',
-            'version' => '14.14.0.0',
-            'reference' => '46d8139cc4c4a53c70a56cbc8605c4503a429f4c',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../laravel/cashier',
-            'aliases' => array(),
-            'dev_requirement' => false,
-        ),
         'laravel/framework' => array(
             'pretty_version' => 'v10.33.0',
             'version' => '10.33.0.0',
@@ -416,9 +407,9 @@
             'dev_requirement' => false,
         ),
         'laravel/laravel' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
-            'reference' => NULL,
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => '5122caa23d76f67f91c905678b84949a47e02b79',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -585,15 +576,6 @@
             'install_path' => __DIR__ . '/../mockery/mockery',
             'aliases' => array(),
             'dev_requirement' => true,
-        ),
-        'moneyphp/money' => array(
-            'pretty_version' => 'v4.3.0',
-            'version' => '4.3.0.0',
-            'reference' => '50ddfd15b2be01d4bed3bcb0c975a6af5f78a183',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../moneyphp/money',
-            'aliases' => array(),
-            'dev_requirement' => false,
         ),
         'monolog/monolog' => array(
             'pretty_version' => '3.5.0',
@@ -865,8 +847,8 @@
         'psr/log-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '1.0|2.0|3.0',
-                1 => '3.0.0',
+                0 => '3.0.0',
+                1 => '1.0|2.0|3.0',
             ),
         ),
         'psr/simple-cache' => array(
@@ -1106,15 +1088,6 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
-        'stripe/stripe-php' => array(
-            'pretty_version' => 'v10.21.0',
-            'version' => '10.21.0.0',
-            'reference' => 'b4ab319731958077227fad1874a3671458c5d593',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../stripe/stripe-php',
-            'aliases' => array(),
-            'dev_requirement' => false,
-        ),
         'symfony/console' => array(
             'pretty_version' => 'v6.3.8',
             'version' => '6.3.8.0',
@@ -1235,15 +1208,6 @@
             'reference' => '875e90aeea2777b6f135677f618529449334a612',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/polyfill-intl-grapheme',
-            'aliases' => array(),
-            'dev_requirement' => false,
-        ),
-        'symfony/polyfill-intl-icu' => array(
-            'pretty_version' => 'v1.28.0',
-            'version' => '1.28.0.0',
-            'reference' => 'e46b4da57951a16053cd751f63f4a24292788157',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../symfony/polyfill-intl-icu',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
@@ -1443,9 +1407,9 @@
             'dev_requirement' => false,
         ),
         'yajra/laravel-datatables-oracle' => array(
-            'pretty_version' => 'v10.11.0',
-            'version' => '10.11.0.0',
-            'reference' => '6badd623d6352284a926de604b55db881057ca67',
+            'pretty_version' => 'v10.11.1',
+            'version' => '10.11.1.0',
+            'reference' => '6fb8571f9da39b8f256298e98bbcf6dd86900888',
             'type' => 'library',
             'install_path' => __DIR__ . '/../yajra/laravel-datatables-oracle',
             'aliases' => array(),

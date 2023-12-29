@@ -16,43 +16,44 @@ class GeneralSettings extends Controller
         $RolesPrivileges = Role_privilege::where('id', $role_id)->where('status', 'active')->select('privileges')->first();
         if (!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'general_setting_view')){
             $general_settings = General_setting::where('status', '=', 'active')->first();
-            return view('admin.settings.general_settings_contact', compact('general_settings'));
+            return view('Admin.Settings.general-setting', compact('general_settings'));
         } else {
             return redirect()->back()->with('error', 'Sorry, You Have No Permission For This Request!');
         } 
     }
 
-    public function social_media_index()
-    {
-        $general_settings = General_setting::where('status', 'active')->first();
-        return view('admin.settings.general_settings_social_media', compact('general_settings'));
-    }
+    // public function social_media_index()
+    // {
+    //     $role_id = Auth::guard('master_admins')->user()->role_id;
+    //     $RolesPrivileges = Role_privilege::where('id', $role_id)->where('status', 'active')->select('privileges')->first();
+    //     if (!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'general_setting_view')){
+    //         $general_settings = General_setting::where('status', 'active')->first();
+    //         return view('admin.settings.general-setting-social-media', compact('general_settings'));
+    //     } else {
+    //         return redirect()->back()->with('error', 'Sorry, You Have No Permission For This Request!');
+    //     } 
+    // }
 
     public function store(Request $request)
     {
         $role_id = Auth::guard('master_admins')->user()->role_id;
         $RolesPrivileges = Role_privilege::where('id', $role_id)->where('status', 'active')->select('privileges')->first();
-
         $id = $request->id;
-
         if ($request->has('contact_settings')){
-            
             // $request->validate([
             //     'email' => 'required|email',
             //     'mobile' => 'required|digits:10',
             //     'address' => 'required',
             // ]);
-
             $input['email'] = $request->email;
             $input['mobile'] = $request->mobile;
             $input['address'] = $request->address;
-            $input['map_link'] = $request->map_url;
             if (!empty($id)) {
                 if (!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'general_setting_edit')){
                     $input['modified_by'] = auth()->guard('master_admins')->user()->id;
                     $input['modified_ip_address'] = $request->ip();
                     General_setting::where('id', '=', $id)->update($input);
-                    return redirect('admin/general-settings-contact')->with('success', 'Contact Settings updated successfully!');
+                    return redirect('admin/general-setting')->with('success', 'Contact Settings updated successfully!');
                 } else {
                     return redirect()->back()->with('error', 'Sorry, You Have No Permission For This Request!');
                 } 
@@ -61,7 +62,7 @@ class GeneralSettings extends Controller
                     $input['created_by'] = auth()->guard('master_admins')->user()->id;
                     $input['created_ip_address'] = $request->ip();
                     General_setting::create($input);
-                    return redirect('admin/general-settings-contact')->with('success', 'Contact Settings added successfully!');
+                    return redirect('admin/general-setting')->with('success', 'Contact Settings added successfully!');
                 } else {
                     return redirect()->back()->with('error', 'Sorry, You Have No Permission For This Request!');
                 } 
@@ -75,7 +76,6 @@ class GeneralSettings extends Controller
             //     'linkedin_url' => 'required|string',
             //     'twitter_url' => 'required|string',
             // ]);
-
             $input['facebook_url'] = $request->facebook_url;
             $input['instagram_url'] = $request->instagram_url;
             $input['linkedin_url'] = $request->linkedin_url;
@@ -86,7 +86,7 @@ class GeneralSettings extends Controller
                     $input['modified_by'] = auth()->guard('master_admins')->user()->id;
                     $input['modified_ip_address'] = $request->ip();
                     General_setting::where('id', '=', $id)->update($input);
-                    return redirect('/admin/general-settings-social-media')->with('success', 'Social Media Settings updated successfully!');
+                    return redirect('/admin/general-setting')->with('success', 'Social Media Settings updated successfully!');
                 } else {
                     return redirect()->back()->with('error', 'Sorry, You Have No Permission For This Request!');
                 } 
@@ -95,7 +95,7 @@ class GeneralSettings extends Controller
                     $input['created_by'] = auth()->guard('master_admins')->user()->id;
                     $input['created_ip_address'] = $request->ip();
                     General_setting::create($input);
-                    return redirect('/admin/general-settings-social-media')->with('success', 'Social Media Settings added successfully!');
+                    return redirect('/admin/general-setting')->with('success', 'Social Media Settings added successfully!');
                 } else {
                     return redirect()->back()->with('error', 'Sorry, You Have No Permission For This Request!');
                 } 

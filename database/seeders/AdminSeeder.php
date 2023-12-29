@@ -15,6 +15,7 @@ class AdminSeeder extends Seeder
     public function run(): void
     {
         $input = [];
+        $input['user_type'] = "system";
         $input['user_name'] = "Mplussoft Technologies";
         $input['email'] = 'mplussoftesting@gmail.com';
         $input['password'] = Hash::make('12345678');

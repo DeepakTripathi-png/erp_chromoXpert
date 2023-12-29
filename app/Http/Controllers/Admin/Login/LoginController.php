@@ -21,10 +21,10 @@ class LoginController extends Controller
         return !empty(Session::has('MasterAdmin*%')) ? redirect('admin/dashboard') :  view('Admin.Logins.login'); 
     }
 
-    public function dashboard_view()
-    {
-        return !empty(Session::has('MasterAdmin*%')) ? view('Admin.dashboard') : redirect('/');        
-    }
+    // public function dashboard_view()
+    // {
+    //     return !empty(Session::has('MasterAdmin*%')) ? view('Admin.Dashboard.index') : redirect('/login');        
+    // }
 
     public function admin_login(Request $request){
         $request->validate([
@@ -65,7 +65,7 @@ class LoginController extends Controller
     }
 
     public function view_change_password(){
-        return view('Admin.Settings.change_password');
+        return view('Admin.Settings.change-password');
     }
 
     public function change_password(Request $request){

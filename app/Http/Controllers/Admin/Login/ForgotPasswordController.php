@@ -16,7 +16,7 @@ class ForgotPasswordController extends Controller
 {
     public function showForgetPasswordForm()
     {
-        return view('Admin.Logins.forgetPassword');
+        return view('Admin.Forget-passwords.forget-password');
     }
 
     public function submitForgetPasswordForm(Request $request)
@@ -58,7 +58,7 @@ class ForgotPasswordController extends Controller
     }
 
     public function showResetPasswordForm($token) { 
-        return view('Admin.Logins.forgetPasswordLink', ['token' => $token]);
+        return view('Admin.Forget-passwords.change-forget-password', ['token' => $token]);
     }
   
     public function submitResetPasswordForm(Request $request)

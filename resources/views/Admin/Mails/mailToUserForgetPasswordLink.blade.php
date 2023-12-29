@@ -1,6 +1,6 @@
 @extends('Admin.Layouts.mail_layout')
 
-@section('mail_title')  Project  @endsection
+@section('mail_title')  Change Password  @endsection
 
 @section('email_content')
 

@@ -17,7 +17,7 @@ class VisualSettings extends Controller
         $RolesPrivileges = Role_privilege::where('id', $role_id)->where('status', 'active')->select('privileges')->first();
         if (!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'general_setting_view')){
             $visual_settings = Visual_setting::where('status', 'active')->first();
-            return view('admin.settings.visual_settings', compact('visual_settings'));
+            return view('admin.settings.visual-setting', compact('visual_settings'));
         } else {
             return redirect()->back()->with('error', 'Sorry, You Have No Permission For This Request!');
         } 
@@ -65,7 +65,7 @@ class VisualSettings extends Controller
                 $input['modified_by'] = auth()->guard('master_admins')->user()->id;
                 $input['modified_ip_address'] = $request->ip();
                 Visual_setting::where('id', $id)->update($input);
-                return redirect('admin/visual-settings')->with('success', 'Visual Settings updated successfully!');
+                return redirect('admin/visual-setting')->with('success', 'Visual Settings updated successfully!');
             } else {
                 return redirect()->back()->with('error', 'Sorry, You Have No Permission For This Request!');
             } 
@@ -74,7 +74,7 @@ class VisualSettings extends Controller
                 $input['created_by'] = auth()->guard('master_admins')->user()->id;
                 $input['created_ip_address'] = $request->ip();
                 Visual_setting::create($input);
-                return redirect('admin/visual-settings')->with('success', 'Visual Settings added successfully!');
+                return redirect('admin/visual-setting')->with('success', 'Visual Settings added successfully!');
             } else {
                 return redirect()->back()->with('error', 'Sorry, You Have No Permission For This Request!');
             } 

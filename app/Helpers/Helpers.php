@@ -1,72 +1,56 @@
 <?php
 
 namespace App\Helpers\Helpers;
-use App\Models\ReportCategory;
+use App\Models\Main_inventory_stocks\Stock_update;
+use App\Models\Cims_master\Warehouse;
+use App\Models\Cims_master\Item;
+use App\Models\Cims_master\Category;
+use App\Models\Cims_master\Sub_category;
+use App\Models\Cims_master\Department;
+use App\Models\Cims_master\Designation;
+use App\Models\Master\Master_admin;
+use App\Models\Master\Role_privilege;
+use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class Helper {
-
-    public static function getFirstFiveWords($string) {
-        $endWord = 'Market';
-        $endPos = stripos($string, $endWord);
-        if ($endPos === false) {
-            $firstThreerWords = array_slice(explode(" ", trim($string)) , 0, 3);
-            return implode(' ',$firstThreerWords);
-        }
-        $result = trim(substr($string, 0, $endPos + strlen($endWord)));
-        return $result;
+    public static function itemQuantity($item_id){
+        return Stock_update::where('status', 'active')->where('item_id', $item_id)->sum('quantity');
     }
-
-    public static function getCategoryNameById($id){
-        $cat_name = ReportCategory::where('status','!=','delete')->where('id',$id)->select('category_name')->first();
-        return $cat_name->category_name;
+    public static function itemQuantityInWarehouse($item_id, $warehouse_id){
+        return Stock_update::where('status', 'active')->where('item_id', $item_id)->where('warehouse_id', $warehouse_id)->sum('quantity');
     }
-
-    public static function rupeesToWords($amount) {
-        $ones = array(
-            0 => 'zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven',
-            'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'
-        );
-        $tens = array(
-            0 => '', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'
-        );
-        $suffixes = array(
-            10000000 => 'crore',
-            100000 => 'lakh',
-            1000 => 'thousand',
-            100 => 'hundred',
-            1 => ''
-        );
-
-        if ($amount == 0) {
-            return $ones[0] . ' ' . $suffixes[1];
-        }
-
-        $words = '';
-        foreach ($suffixes as $number => $suffix) {
-            if ($amount >= $number) {
-                $count = floor($amount / $number);
-                $amount %= $number;
-
-                if ($count > 0) {
-                    if ($count < 20) {
-                        $words .= $ones[$count] . ' ';
-                    } elseif ($count < 100) {
-                        $words .= $tens[floor($count / 10)];
-
-                        // Exclude unnecessary zeros
-                        if ($count % 10 !== 0) {
-                            $words .= ' ' . $ones[$count % 10];
-                        }
-                        $words .= ' ';
-                    } else {
-                        $words .= rupeesToWords($count) . ' ';
-                    }
-
-                    $words .= $suffix . ' ';
-                }
-            }
-        }
-
-        return trim(preg_replace('/\s+/', ' ', $words));
+    public static function getWarehouseNameByID($warehouse_id){
+        return Warehouse::where('status', 'active')->where('id', $warehouse_id)->first()->warehouse_name;
+    }
+    public static function getItemByID($item_id){
+        return Item::where('status', 'active')->where('id', $item_id)->with('unit')->first();
+    }
+    public static function getCreatedByName($Master_admin){
+        return Master_admin::where('status', 'active')->where('id', $Master_admin)->first()->user_name;
+    }
+    public static function getCreatedAtDateTime($date){
+        return Carbon::createFromTimestamp(strtotime($date))->setTimezone('Asia/Kolkata')->format('d-m-Y h:i A');
+    }
+    public static function getCreatedAtDate($date){
+        return Carbon::createFromTimestamp(strtotime($date))->setTimezone('Asia/Kolkata')->format('d-m-Y');
+    }
+    public static function getTimeFormat($time){
+        return Carbon::createFromTimestamp(strtotime($time))->format('h:i A');
+    }
+    public static function getCategoryByID($category_id){
+        return Category::where('status', 'active')->where('id', $category_id)->first()->category;
+    }
+    public static function getSubCategoryByID($sub_category_id){
+        return Sub_category::where('status', 'active')->where('id', $sub_category_id)->first()->sub_category;
+    }
+    public static function getDepartmentById($department_id){
+        return department::where('status', 'active')->where('id', $department_id)->first()->department;
+    }
+    public static function getDesignationById($designation_id){
+        return designation::where('status', 'active')->where('id', $designation_id)->first()->designation;
+    }
+    public static function getRoleName(){
+        return Role_privilege::where('status', 'active')->where('id', Auth::guard('master_admins')->user()->role_id)->first()->role_name;
     }
 }

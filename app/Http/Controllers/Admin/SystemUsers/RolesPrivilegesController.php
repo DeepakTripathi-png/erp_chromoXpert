@@ -22,7 +22,7 @@ class RolesPrivilegesController extends Controller
         $role_id = Auth::guard('master_admins')->user()->role_id;
         $RolesPrivileges = Role_privilege::where('id', $role_id)->where('status', 'active')->select('privileges')->first();
         if (!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'role_privileges_view')){
-            return view('Admin.SystemUsers.roles-privileges');
+            return view('Admin.System-users.roles-privileges');
         }else {
             return redirect()->back()->with('error', 'Sorry, You Have No Permission For This Request!');
         }
@@ -32,26 +32,25 @@ class RolesPrivilegesController extends Controller
         $role_id = Auth::guard('master_admins')->user()->role_id;
         $RolesPrivileges = Role_privilege::where('id', $role_id)->where('status', 'active')->select('privileges')->first();
         if (!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'role_privileges_add')){
-            return view('Admin.SystemUsers.add-roles-privileges');
+            return view('Admin.System-users.add-roles-privileges');
         }else {
             return redirect()->back()->with('error', 'Sorry, You Have No Permission For This Request!');
         }
     }
 
     public function store(Request $request){
-        // dd($request->all());
-        $id = $request->role_id;
-
+        $id = $request->id;
         $request->validate([
             'role_name' => 'required|string',
             'privileges' => 'required',
         ]);
-
+        $role_id = Auth::guard('master_admins')->user()->role_id;
+        $RolesPrivileges = Role_privilege::where('id', $role_id)->where('status', 'active')->select('privileges')->first();
         if (!empty($id)) {
-            $role_id = Auth::guard('master_admins')->user()->role_id;
-            $RolesPrivileges = Role_privilege::where('id', $role_id)->where('status', 'active')->select('privileges')->first();
-
             if (!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'role_privileges_edit')) {
+                if(Role_privilege::where('status','!=','delete')->where('id', '!=', $id)->where('role_name', $request->role_name)->exists()){
+                    return redirect()->back()->with('error', 'Sorry, This Role Has Already Been Taken !');
+                }
                 $input['modified_by'] = auth()->guard('master_admins')->user()->id;
                 $input['modified_ip_address'] = $request->ip();
                 $input['role_name'] = $request->role_name;
@@ -62,11 +61,10 @@ class RolesPrivilegesController extends Controller
                 return redirect()->back()->with('error', 'Sorry, You Have No Permission For This Request!');
             }
         } else {
-
-            $role_id = Auth::guard('master_admins')->user()->role_id;
-            $RolesPrivileges = Role_privilege::where('id', $role_id)->where('status', 'active')->select('privileges')->first();
-
             if (!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'role_privileges_add')) {
+                if(Role_privilege::where('status','!=','delete')->where('role_name', $request->role_name)->exists()){
+                    return redirect()->back()->with('error', 'Sorry, This Role Has Already Been Taken !');
+                }
                 $input['created_by'] = auth()->guard('master_admins')->user()->id;
                 $input['created_ip_address'] = $request->ip();
                 $input['role_name'] = $request->role_name;
@@ -79,14 +77,11 @@ class RolesPrivilegesController extends Controller
         }
     }
 
-    public function role_privileges_data_table(Request $request){
+    public function data_table(Request $request){
         $roles_previleges = Role_privilege::where('status', '!=', 'delete')->orderBy('id','DESC')->select('id', 'role_name', 'privileges', 'status')->get();
-
         if ($request->ajax()) {
             return DataTables::of($roles_previleges)
-
                 ->addIndexColumn()
-
                 ->addColumn('role_name', function ($row) {
                     return !empty($row->role_name) ? $row->role_name : '' ;
                 })
@@ -99,15 +94,16 @@ class RolesPrivilegesController extends Controller
                     $RolesPrivileges = Role_privilege::where('id', $role_id)->where('status', 'active')->select('privileges')->first();
 
                     if (!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'role_privileges_edit')) {
-                        $actionBtn .= '<a href="' . url('admin/roles-privileges/' . Crypt::encrypt($row->id) . '/edit') . '"> <button type="button" data-id="' . $row->id . '" class="btn btn-warning btn-xs Edit_button" title="Edit"><i class="fa fa-pencil"></i></button></a>';
+                        $actionBtn .= '<a href="' . url('admin/roles-privileges/edit/' . $row->id ) . '"> <button type="button" data-id="' . $row->id . '" class="btn btn-warning btn-xs Edit_button" title="Edit"><i class="mdi mdi-pencil"></i></button></a>';
                     } else {
-                        $actionBtn .= '<a href="javascript:;"> <button type="button" data-id="' . $row->id . '" class="btn btn-warning btn-xs Edit_button" title="Edit" disabled><i class="fa fa-pencil"></i></button></a>';
+                        $actionBtn .= '<a href="javascript:void;"> <button type="button" data-id="' . $row->id . '" class="btn btn-warning btn-xs Edit_button" title="Edit" disabled><i class="mdi mdi-pencil"></i></button></a>';
                     }
 
-                    if (!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'role_privileges_delete')) {
-                        $actionBtn .=  ' <a href="javascript:void;" data-id="' . $row->id . '" data-table="role_privileges" data-flash="Roles And Privileges Deleted Successfully!" class="btn btn-danger delete btn-xs" title="Delete"><i class="fa fa-trash"></i></a>';
+
+                    if (!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'role_privileges_delete') && $row->id != 1 && $row->id != 2 && $row->id != 3) {
+                        $actionBtn .=  ' <a href="javascript:void;" data-id="' . $row->id . '" data-table="role_privileges" data-flash="Roles And Privileges Deleted Successfully!" class="btn btn-danger delete btn-xs" title="Delete"><i class="mdi mdi-trash-can"></i></a>';
                     } else {
-                        $actionBtn .= '<a href="javascript:;" class="btn btn-danger btn-xs" title="Disabled" disabled><i class="fa fa-trash"></i></a>';
+                        $actionBtn .= '<a href="javascript:void;" class="btn btn-danger btn-xs" title="Disabled" style="cursor:not-allowed;" disabled><i class="mdi mdi-trash-can"></i></a>';
                     }
                     return $actionBtn;
                 })
@@ -140,11 +136,27 @@ class RolesPrivilegesController extends Controller
 
     public function edit($id){
         try {
-            $role_privileges = Role_privilege::find(Crypt::decrypt($id));
-            return view('Admin.SystemUsers.add-roles-privileges', compact('role_privileges'));
+            $role_privileges = Role_privilege::find($id);
+            return view('Admin.System-users.add-roles-privileges', compact('role_privileges'));
         } 
         catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
             return redirect('admin/roles-privileges')->with('error', 'Access Denied !');
         }
+    }
+
+    public function check_role_exist(Request $request){
+        if(!empty($request->role_id)){
+            if(Role_privilege::where('id', '!=', $request->role_id)->where('status', '!=', 'delete')->where('role_name', $request->role_name)->exists()){
+                return "true";
+            } else {
+                return "false";
+            }
+        } else {
+            if(Role_privilege::where('status', '!=', 'delete')->where('role_name', $request->role_name)->exists()){
+                return "true";
+            } else {
+                return "false";
+            }
+        } 
     }
 }
