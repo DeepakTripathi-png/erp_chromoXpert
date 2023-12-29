@@ -34,7 +34,7 @@
                         <div class="notification-list">
                             <a href="javascript:void(0);" class="dropdown-item notify-item">
                                 <div class="d-flex align-items-start">
-                                    <img class="d-flex me-2 rounded-circle" src="{{URL::asset('ims_assets/images/users/user-2.jpg')}}" alt="Generic placeholder image" height="32">
+                                    <img class="d-flex me-2 rounded-circle" src="{{URL::asset('package_assets/images/users/user-2.jpg')}}" alt="Generic placeholder image" height="32">
                                     <div class="w-100">
                                         <h5 class="m-0 font-14">Erwin E. Brown</h5>
                                         <span class="font-12 mb-0">UI Designer</span>
@@ -43,7 +43,7 @@
                             </a>
                             <a href="javascript:void(0);" class="dropdown-item notify-item">
                                 <div class="d-flex align-items-start">
-                                    <img class="d-flex me-2 rounded-circle" src="{{URL::asset('ims_assets/images/users/user-5.jpg')}}" alt="Generic placeholder image" height="32">
+                                    <img class="d-flex me-2 rounded-circle" src="{{URL::asset('package_assets/images/users/user-5.jpg')}}" alt="Generic placeholder image" height="32">
                                     <div class="w-100">
                                         <h5 class="m-0 font-14">Jacob Deo</h5>
                                         <span class="font-12 mb-0">Developer</span>
@@ -161,7 +161,7 @@
 
         <li class="dropdown notification-list topbar-dropdown">
             <a class="nav-link dropdown-toggle nav-user me-0 waves-effect waves-light" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                <img src="{{ !empty(Auth::guard('master_admins')->user()->user_profile_image_path) && Storage::exists(Auth::guard('master_admins')->user()->user_profile_image_path) ? url('/').Storage::url(Auth::guard('master_admins')->user()->user_profile_image_path) : URL::asset('ims_assets/images/default-images/profile-image.png')}}" alt="user-image" class="rounded-circle">
+                <img src="{{ !empty(Auth::guard('master_admins')->user()->user_profile_image_path) && Storage::exists(Auth::guard('master_admins')->user()->user_profile_image_path) ? url('/').Storage::url(Auth::guard('master_admins')->user()->user_profile_image_path) : URL::asset('package_assets/images/default-images/profile-image.png')}}" alt="user-image" class="rounded-circle">
                 <span class="pro-user-name ms-1"> {{ !empty(Auth::guard('master_admins')->user()->user_name) ? Auth::guard('master_admins')->user()->user_name : '' }} <i class="mdi mdi-chevron-down"></i></span>
             </a>
             <div class="dropdown-menu dropdown-menu-end profile-dropdown ">
@@ -194,19 +194,19 @@
     <div class="logo-box">
         <a href="{{ url('/admin/dashboard') }}" class="logo logo-light text-center">
             <span class="logo-sm">
-                <img src="{{URL::asset('ims_assets/images/construction_inventory.png')}}" alt="" height="22">
+                <img src="{{URL::asset('package_assets/images/construction_inventory.png')}}" alt="" height="22">
             </span>
             <span class="logo-lg">
-                <img src="{{URL::asset('ims_assets/images/construction_inventory.png')}}" alt="" height="16">
+                <img src="{{URL::asset('package_assets/images/construction_inventory.png')}}" alt="" height="16">
             </span>
         </a>
         <a href="{{ url('/admin/dashboard') }}" class="logo logo-dark text-center">
             <span class="logo-sm">
-                <img src="{{URL::asset('ims_assets/images/construction_inventory.png')}}" alt="" height="22">
+                <img src="{{URL::asset('package_assets/images/construction_inventory.png')}}" alt="" height="22">
 
             </span>
             <span class="logo-lg text-dark fs-4">
-                <img src="{{URL::asset('ims_assets/images/construction_inventory.png')}}" alt="" height="35">
+                <img src="{{URL::asset('package_assets/images/construction_inventory.png')}}" alt="" height="35">
             </span>
         </a>
     </div>
@@ -223,7 +223,7 @@
 <!-- end Topbar -->
 
 <!-- ========== Left Sidebar Start ========== -->
-@php 
+@php
 $role_id = Auth::guard('master_admins')->user()->role_id;
 $RolesPrivileges = App\Models\Master\Role_privilege::where('status', 'active')->where('id', $role_id)->select('privileges')->first();
 @endphp
