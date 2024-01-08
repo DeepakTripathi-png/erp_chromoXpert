@@ -54,11 +54,11 @@
                                 <button class="btn  btn-success mt-4" type="submit"> {{ !empty($visual_settings) ? 'Update' : 'Submit' }} </button>
                             </form>
                         </div>
-                    </div> <!-- end card-body -->
+                    </div> 
                 </div>
             </div>
-        </div> <!-- end row -->
-    </div> <!-- container-fluid -->
+        </div> 
+    </div> 
 </div>
 @endsection
 
