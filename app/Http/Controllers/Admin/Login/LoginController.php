@@ -27,6 +27,7 @@ class LoginController extends Controller
     // }
 
     public function admin_login(Request $request){
+    
         $request->validate([
             'email' => 'required',
             'password' => 'required'
@@ -36,7 +37,9 @@ class LoginController extends Controller
             'email' => $request->get('email'),
             'password' => $request->get('password')
         );  
-        // login by Auth
+
+      
+       
         $user = Master_admin::where('email', $user_data['email'])->where('status', '!=', 'delete')->first();
         if($user && Hash::check($user_data['password'], $user->password)){
             Auth::guard('master_admins')->login($user);

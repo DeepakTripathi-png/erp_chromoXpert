@@ -104,8 +104,8 @@ class SystemUserController extends Controller
                     'role' => $role_name->role_name,
                 ];
                 try{
-                    \Mail::to('mohitmkg65@gmail.com')->send(new MailToAdminAfterUserCreation($mailData));
-                    \Mail::to($input['email'])->send(new MailToUserAfterUserCreation($mailData));
+                    // \Mail::to('deepakmegreat@gmail.com')->send(new MailToAdminAfterUserCreation($mailData));
+                    // \Mail::to($input['email'])->send(new MailToUserAfterUserCreation($mailData));
                 }catch (Throwable $e) {
                     return redirect()->back()->with('warning', 'User Created But Mail Sending Issue');
                 }
@@ -133,43 +133,113 @@ class SystemUserController extends Controller
                 ->addColumn('mobile_no', function ($row) {
                     return !empty($row->mobile_no) ? $row->mobile_no : '' ;
                 })
+
+
+                // ->addColumn('action', function ($row) {
+                //     $actionBtn = '';
+                //     $role_id = Auth::guard('master_admins')->user()->role_id;
+                //     $RolesPrivileges = Role_privilege::where('status', 'active')->where('id', $role_id)->select('privileges')->first();
+                //     if (!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'user_edit')) {
+                //         $actionBtn .= '<a href="' . url('admin/system-user/edit/' .$row->id) . '"> <button type="button" data-id="' . $row->id . '" class="btn btn-warning btn-xs Edit_button" title="Edit"><i class="mdi mdi-pencil"></i></button></a>';
+                //     } else {
+                //         $actionBtn .= '<a href="javascript:;"> <button type="button" data-id="' . $row->id . '" class="btn btn-warning btn-xs Edit_button" title="Edit" disabled><i class="mdi mdi-pencil"></i></button></a>';
+                //     }
+                //     if (str_contains($RolesPrivileges, 'user_delete')) {
+                //         $actionBtn .=  ' <a href="javascript:void;" data-id="' . $row->id . '" data-table="master_admins" data-flash="User Deleted Successfully!" class="btn btn-danger delete btn-xs" title="Delete"><i class="mdi mdi-trash-can"></i></a>';
+                //     } else {
+                //         $actionBtn .= '<a href="javascript:void;" class="btn btn-danger btn-xs" title="Disabled" disabled><i class="mdi mdi-trash-can"></i></a>';
+                //     }
+                //     return $actionBtn;
+                // })
+
+
                 ->addColumn('action', function ($row) {
                     $actionBtn = '';
                     $role_id = Auth::guard('master_admins')->user()->role_id;
                     $RolesPrivileges = Role_privilege::where('status', 'active')->where('id', $role_id)->select('privileges')->first();
-                    if (!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'user_edit')) {
-                        $actionBtn .= '<a href="' . url('admin/system-user/edit/' .$row->id) . '"> <button type="button" data-id="' . $row->id . '" class="btn btn-warning btn-xs Edit_button" title="Edit"><i class="mdi mdi-pencil"></i></button></a>';
+
+                    // Edit button
+                    if (!empty($RolesPrivileges) && str_contains($RolesPrivileges->privileges, 'user_edit')) {
+                        $actionBtn .= '<a href="' . url('admin/system-user/edit/' . $row->id) . '" 
+                                        class="btn btn-icon btn-warning me-1" 
+                                        title="Edit User" 
+                                        data-bs-toggle="tooltip" 
+                                        style="background:#fff; color:#f6b51d; border:1px solid #f6b51d;">
+                                        <i class="mdi mdi-pencil"></i>
+                                    </a>';
                     } else {
-                        $actionBtn .= '<a href="javascript:;"> <button type="button" data-id="' . $row->id . '" class="btn btn-warning btn-xs Edit_button" title="Edit" disabled><i class="mdi mdi-pencil"></i></button></a>';
+                        $actionBtn .= '<a href="javascript:;" 
+                                        class="btn btn-icon btn-warning me-1" 
+                                        title="Edit Disabled" 
+                                        data-bs-toggle="tooltip" 
+                                        style="background:#fff; color:#f6b51d; border:1px solid #f6b51d;" disabled>
+                                        <i class="mdi mdi-pencil"></i>
+                                    </a>';
                     }
-                    if (str_contains($RolesPrivileges, 'user_delete')) {
-                        $actionBtn .=  ' <a href="javascript:void;" data-id="' . $row->id . '" data-table="master_admins" data-flash="User Deleted Successfully!" class="btn btn-danger delete btn-xs" title="Delete"><i class="mdi mdi-trash-can"></i></a>';
+
+                    // Delete button
+                    if (!empty($RolesPrivileges) && str_contains($RolesPrivileges->privileges, 'user_delete')) {
+                        $actionBtn .= '<a href="javascript:void(0)" 
+                                        data-id="' . $row->id . '" 
+                                        data-table="master_admins" 
+                                        data-flash="User Deleted Successfully!" 
+                                        class="btn btn-icon btn-danger delete me-1" 
+                                        title="Delete User" 
+                                        data-bs-toggle="tooltip" 
+                                        style="background:#fff; color:#cc235e; border:1px solid #cc235e;">
+                                        <i class="mdi mdi-trash-can"></i>
+                                    </a>';
                     } else {
-                        $actionBtn .= '<a href="javascript:void;" class="btn btn-danger btn-xs" title="Disabled" disabled><i class="mdi mdi-trash-can"></i></a>';
+                        $actionBtn .= '<a href="javascript:;" 
+                                        class="btn btn-icon btn-danger me-1" 
+                                        title="Delete Disabled" 
+                                        data-bs-toggle="tooltip" 
+                                        style="background:#fff; color:#cc235e; border:1px solid #cc235e;" disabled>
+                                        <i class="mdi mdi-trash-can"></i>
+                                    </a>';
                     }
+
                     return $actionBtn;
                 })
+
+
+                // ->addColumn('status', function ($row) {
+                //     $role_id = Auth::guard('master_admins')->user()->role_id;
+                //     $RolesPrivileges = Role_privilege::where('status', 'active')->where('id', $role_id)->select('privileges')->first();
+                //     if (!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'user_status_change')) {
+                //         if ($row->status == 'active') {
+                //             $statusActiveBtn = '<a href="javascript:void(0)"  data-id="' . $row->id . '" data-table="master_admins" data-flash="Status Changed Successfully!"  class="change-status"  ><i class="fa fa-toggle-on tgle-on  status_button" aria-hidden="true" title=""></i></a>';
+                //             return $statusActiveBtn;
+                //         } else {
+                //             $statusBlockBtn = '<a href="javascript:void(0)"  data-id="' . $row->id . '" data-table="master_admins" data-flash="Status Changed Successfully!" class="change-status" ><i class="fa fa-toggle-off tgle-off  status_button" aria-hidden="true" title=""></></a>';
+                //             return $statusBlockBtn;
+                //         }
+                //     } else {
+                //         if ($row->status == 'active') {
+                //             $statusActiveBtn = '<a href="javascript:;" disabled  ><i class="fa fa-toggle-on tgle-on  status_button" aria-hidden="true" title="Active"></i></a>';
+                //             return $statusActiveBtn;
+                //         } else {
+                //             $statusBlockBtn = '<a href="javascript:;" disabled ><i class="fa fa-toggle-off tgle-off  status_button" aria-hidden="true" title="Inactive"></></a>';
+                //             return $statusBlockBtn;
+                //         }
+                //     }
+                // })
+
                 ->addColumn('status', function ($row) {
                     $role_id = Auth::guard('master_admins')->user()->role_id;
                     $RolesPrivileges = Role_privilege::where('status', 'active')->where('id', $role_id)->select('privileges')->first();
-                    if (!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'user_status_change')) {
-                        if ($row->status == 'active') {
-                            $statusActiveBtn = '<a href="javascript:void(0)"  data-id="' . $row->id . '" data-table="master_admins" data-flash="Status Changed Successfully!"  class="change-status"  ><i class="fa fa-toggle-on tgle-on  status_button" aria-hidden="true" title=""></i></a>';
-                            return $statusActiveBtn;
-                        } else {
-                            $statusBlockBtn = '<a href="javascript:void(0)"  data-id="' . $row->id . '" data-table="master_admins" data-flash="Status Changed Successfully!" class="change-status" ><i class="fa fa-toggle-off tgle-off  status_button" aria-hidden="true" title=""></></a>';
-                            return $statusBlockBtn;
-                        }
+
+                    $isChecked = $row->status == 'active' ? 'checked' : '';
+
+                    if (!empty($RolesPrivileges) && str_contains($RolesPrivileges->privileges, 'user_status_change')) {
+                        return '<input type="checkbox" class="change-status" data-id="' . $row->id . '" data-table="master_admins" data-flash="Status Changed Successfully!" ' . $isChecked . '>';
                     } else {
-                        if ($row->status == 'active') {
-                            $statusActiveBtn = '<a href="javascript:;" disabled  ><i class="fa fa-toggle-on tgle-on  status_button" aria-hidden="true" title="Active"></i></a>';
-                            return $statusActiveBtn;
-                        } else {
-                            $statusBlockBtn = '<a href="javascript:;" disabled ><i class="fa fa-toggle-off tgle-off  status_button" aria-hidden="true" title="Inactive"></></a>';
-                            return $statusBlockBtn;
-                        }
+                        // Disabled checkbox for users without permission
+                        return '<input type="checkbox" disabled ' . $isChecked . '>';
                     }
                 })
+
+
                 ->rawColumns(['action', 'status'])
                 ->make(true);
         }

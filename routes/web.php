@@ -11,6 +11,18 @@ use App\Http\Controllers\Admin\SystemUsers\RolesPrivilegesController;
 use App\Http\Controllers\Admin\SystemUsers\SystemUserController;
 use App\Http\Controllers\Admin\NotFoundController\NotFoundController;
 use App\Http\Controllers\Admin\Dashboard\DashboardController;
+use App\Http\Controllers\Admin\Petparent\PetparentController;
+use App\Http\Controllers\Admin\Pet\PetController;
+use App\Http\Controllers\Admin\Appointments\AppointmentsController;
+use App\Http\Controllers\Admin\Branch\BranchController;
+use App\Http\Controllers\Admin\Departments\DepartmentController;
+use App\Http\Controllers\Admin\Testcase\TestcaseController;
+use App\Http\Controllers\Admin\Report\ReportController;
+use App\Http\Controllers\Admin\Revenu\RevenuController;
+use App\Http\Controllers\Admin\RefereeDoctor\RefereeDoctorController;
+use App\Http\Controllers\Admin\InternalDoctor\InternalDoctorController;
+use App\Http\Controllers\Admin\Notification\NotificationController;
+use App\Http\Controllers\Admin\Location\LocationController;
 // End Common Controllers Needed For All Project
 
 // Project Controller Start Here
@@ -33,6 +45,7 @@ Route::get('clear', function () {
 Route::group(['middleware' => 'prevent-back-history'], function () {
     Route::get('/admin', [LoginController::class, 'index']);
 });
+
 Route::post('login-action', [LoginController::class, 'admin_login'])->name('login');
 
 Route::get('forget-password', [ForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');
@@ -63,7 +76,111 @@ Route::group(['prefix' => 'admin', 'middleware' => ['prevent-back-history', 'is_
 
     // Start Backend Common Routes For The Projects
 
-    Route::controller(GeneralSettings::class)->group(function () {
+    
+
+    Route::controller(AppointmentsController::class)->group(function (){
+        Route::get('appointments', 'index');
+        Route::get('appointments/add', 'add');
+        Route::get('appointments/reciept', 'viewReciept');
+        Route::post('appointments/store', 'store');
+    });
+
+   
+
+ 
+
+    
+    Route::controller(BranchController::class)->group(function (){
+        Route::get('branches', 'index');
+        Route::get('branches/add', 'add');
+        Route::post('branches/store', 'store')->name('branch.store');
+        Route::get('branches/data-table', 'data_table');
+        Route::get('branches/edit/{id}', 'edit');
+        Route::get('branches/view/{id}', 'view');
+        Route::get('branches/delete/{id}', 'delete');
+    });
+
+
+
+
+    Route::controller(DepartmentController::class)->group(function (){
+        Route::get('departments', 'index');
+        Route::get('departments/add', 'add');
+    });
+
+
+
+
+     Route::controller(PetparentController::class)->group(function (){
+        Route::get('parent', 'index');
+        Route::get('parent/add', 'add');
+        Route::post('parent/store', 'store')->name('petparent.store');
+        Route::get('parent/data-table', 'data_table');
+        Route::get('parent/edit/{id}', 'edit');
+     });
+
+
+    Route::controller(PetController::class)->group(function (){
+        Route::get('pet', 'index');
+        Route::get('pet/add', 'add');
+     });
+
+    Route::controller(InternalDoctorController::class)->group(function (){
+        Route::get('internal-doctors', 'index');
+        Route::get('internal-doctors/add', 'add');
+        Route::post('internal-doctor/store', 'store')->name('internaldoctor.store');
+        Route::get('internal-doctor/data-table', 'data_table');
+        Route::get('internal-doctor/edit/{id}', 'edit');
+        Route::get('internal-doctor/view/{id}', 'view');
+        Route::get('internal-doctor/delete/{id}', 'delete');
+     });
+
+    Route::controller(RefereeDoctorController::class)->group(function (){
+        Route::get('referee-doctors', 'index');
+        Route::get('referee-doctors/add', 'add');
+        Route::post('referee-doctor/store', 'store')->name('refereedoctor.store');
+        Route::get('referee-doctor/data-table', 'data_table');
+        Route::get('referee-doctor/edit/{id}', 'edit');
+     });
+
+
+
+    Route::controller(TestcaseController::class)->group(function (){
+        Route::get('test-case', 'index');
+        Route::get('test-case/add', 'add');
+        Route::get('test-case/view', 'view');
+     });
+
+    Route::controller(ReportController::class)->group(function (){
+        Route::get('report', 'index');
+        Route::get('generate-reports', 'getGenerateReport');
+        Route::get('reports/view', 'viewReport');
+    });
+
+
+    Route::controller(RevenuController::class)->group(function (){
+        Route::get('revenu', 'index');
+        Route::get('revenu/view', 'view');
+    });
+
+
+    
+    Route::controller(NotificationController::class)->group(function (){
+        Route::get('notification', 'index');
+    });
+
+
+    Route::controller(LocationController::class)->group(function (){ 
+       Route::get('/get-states/{country_id}', 'getStates')->name('get.states');
+       Route::get('/get-cities/{state_id}', 'getCities')->name('get.cities');
+    });
+
+
+
+
+
+
+    Route::controller(GeneralSettings::class)->group(function (){
         Route::get('general-setting', 'index');
         Route::post('general-settings-store', 'store')->name('geraral.settings.store');
     });
@@ -73,7 +190,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['prevent-back-history', 'is_
         Route::post('visual-settings-store', 'store')->name('visual.settings.store');
     });
 
-    Route::controller(RolesPrivilegesController::class)->group(function () {
+    Route::controller(RolesPrivilegesController::class)->group(function (){
         Route::get('roles-privileges','index');
         Route::get('roles-privileges/add','create');
         Route::post('roles-privileges/store','store')->name('roles-previllages.store');

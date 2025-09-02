@@ -17,5 +17,6 @@
         @yield('content')
     </div>
     @include('Admin.Includes.footer')
+    @yield('scripts')
 </body>
 </html>

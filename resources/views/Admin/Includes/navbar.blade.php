@@ -1,282 +1,327 @@
 <style>
-    #sidebar-menu #side-menu li a{
-    display: flex !important;
-}
-#sidebar-menu>ul>li>a i {
-    line-height:unset;
-}
- </style>
-{{-- statrt Topbar --}}
+    /* Custom scrollbar for sidebar */
+    .left-side-menu::-webkit-scrollbar {
+        width: 8px;
+    }
+    .left-side-menu::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+    .left-side-menu::-webkit-scrollbar-thumb {
+        background: #ac7fb6;
+        border-radius: 4px;
+    }
+    .left-side-menu::-webkit-scrollbar-thumb:hover {
+        background: #cc235e;
+    }
+    /* Sidebar Styling */
+    .left-side-menu {
+        background: linear-gradient(180deg, #6267ae 0%, #cc235e 100%);
+        box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.2);
+    }
+    #sidebar-menu ul li a {
+        display: flex;
+        align-items: center;
+        padding: 12px 18px;
+        font-size: 15px;
+        font-weight: 500;
+        color: #e0e7ff;
+        border-radius: 8px;
+        margin: 4px 10px;
+        transition: all 0.3s ease;
+    }
+    #sidebar-menu ul li a i {
+        font-size: 18px;
+        margin-right: 10px;
+        color: #f6b51d;
+    }
+    #sidebar-menu ul li a:hover {
+        background: #fff;
+        color: #1f2937;
+        transform: scale(1.02);
+    }
+    #sidebar-menu ul li a:hover i {
+        color: #6267ae;
+    }
+    #sidebar-menu ul li.active > a {
+        background: #fff;
+        color: #1f2937;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+        transform: translateX(4px);
+    }
+    #sidebar-menu ul li.active > a i {
+        color: #6267ae;
+    }
+    /* Submenu Styling */
+    #sidebar-menu .nav-second-level li a {
+        padding: 10px 18px 10px 40px;
+        font-size: 14px;
+        color: #e0e7ff;
+        border-radius: 8px;
+        margin: 2px 10px;
+        transition: all 0.3s ease;
+    }
+    #sidebar-menu .nav-second-level li a:hover {
+        background: #fff;
+        color: #1f2937;
+    }
+    #sidebar-menu .nav-second-level li.active a {
+        background: #fff;
+        color: #1f2937;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    }
+    .menu-arrow {
+        color: #f6b51d;
+        margin-left: auto;
+        font-size: 14px;
+    }
+    .menu-arrow::before {
+        content: '\f078'; /* Material Design Icons chevron-down */
+        font-family: 'Material Design Icons';
+    }
+    /* Navbar Styling */
+    .navbar-custom {
+        background: white;
+        border-bottom: 1px solid #e5e7eb;
+        padding: 10px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.1);
+    }
+    .navbar-custom .topnav-menu > li > a {
+        color: #6267ae;
+        padding: 8px 12px;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+    }
+    .navbar-custom .topnav-menu > li > a:hover {
+        background: #f6b51d;
+        color: #1f2937;
+    }
+    /* Profile Image */
+    .nav-user img {
+        border: 2px solid #f6b51d;
+        width: 36px;
+        height: 36px;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+    /* Notification Badge */
+    .noti-icon-badge {
+        font-size: 10px;
+        padding: 3px 5px;
+        background: #cc235e;
+        color: #fff;
+        border-radius: 50%;
+    }
+    /* Dropdown Menu */
+    .dropdown-menu {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+    }
+    .dropdown-menu .dropdown-item {
+        color: #6267ae;
+        padding: 8px 16px;
+        transition: background 0.3s ease;
+    }
+    .dropdown-menu .dropdown-item:hover {
+        background: #f6b51d;
+        color: #1f2937;
+    }
+    .dropdown-header h6 {
+        color: #6267ae;
+    }
+    .dropdown-header small {
+        color: #ac7fb6;
+    }
+</style>
+
+{{-- Topbar --}}
 <div class="navbar-custom">
+    <div class="d-flex align-items-center">
+        <a href="{{ url('/admin/dashboard') }}" class="ms-3">
+            <img src="{{ !empty(App\Helpers\Helpers\Helper::getVisualImages()->logo_image_path) && Storage::exists(App\Helpers\Helpers\Helper::getVisualImages()->logo_image_path) ? url('/').Storage::url(App\Helpers\Helpers\Helper::getVisualImages()->logo_image_path) : URL::asset('package_assets/images/logo.png') }}" height="40" alt="ChromoXpert Logo">
+        </a>
+    </div>
     <ul class="list-unstyled topnav-menu float-end mb-0">
+        {{-- Notifications --}}
         <li class="dropdown notification-list topbar-dropdown">
-            <a class="nav-link dropdown-toggle waves-effect waves-light" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                <i class="fe-bell noti-icon"></i>
+            <a class="nav-link waves-effect waves-light" href="{{ url('admin/notification') }}" aria-label="Notifications">
+                <i class="fe-bell noti-icon text-[#6267ae] text-lg"></i>
                 <span class="badge bg-danger rounded-circle noti-icon-badge">9</span>
             </a>
         </li>
 
+        {{-- Profile --}}
         <li class="dropdown notification-list topbar-dropdown">
-            <a class="nav-link dropdown-toggle nav-user me-0 waves-effect waves-light" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                <img src="{{ !empty(Auth::guard('master_admins')->user()->user_profile_image_path) && Storage::exists(Auth::guard('master_admins')->user()->user_profile_image_path) ? url('/').Storage::url(Auth::guard('master_admins')->user()->user_profile_image_path) : URL::asset('package_assets/images/default-images/profile-image.png')}}" alt="user-image" class="rounded-circle">
-                <span class="pro-user-name ms-1"> {{ !empty(Auth::guard('master_admins')->user()->user_name) ? Auth::guard('master_admins')->user()->user_name : '' }} <i class="mdi mdi-chevron-down"></i></span>
+            <a class="nav-link dropdown-toggle nav-user me-0" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" aria-label="User profile">
+                <img src="{{ !empty(Auth::guard('master_admins')->user()->user_profile_image_path) && Storage::exists(Auth::guard('master_admins')->user()->user_profile_image_path) ? url('/').Storage::url(Auth::guard('master_admins')->user()->user_profile_image_path) : URL::asset('package_assets/images/default-images/profile-image.png')}}" class="rounded-circle">
+                <span class="pro-user-name ms-1 text-[#6267ae]">{{ Auth::guard('master_admins')->user()->user_name ?? '' }} <i class="mdi mdi-chevron-down text-[#f6b51d]"></i></span>
             </a>
-            <div class="dropdown-menu dropdown-menu-end profile-dropdown ">
-                <div class="dropdown-header noti-title">
-                    <h6 class="text-overflow m-0">Welcome {{ !empty(Auth::guard('master_admins')->user()->user_name) ? Auth::guard('master_admins')->user()->user_name : '' }}!</h6>
-                    <div class="text-center mt-1" style="background-color: #f3f9ff;"><span>{{ App\Helpers\Helpers\Helper::getRoleName() }}</span></div>
+            <div class="dropdown-menu dropdown-menu-end profile-dropdown">
+                <div class="dropdown-header text-center">
+                    <h6>Welcome, {{ Auth::guard('master_admins')->user()->user_name ?? '' }}</h6>
+                    <small>{{ App\Helpers\Helpers\Helper::getRoleName() }}</small>
                 </div>
-
-                <a href="Javascript:;" class="dropdown-item notify-item">
-                    <i class="fe-user"></i>
-                    <span>My Account</span>
-                </a>
-
-                {{-- <a href="javascript:;" class="dropdown-item notify-item">
-                    <i class="fe-lock"></i>
-                    <span>Lock Screen</span>
-                </a> --}}
-
+                <a href="javascript:;" class="dropdown-item"><i class="fe-user text-[#6267ae] me-2"></i> My Account</a>
                 <div class="dropdown-divider"></div>
-
-                <a href="{{ url('admin/logout') }}" class="dropdown-item notify-item">
-                    <i class="fe-log-out"></i>
-                    <span>Logout</span>
-                </a>
-
+                <a href="{{ url('admin/logout') }}" class="dropdown-item"><i class="fe-log-out text-[#6267ae] me-2"></i> Logout</a>
             </div>
         </li>
     </ul>
-
-    <div class="logo-box">
-        <a href="{{ url('/admin/dashboard') }}" class="logo logo-light text-center">
-            <span class="logo-sm">
-                <img src="{{ !empty(App\Helpers\Helpers\Helper::getVisualImages()->mini_logo_image_path) && Storage::exists(App\Helpers\Helpers\Helper::getVisualImages()->mini_logo_image_path) ? url('/').Storage::url(App\Helpers\Helpers\Helper::getVisualImages()->mini_logo_image_path) : URL::asset('package_assets/images/construction_inventory_old.png') }}" alt="{{ !empty(App\Helpers\Helpers\Helper::getVisualImages()->mini_logo_image_name) ? App\Helpers\Helpers\Helper::getVisualImages()->mini_logo_image_name : '' }}" height="22">
-            </span>
-            <span class="logo-lg">
-                <img src="{{ !empty(App\Helpers\Helpers\Helper::getVisualImages()->logo_image_path) && Storage::exists(App\Helpers\Helpers\Helper::getVisualImages()->logo_image_path) ? url('/').Storage::url(App\Helpers\Helpers\Helper::getVisualImages()->logo_image_path) : URL::asset('package_assets/images/construction_inventory_old.png') }}" alt="{{ !empty(App\Helpers\Helpers\Helper::getVisualImages()->logo_image_name) ? App\Helpers\Helpers\Helper::getVisualImages()->logo_image_name : '' }}" height="16">
-            </span>
-        </a>
-        <a href="{{ url('/admin/dashboard') }}" class="logo logo-dark text-center">
-            <span class="logo-sm">
-                <img src="{{ !empty(App\Helpers\Helpers\Helper::getVisualImages()->mini_logo_image_path) && Storage::exists(App\Helpers\Helpers\Helper::getVisualImages()->mini_logo_image_path) ? url('/').Storage::url(App\Helpers\Helpers\Helper::getVisualImages()->mini_logo_image_path) : URL::asset('package_assets/images/construction_inventory_old.png') }}" alt="{{ !empty(App\Helpers\Helpers\Helper::getVisualImages()->mini_logo_image_name) ? App\Helpers\Helpers\Helper::getVisualImages()->mini_logo_image_name : '' }}" height="22">
-            </span>
-            <span class="logo-lg text-dark fs-4">
-                <img src="{{ !empty(App\Helpers\Helpers\Helper::getVisualImages()->logo_image_path) && Storage::exists(App\Helpers\Helpers\Helper::getVisualImages()->logo_image_path) ? url('/').Storage::url(App\Helpers\Helpers\Helper::getVisualImages()->logo_image_path) : URL::asset('package_assets/images/construction_inventory_old.png') }}" alt="{{ !empty(App\Helpers\Helpers\Helper::getVisualImages()->logo_image_name) ? App\Helpers\Helpers\Helper::getVisualImages()->logo_image_name : '' }}" height="35">
-            </span>
-        </a>
-    </div>
-
-    <ul class="list-unstyled topnav-menu topnav-menu-left mb-0">
-        <li>
-            <button class="button-menu-mobile disable-btn waves-effect">
-                <i class="fe-menu"></i>
-            </button>
-        </li>
-    </ul>
-
 </div>
-<!-- end Topbar -->
 
-<!-- ========== Left Sidebar Start ========== -->
+{{-- Sidebar --}}
 @php
 $role_id = Auth::guard('master_admins')->user()->role_id;
 $RolesPrivileges = App\Models\Master\Role_privilege::where('status', 'active')->where('id', $role_id)->select('privileges')->first();
 @endphp
+
 <div class="left-side-menu">
     <div class="h-100" data-simplebar>
         <div id="sidebar-menu">
             <ul id="side-menu">
+                {{-- Dashboard --}}
                 @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'dashboard_view'))
-                <li>
+                <li class="{{ Request::is('admin/dashboard*') ? 'active' : '' }}">
                     <a href="{{ url('/admin/dashboard') }}">
-                        <i class="mdi mdi-view-dashboard-outline"></i>
+                        <i class="mdi mdi-monitor-dashboard"></i>
                         <span> Dashboard </span>
                     </a>
                 </li>
                 @endif
 
-                @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'master_view'))
-                <li class="master">
-                    <a href="#master" data-bs-toggle="collapse">
-                        <i class="mdi mdi-chart-pie"></i>
-                        <span> Master </span>
+                {{-- Appointments --}}
+                @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'appointments_view'))
+                <li class="{{ Request::is('admin/appointments*') ? 'active' : '' }}">
+                    <a href="{{ url('/admin/appointments') }}">
+                        <i class="mdi mdi-calendar-clock"></i>
+                        <span> New Registration </span>
+                    </a>
+                </li>
+                @endif
+
+
+                    {{-- Test Reports --}}
+                @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'reports_view'))
+                <li class="{{ Request::is('admin/report*') ? 'active' : '' }}">
+                    <a href="{{ url('/admin/report') }}">
+                        <i class="mdi mdi-file-chart-outline"></i>
+                        <span>Reports </span>
+                    </a>
+                </li>
+                @endif
+
+
+                {{-- Branches --}}
+                @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'branch_view'))
+                <li class="{{ Request::is('admin/branches*') ? 'active' : '' }}">
+                    <a href="{{ url('/admin/branches') }}">
+                        <i class="mdi mdi-map-marker-radius"></i>
+                        <span> Branches </span>
+                    </a>
+                </li>
+                @endif
+
+                {{-- Departments --}}
+                @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'departments_view'))
+                <li class="{{ Request::is('admin/departments*') ? 'active' : '' }}">
+                    <a href="{{ url('/admin/departments') }}">
+                        <i class="mdi mdi-domain"></i>
+                        <span> Departments </span>
+                    </a>
+                </li>
+                @endif
+
+                {{-- Doctors --}}
+                @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'doctors_view'))
+                <li class="doctors {{ Request::is('admin/doctors*', 'admin/internal-doctors*', 'admin/referee-doctors*') ? 'active' : '' }}">
+                    <a href="#doctors" data-bs-toggle="collapse" aria-expanded="{{ Request::is('admin/doctors*', 'admin/internal-doctors*', 'admin/referee-doctors*') ? 'true' : 'false' }}">
+                        <i class="mdi mdi-stethoscope"></i>
+                        <span> Doctors </span>
                         <span class="menu-arrow"></span>
                     </a>
-                    <div class="collapse" id="master">
+                    <div class="collapse {{ Request::is('admin/doctors*', 'admin/internal-doctors*', 'admin/referee-doctors*') ? 'show' : '' }}" id="doctors">
                         <ul class="nav-second-level">
-                            @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'site_view'))
-                            <li class="site-master">
-                                <a href="{{ url('admin/master/site') }}">Site Master</a>
+                            <li class="internal-doctors {{ Request::is('admin/internal-doctors*') ? 'active' : '' }}">
+                                <a href="{{ url('admin/internal-doctors') }}">
+                                    <span> Internal Doctors </span>
+                                </a>
                             </li>
-                            @endif
-                            @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'department_view'))
-                            <li class="department-master">
-                                <a href="{{ url('admin/master/department') }}">Department Master</a>
+                            <li class="referee-doctors {{ Request::is('admin/referee-doctors*') ? 'active' : '' }}">
+                                <a href="{{ url('/admin/referee-doctors') }}">
+                                    <span> Referee Doctors </span>
+                                </a>
                             </li>
-                            @endif
-                            @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'designation_view'))
-                            <li class="designation-master">
-                                <a href="{{ url('admin/master/designation') }}">Designation Master</a>
-                            </li>
-                            @endif
-                            @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'category_view'))
-                            <li class="category-master">
-                                <a href="{{ url('admin/master/category') }}">Item Category Master</a>
-                            </li>
-                            @endif
-                            @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'sub_categories_view'))
-                            <li class="sub-category-master">
-                                <a href="{{ url('admin/master/sub-category') }}">Item Sub Category Master</a>
-                            </li>
-                            @endif
-                            @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'unit_view'))
-                            <li class="unit-master">
-                                <a href="{{ url('admin/master/unit') }}">Unit Master</a>
-                            </li>
-                            @endif
-                            @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'item_view'))
-                            <li class="item-master">
-                                <a href="{{ url('admin/master/item') }}">Item Master</a>
-                            </li>
-                            @endif
-                            @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'document_category_view'))
-                            <li class="document-category-master">
-                                <a href="{{ url('admin/master/document-category') }}">Document Category Master</a>
-                            </li>
-                            @endif
-                            @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'document_sub_categories_view'))
-                            <li class="document-sub-category-master">
-                                <a href="{{ url('admin/master/document-sub-category') }}">Document Sub Category Master</a>
-                            </li>
-                            @endif
-                            @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'warehouse_view'))
-                            <li class="warehouse-master">
-                                <a href="{{ url('admin/master/warehouse') }}">Warehouse Master</a>
-                            </li>
-                            @endif
-                            @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'configuration_view'))
-                            <li class="configuration-master">
-                                <a href="{{ url('admin/master/configuration') }}">Configuration Master</a>
-                            </li>
-                            @endif
-                            @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'employee_view'))
-                            <li class="employee">
-                                <a href="{{ url('admin/master/employee') }}">Employee</a>
-                            </li>
-                            @endif
                         </ul>
                     </div>
                 </li>
                 @endif
 
-                @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'vendor_view'))
-                <li class="vendor">
-                    <a href="{{ url('admin/vendor') }}">
-                        <i class="mdi mdi-account"></i>
-                        <span> Vendor </span>
-                    </a>
-                </li>
-                @endif
-                @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'main_inventory_view'))
-                <li class="main-inventory">
-                    <a href="{{ url('admin/inventory/main') }}">
-                        <i class="mdi mdi-clipboard-list"></i>
-                        <span> Main Inventory </span>
-                    </a>
-                </li>
-                @endif
-                @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'site_inventory_view'))
-                <li class ="site-inventory">
-                    <a href="{{ url('admin/inventory/site') }}">
-                        <i class="mdi mdi-clipboard-list"></i>
-                        <span> Site Inventory </span>
-                    </a>
-                </li>
-                @endif
-                @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'item_requisition_view'))
-                <li class="item-requisition">
-                    <a href="{{ url('admin/requisitions/pending') }}">
-                        <i class="mdi mdi-briefcase-variant-outline"></i>
-                        <span> Item Requisition </span>
-                    </a>
-                </li>
-                @endif
-                @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'utilized_item_view'))
-                <li class="utilized-item">
-                    <a href="{{ url('admin/utilized-item') }}">
-                        <i class="mdi mdi-briefcase-variant-outline"></i>
-                        <span> Utilized Item </span>
-                    </a>
-                </li>
 
-                @endif
-                @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'all_document_view'))
-                <li class="documents">
-                    <a href="{{ url('admin/document') }}">
-                        <i class="mdi mdi-file-document"></i>
-                        <span>Documents </span>
+                {{-- Pet Parents --}}
+                @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'pet_owners_view'))
+                <li class="{{ Request::is('admin/parent*') ? 'active' : '' }}">
+                    <a href="{{ url('/admin/parent') }}">
+                        <i class="mdi mdi-account-heart"></i>
+                        <span> Pet Parent / Care Of </span>
                     </a>
                 </li>
                 @endif
-                @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'support_ticket_view'))
-                <li class="support-ticket">
-                    <a href="{{ url('admin/support-tickets/pending') }}">
-                        <i class="mdi mdi-ticket-confirmation"></i>
-                        <span>Support Ticket </span>
+
+                {{-- Pets --}}
+                @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'animals_view'))
+                <li class="{{ Request::is('admin/pet*') ? 'active' : '' }}">
+                    <a href="{{ url('/admin/pet') }}">
+                        <i class="mdi mdi-paw"></i>
+                        <span> Pets </span>
                     </a>
                 </li>
                 @endif
-                @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'dpr_view'))
-                <li class="dpr">
-                    <a href="{{ url('admin/dpr') }}" class="d-flex">
-                        <i class="mdi mdi-file-document-edit"></i>
-                        <span> DPR (Daily Progress Report) </span>
+
+                {{-- Test Management --}}
+                @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'test_management_view'))
+                <li class="{{ Request::is('admin/test-case*') ? 'active' : '' }}">
+                    <a href="{{ url('/admin/test-case') }}">
+                        <i class="mdi mdi-flask-outline"></i>
+                        <span> Tests</span>
                     </a>
                 </li>
                 @endif
-                @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'attendance_view'))
-                <li class="attendance">
-                    <a href="{{ url('admin/attendance') }}">
-                        <i class="mdi mdi-account-check"></i>
-                        <span>Attendance</span>
+
+            
+
+                {{-- Revenue --}}
+                @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'revenue_view'))
+                <li class="{{ Request::is('admin/revenu*') ? 'active' : '' }}">
+                    <a href="{{ url('/admin/revenu') }}">
+                        <i class="mdi mdi-cash-multiple"></i>
+                        <span> Revenue </span>
                     </a>
                 </li>
                 @endif
-                @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'training_view'))
-                <li class="training">
-                    <a href="{{ url('admin/training') }}">
-                        <i class="mdi mdi-briefcase-variant-outline"></i>
-                        <span>Training</span>
-                    </a>
-                </li>
-                @endif
-                @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'report_view'))
-                <li>
-                    <a href="#">
-                        <i class="mdi mdi-clipboard-edit"></i>
-                        <span> Reports </span>
-                    </a>
-                </li>
-                @endif
+
+                {{-- System Users --}}
                 @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'system_users_view'))
-                <li class="system-user">
-                    <a href="#system-user" data-bs-toggle="collapse">
-                        <i class="mdi mdi-account-circle"></i>
-                        <span> System Users</span>
+                <li class="system-user {{ Request::is('admin/system-user*', 'admin/roles-privileges*') ? 'active' : '' }}">
+                    <a href="#system-user" data-bs-toggle="collapse" aria-expanded="{{ Request::is('admin/system-user*', 'admin/roles-privileges*') ? 'true' : 'false' }}">
+                        <i class="mdi mdi-account-group-outline"></i>
+                        <span> System Users </span>
                         <span class="menu-arrow"></span>
                     </a>
-                    <div class="collapse" id="system-user">
+                    <div class="collapse {{ Request::is('admin/system-user*', 'admin/roles-privileges*') ? 'show' : '' }}" id="system-user">
                         <ul class="nav-second-level">
                             @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'user_view'))
-                            <li class="system-user-list">
+                            <li class="system-user-list {{ Request::is('admin/system-user*') ? 'active' : '' }}">
                                 <a href="{{ url('admin/system-user') }}">
-                                    <span> System Users </span>
+                                    <span> Users </span>
                                 </a>
                             </li>
                             @endif
                             @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'role_privileges_view'))
-                            <li class="role-privileges">
+                            <li class="role-privileges {{ Request::is('admin/roles-privileges*') ? 'active' : '' }}">
                                 <a href="{{ url('/admin/roles-privileges') }}">
                                     <span> Role Privileges </span>
                                 </a>
@@ -286,44 +331,76 @@ $RolesPrivileges = App\Models\Master\Role_privilege::where('status', 'active')->
                     </div>
                 </li>
                 @endif
+
+                {{-- Settings --}}
                 @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'settings_view'))
-                <li class="setting">
-                    <a href="#setting" data-bs-toggle="collapse">
-                        <i class="mdi mdi-chart-pie"></i>
+                <li class="setting {{ Request::is('admin/general-setting*', 'admin/visual-setting*', 'admin/change-password*') ? 'active' : '' }}">
+                    <a href="#setting" data-bs-toggle="collapse" aria-expanded="{{ Request::is('admin/general-setting*', 'admin/visual-setting*', 'admin/change-password*') ? 'true' : 'false' }}">
+                        <i class="mdi mdi-cog-outline"></i>
                         <span> Settings </span>
                         <span class="menu-arrow"></span>
                     </a>
-                    <div class="collapse" id="setting">
+                    <div class="collapse {{ Request::is('admin/general-setting*', 'admin/visual-setting*', 'admin/change-password*') ? 'show' : '' }}" id="setting">
                         <ul class="nav-second-level">
                             @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'general_setting_view'))
-                            <li class="general-setting">
+                            <li class="general-setting {{ Request::is('admin/general-setting*') ? 'active' : '' }}">
                                 <a href="{{ url('/admin/general-setting') }}">
-                                    <span> General Settings</span>
+                                    <span> General Settings </span>
                                 </a>
                             </li>
                             @endif
                             @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'visual_setting_view'))
-                            <li class="visual-setting">
+                            <li class="visual-setting {{ Request::is('admin/visual-setting*') ? 'active' : '' }}">
                                 <a href="{{ url('/admin/visual-setting') }}">
-                                    <span> Visual Settings</span>
+                                    <span> Visual Settings </span>
                                 </a>
                             </li>
                             @endif
-                            <li class="change-password">
+                            <li class="change-password {{ Request::is('admin/change-password*') ? 'active' : '' }}">
                                 <a href="{{ url('/admin/change-password') }}">
-                                    <span> Change Password</span>
-                                </a>
-                            </li>
-                            <li class="logout">
-                                <a href="{{ url('admin/logout') }}">
-                                    <span> Logout</span>
+                                    <span> Change Password </span>
                                 </a>
                             </li>
                         </ul>
                     </div>
                 </li>
                 @endif
-            </ul>
+               
+                {{-- Notifications --}}
+                <li>
+                    <a href="{{ url('admin/notification') }}">
+                        <i class="mdi mdi-bell-outline"></i>
+                        <span> Notifications </span>
+                    </a>
+                </li> 
+
+                {{-- Logout --}}
+                <li class="logout">
+                    <a href="{{ url('admin/logout') }}">
+                        <i class="mdi mdi-logout"></i>
+                        <span> Logout </span>
+                    </a>
+                </li>
+
+            </ul> 
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize all Bootstrap dropdowns
+    var dropdownElementList = [].slice.call(document.querySelectorAll('[data-bs-toggle="dropdown"]'))
+    var dropdownList = dropdownElementList.map(function (dropdownToggleEl) {
+        return new bootstrap.Dropdown(dropdownToggleEl)
+    });
+    
+    // Initialize collapse components for sidebar menus
+    var collapseElementList = [].slice.call(document.querySelectorAll('[data-bs-toggle="collapse"]'))
+    var collapseList = collapseElementList.map(function (collapseToggleEl) {
+        return new bootstrap.Collapse(collapseToggleEl, {
+            toggle: false
+        })
+    });
+});
+</script>

@@ -5,7 +5,7 @@
             <div class="col-md-6">
                 <script>
                     document.write(new Date().getFullYear())
-                </script> &copy; laravel-default-package by <a target="_blank" href="https://www.mplussoft.com/">Mplussoft</a>
+                </script> &copy; All rights reserved <a target="_blank" href="https://codepixsolutions.com/">Codepix</a>
             </div>
 
         </div>

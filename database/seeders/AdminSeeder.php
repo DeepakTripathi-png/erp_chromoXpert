@@ -16,8 +16,8 @@ class AdminSeeder extends Seeder
     {
         $input = [];
         $input['user_type'] = "system";
-        $input['user_name'] = "Mplussoft Technologies";
-        $input['email'] = 'mplussoftesting@gmail.com';
+        $input['user_name'] = "ChromoXpert";
+        $input['email'] = 'chromoxpert@gmail.com';
         $input['password'] = Hash::make('12345678');
         $input['role_id'] = 1;
 
