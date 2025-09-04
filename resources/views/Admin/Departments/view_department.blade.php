@@ -34,9 +34,10 @@
                             <h5 style="color: #6267ae;">Department Name</h5>
                             <p>{{ $department->department_name ?? 'N/A' }}</p>
                         </div>
+
                         <div class="col-md-6">
                             <h5 style="color: #6267ae;">Department Head</h5>
-                            <p>{{ $department->departmentHead ? $department->departmentHead->name : 'N/A' }}</p>
+                            <p>{{ $department->head ? $department->head->user_name : 'N/A' }}</p>
                         </div>
                         <div class="col-md-6">
                             <h5 style="color: #6267ae;">Phone Number</h5>

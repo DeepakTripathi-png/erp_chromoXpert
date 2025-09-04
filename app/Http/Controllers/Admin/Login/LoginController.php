@@ -48,12 +48,18 @@ class LoginController extends Controller
                 Session::flush();
                 return redirect('/admin')->with('error', 'Contact To Admin For Login.');
             }else{
+                $userType = Auth::guard('master_admins')->user()->user_type;
                 $user_id = Auth::guard('master_admins')->user()->id;  
                 $last_login = Master_admin::where('id', $user_id)->update([
                     'last_login' => date('Y-m-d H:i:s'),
                 ]);
                 Session::put('MasterAdmin*%', $user_id);
-                return redirect('admin/dashboard')->with('success','Login Successfully!');
+                if($userType == 'internal_doctor'){
+                    return redirect('admin/doctor/dashboard')->with('success','Login Successfully!');
+                }else{
+                    return redirect('admin/dashboard')->with('success','Login Successfully!');
+                }
+                
             }
         }else{          
             return redirect('/admin')->with('error','Invalid Login Details!');;

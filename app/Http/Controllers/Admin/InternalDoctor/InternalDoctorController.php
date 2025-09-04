@@ -57,6 +57,7 @@ class InternalDoctorController extends Controller
             'email' => $request->email,
             'mobile' => $request->mobile,
             'address' => $request->address,
+
         ];
 
         // Handle image uploads
@@ -89,6 +90,7 @@ class InternalDoctorController extends Controller
             'mobile_no' => $request->mobile,
             'password' => $passwordHashed,
             'address' => $request->address,
+            'role_id' =>4
         ];
 
         if (isset($internalDoctorInput['doctor_image_path'])) {

@@ -72,7 +72,12 @@ Route::get('/', function () {
 // Start Backend Routes
 Route::group(['prefix' => 'admin', 'middleware' => ['prevent-back-history', 'is_admin']], function () {
 
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+  
+
+       Route::controller(DashboardController::class)->group(function (){
+         Route::get('/dashboard', 'index')->name('dashboard');
+         Route::get('/doctor/dashboard', 'doctorDashboard')->name('doctor.dashboard');
+       }); 
 
     // Start Backend Common Routes For The Projects
 
@@ -93,7 +98,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['prevent-back-history', 'is_
         Route::get('branches/data-table', 'data_table');
         Route::get('branches/edit/{id}', 'edit');
         Route::get('branches/view/{id}', 'view');
-        // Route::get('branches/delete/{id}', 'delete');
         Route::get('get-states/{countryId}', 'getStates');
         Route::get('get-cities/{stateId}', 'getCities');
     });
@@ -123,7 +127,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['prevent-back-history', 'is_
 
     Route::controller(PetController::class)->group(function (){
         Route::get('pet', 'index');
-        Route::get('pet/add', 'add');
+        Route::get('pet/add', 'add')->name('pet.add');
+        Route::get('/pet/edit/{id}','edit')->name('pet.edit');
+        Route::post('/pet/store','store')->name('pet.store');
+        Route::get('pet/data-table', 'data_table')->name('pet.data_table');
+        Route::get('pet/view/{id}', 'view')->name('pet.view');
      });
 
     Route::controller(InternalDoctorController::class)->group(function (){

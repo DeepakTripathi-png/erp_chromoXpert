@@ -22,14 +22,23 @@
 
             {{-- Search and Filter Inputs --}}
             <div class="d-flex flex-wrap align-items-center gap-2 mb-4">
-                <div class="input-group rounded-pill shadow-sm" style="max-width: 250px;">
-                    <span class="input-group-text bg-white border-0 pe-1" style="background: #fff !important; border: 1px solid #f6b51d !important;">
-                        <i class="mdi mdi-magnify text-muted"></i>
+                <!-- Search Box -->
+                <div class="input-group rounded-pill shadow-sm" 
+                    style="max-width: 280px; background: #fff; border: 1px solid #f6b51d;">
+                    <span class="input-group-text bg-transparent border-0 pe-1">
+                        <i class="mdi mdi-magnify" style="color: #6267ae;"></i>
                     </span>
-                    <input type="search" id="searchInput" class="form-control border-0 ps-1" placeholder="Search pets..."
-                           style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
+                    <input type="search" id="searchInput" 
+                        class="form-control border-0 ps-1 rounded-pill" 
+                        placeholder="Search pets..."
+                        style="color: #6267ae;">
                 </div>
-                <select id="statusFilter" class="form-select rounded-pill shadow-sm" style="max-width: 200px; background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
+
+                <!-- Status Filter -->
+                <select id="statusFilter" 
+                        class="form-select rounded-pill shadow-sm"
+                        style="max-width: 200px; background: #fff; color: #6267ae; 
+                            border: 1px solid #f6b51d; padding-top:9px; padding-bottom:9px;">
                     <option value="">All Status</option>
                     <option value="Active">Active</option>
                     <option value="Inactive">Inactive</option>
@@ -46,84 +55,30 @@
                                 <tr>
                                     <th style="width: 5%;">#</th>
                                     <th style="width: 10%;">Code</th>
-                                    <th style="width: 20%;">Pet Parent</th>
-                                    <th style="width: 20%;">Name</th>
-                                    <th style="width: 15%;">Gender</th>
-                                    <th style="width: 15%;">DOB</th>
+                                    <th style="width: 15%;">Pet Parent</th>
+                                    <th style="width: 15%;">Name</th>
+                                    <th style="width: 10%;">Gender</th>
+                                    <th style="width: 10%;">DOB</th>
+                                    <th style="width: 10%;">Image</th>
                                     <th style="width: 10%;" class="text-center">Status</th>
                                     <th style="width: 15%;" class="text-center">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach([
-                                    ['id' => 1, 'code' => 'PET001', 'pet_parent' => 'Rahul Sharma', 'name' => 'Max', 'gender' => 'Male', 'dob' => '2020-05-15', 'status' => 'Active'],
-                                    ['id' => 2, 'code' => 'PET002', 'pet_parent' => 'Priya Patel', 'name' => 'Bella', 'gender' => 'Female', 'dob' => '2019-11-22', 'status' => 'Inactive']
-                                ] as $index => $pet)
-                                <tr class="fade-in-row">
-                                    <td>{{ $index + 1 }}</td>
-                                    <td><strong>{{ $pet['code'] }}</strong></td>
-                                    <td>{{ $pet['pet_parent'] }}</td>
-                                    <td>{{ $pet['name'] }}</td>
-                                    <td>{{ $pet['gender'] }}</td>
-                                    <td>{{ $pet['dob'] }}</td>
-                                    <td class="text-center">
-                                        <label class="switch">
-                                            <input type="checkbox" class="change-status" 
-                                                   data-id="{{ $pet['id'] }}" 
-                                                   data-table="pets" 
-                                                   data-flash="Status Changed Successfully!" 
-                                                   {{ $pet['status'] == 'Active' ? 'checked' : '' }}>
-                                            <span class="slider"></span>
-                                        </label>
-                                        <span class="spinner-border spinner-border-sm text-primary ms-2 d-none" id="loadingSpinner" role="status">
-                                            <span class="visually-hidden">Loading...</span>
-                                        </span>
-                                    </td>
-                                    <td class="text-center">
-                                        <a href="{{ url('admin/pet/view/' . $pet['id']) }}" 
-                                           class="btn btn-icon btn-info me-1" 
-                                           title="View Pet" 
-                                           data-bs-toggle="tooltip" 
-                                           style="background: #fff; color: #6267ae; border: 1px solid #6267ae;">
-                                            <i class="mdi mdi-eye"></i>
-                                        </a>
-                                        <a href="{{ url('admin/pet/edit/' . $pet['id']) }}" 
-                                           class="btn btn-icon btn-warning me-1" 
-                                           title="Edit Pet" 
-                                           data-bs-toggle="tooltip" 
-                                           style="background: #fff; color: #f6b51d; border: 1px solid #f6b51d;">
-                                            <i class="mdi mdi-pencil"></i>
-                                        </a>
-                                        <a href="javascript:void(0)" 
-                                           data-id="{{ $pet['id'] }}" 
-                                           data-table="pets" 
-                                           data-flash="Pet Deleted Successfully!" 
-                                           class="btn btn-icon btn-danger delete" 
-                                           title="Delete Pet" 
-                                           data-bs-toggle="tooltip" 
-                                           style="background: #fff; color: #cc235e; border: 1px solid #cc235e;">
-                                            <i class="mdi mdi-trash-can"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                                @endforeach
+                               
                             </tbody>
                         </table>
                     </div>
-
-                    {{-- Custom Pagination with Consistent Styling --}}
-                    <nav class="mt-4">
-                        <ul class="pagination justify-content-center custom-pagination">
-                            <li class="page-item disabled"><a class="page-link" href="#">«</a></li>
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item"><a class="page-link" href="#">»</a></li>
-                        </ul>
-                    </nav>
                 </div>
             </div>
         </div>
+    </div>
+</div>
+
+<!-- Loading Spinner (hidden by default) -->
+<div id="loadingSpinner" class="d-none position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" style="background: rgba(0,0,0,0.1); z-index: 9999;">
+    <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
     </div>
 </div>
 @endsection
@@ -230,73 +185,13 @@
     document.getElementById('statusFilter').addEventListener('change', function() {
         let filter = this.value.toLowerCase();
         document.querySelectorAll('#cims_data_table tbody tr').forEach(function(row) {
-            let status = row.querySelector('.change-status').checked ? 'active' : 'inactive';
+            let status = row.querySelector('.change-status') ? 
+                        (row.querySelector('.change-status').checked ? 'active' : 'inactive') : '';
             row.style.display = (filter === '' || status === filter) ? '' : 'none';
         });
     });
 
-    // Status toggle with AJAX and loading spinner
-    $(document).on('click', '.change-status', function() {
-        var $this = $(this);
-        var $spinner = $('#loadingSpinner').removeClass('d-none');
-        var id = $this.data('id');
-        var table = $this.data('table');
-        var flash_message = $this.data('flash');
-        var _token = $('meta[name="csrf-token"]').attr('content');
-        
-        $.ajax({
-            url: "{{ url('admin/change-status') }}",
-            type: "POST",
-            data: {
-                id: id,
-                table: table,
-                _token: _token
-            },
-            success: function(response) {
-                $spinner.addClass('d-none');
-                if(response.success) {
-                    toastr.success(flash_message);
-                }
-            },
-            error: function(xhr) {
-                $spinner.addClass('d-none');
-                toastr.error('Error changing status');
-            }
-        });
-    });
-
-    // Delete functionality with confirmation and loading spinner
-    $(document).on('click', '.delete', function() {
-        if(confirm('Are you sure you want to delete this pet?')) {
-            var $this = $(this);
-            var $spinner = $('#loadingSpinner').removeClass('d-none');
-            var id = $this.data('id');
-            var table = $this.data('table');
-            var flash_message = $this.data('flash');
-            var _token = $('meta[name="csrf-token"]').attr('content');
-            
-            $.ajax({
-                url: "{{ url('admin/delete-record') }}",
-                type: "POST",
-                data: {
-                    id: id,
-                    table: table,
-                    _token: _token
-                },
-                success: function(response) {
-                    $spinner.addClass('d-none');
-                    if(response.success) {
-                        toastr.success(flash_message);
-                        location.reload();
-                    }
-                },
-                error: function(xhr) {
-                    $spinner.addClass('d-none');
-                    toastr.error('Error deleting record');
-                }
-            });
-        }
-    });
+    
 
     // Initialize Bootstrap tooltips
     $(function () {

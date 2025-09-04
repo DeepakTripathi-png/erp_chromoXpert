@@ -272,7 +272,7 @@ $RolesPrivileges = App\Models\Master\Role_privilege::where('status', 'active')->
                 @endif
 
                 {{-- Pets --}}
-                @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'animals_view'))
+                @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'pet_view'))
                 <li class="{{ Request::is('admin/pet*') ? 'active' : '' }}">
                     <a href="{{ url('/admin/pet') }}">
                         <i class="mdi mdi-paw"></i>
