@@ -10,7 +10,6 @@
                  style="background: linear-gradient(135deg, #6267ae 0%, #cc235e 100%); color: #fff;">
                 <h2 class="fw-bold mb-1">Referee Doctors</h2>
                 <p class="mb-0">Manage all doctor details and commission statuses</p>
-              
                 <a href="{{ url('admin/referee-doctors/add') }}" 
                    class="btn btn-light btn-lg mt-3 fw-semibold rounded-pill shadow-sm"
                    style="background: #f6b51d; color: #1f2937; border: none;">
@@ -24,8 +23,10 @@
             {{-- Search and Filter Inputs --}}
             <div class="d-flex flex-wrap align-items-center gap-2 mb-4">
                 <input type="text" id="searchInput" class="form-control rounded-pill shadow-sm" 
-                       placeholder="Search doctors..." style="max-width: 250px; background: #fff; color: #6267ae; border: 1px solid #f6b51d;padding-top:9px; padding-bottom:9px;">
-                <select id="statusFilter" class="form-select rounded-pill shadow-sm" style="max-width: 200px; background: #fff; color: #6267ae; border: 1px solid #f6b51d;padding-top:9px; padding-bottom:9px;">
+                       placeholder="Search doctors..." aria-label="Search referee doctors"
+                       style="max-width: 250px; background: #fff; color: #6267ae; border: 1px solid #f6b51d;padding-top:9px; padding-bottom:9px;">
+                <select id="statusFilter" class="form-select rounded-pill shadow-sm" aria-label="Filter by status"
+                        style="max-width: 200px; background: #fff; color: #6267ae; border: 1px solid #f6b51d;padding-top:9px; padding-bottom:9px;">
                     <option value="">All Status</option>
                     <option value="Active">Active</option>
                     <option value="Inactive">Inactive</option>
@@ -37,84 +38,6 @@
                  style="background: rgba(255,255,255,0.85); backdrop-filter: blur(14px);">
                 <div class="card-body p-4">
                     <div class="table-responsive">
-
-                        {{-- <table id="cims_data_table" class="table align-middle table-hover">
-                            <thead style="background: linear-gradient(135deg, #ac7fb6 0%, #f6b51d 100%); color: #fff;">
-                                <tr>
-                                    <th style="width: 5%;">#</th>
-                                    <th style="width: 8%;">Code</th>
-                                    <th style="width: 12%;">Name</th>
-                                    <th style="width: 10%;">Phone</th>
-                                    <th style="width: 12%;">Email</th>
-                                    <th style="width: 20%;">Address</th>
-                                    <th style="width: 8%;">Commission</th>
-                                    <th style="width: 8%;">Total</th>
-                                    <th style="width: 8%;">Paid</th>
-                                    <th style="width: 8%;">Due</th>
-                                    <th style="width: 6%;">Status</th>
-                                    <th style="width: 10%;" class="text-center">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach([
-                                    ['id' => 1, 'code' => 'DOC001', 'name' => 'Dr. John Doe', 'phone' => '+91 9876543210', 'email' => 'john.doe@example.com', 'address' => '123 Medical Ave, Suite 100, Mumbai', 'commission' => '15%', 'total' => '₹5,000', 'paid' => '₹3,500', 'due' => '₹1,500', 'status' => 'Active'],
-                                    ['id' => 2, 'code' => 'DOC002', 'name' => 'Dr. Jane Smith', 'phone' => '+91 9876543211', 'email' => 'jane.smith@example.com', 'address' => '456 Health St, Floor 2, Delhi', 'commission' => '20%', 'total' => '₹7,200', 'paid' => '₹5,000', 'due' => '₹2,200', 'status' => 'Inactive']
-                                ] as $index => $doctor)
-                                <tr class="fade-in-row">
-                                    <td>{{ $index + 1 }}</td>
-                                    <td><strong>{{ $doctor['code'] }}</strong></td>
-                                    <td>{{ $doctor['name'] }}</td>
-                                    <td>{{ $doctor['phone'] }}</td>
-                                    <td>{{ $doctor['email'] }}</td>
-                                    <td>{{ $doctor['address'] }}</td>
-                                    <td>{{ $doctor['commission'] }}</td>
-                                    <td>{{ $doctor['total'] }}</td>
-                                    <td>{{ $doctor['paid'] }}</td>
-                                    <td>{{ $doctor['due'] }}</td>
-                                    <td>
-                                        <label class="switch">
-                                            <input type="checkbox" class="change-status" 
-                                                   data-id="{{ $doctor['id'] }}" 
-                                                   data-table="doctors" 
-                                                   data-flash="Status Changed Successfully!" 
-                                                   {{ $doctor['status'] == 'Active' ? 'checked' : '' }}>
-                                            <span class="slider"></span>
-                                        </label>
-                                        <span class="spinner-border spinner-border-sm text-primary ms-2 d-none" id="loadingSpinner" role="status">
-                                            <span class="visually-hidden">Loading...</span>
-                                        </span>
-                                    </td>
-                                    <td class="text-center">
-                                        <a href="{{ url('admin/doctors/view/' . $doctor['id']) }}" 
-                                           class="btn btn-icon btn-info me-1" 
-                                           title="View Doctor" 
-                                           data-bs-toggle="tooltip" 
-                                           style="background: #fff; color: #6267ae; border: 1px solid #6267ae;">
-                                            <i class="mdi mdi-eye"></i>
-                                        </a>
-                                        <a href="{{ url('admin/doctors/edit/' . $doctor['id']) }}" 
-                                           class="btn btn-icon btn-warning me-1" 
-                                           title="Edit Doctor" 
-                                           data-bs-toggle="tooltip" 
-                                           style="background: #fff; color: #f6b51d; border: 1px solid #f6b51d;">
-                                            <i class="mdi mdi-pencil"></i>
-                                        </a>
-                                        <a href="javascript:void(0)" 
-                                           data-id="{{ $doctor['id'] }}" 
-                                           data-table="doctors" 
-                                           data-flash="Doctor Deleted Successfully!" 
-                                           class="btn btn-icon btn-danger delete" 
-                                           title="Delete Doctor" 
-                                           data-bs-toggle="tooltip" 
-                                           style="background: #fff; color: #cc235e; border: 1px solid #cc235e;">
-                                            <i class="mdi mdi-trash-can"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table> --}}
-
                         <table id="cims_data_table" class="table align-middle table-hover">
                             <thead style="background: linear-gradient(135deg, #ac7fb6 0%, #f6b51d 100%); color: #fff;">
                                 <tr>
@@ -134,16 +57,6 @@
                             </tbody>
                         </table>
                     </div>
-
-                    {{-- Custom Pagination with Consistent Styling --}}
-                    {{-- <nav class="mt-4">
-                        <ul class="pagination justify-content-center custom-pagination">
-                            <li class="page-item disabled"><a class="page-link" href="#">«</a></li>
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">»</a></li>
-                        </ul>
-                    </nav> --}}
                 </div>
             </div>
         </div>
@@ -220,9 +133,9 @@
 @endsection
 
 @section('script')
-<script src="{{ URL::asset('admin_panel/controller_js/cn_referee-doctor.js')}}"></script>
+<script src="{{ URL::asset('admin_panel/controller_js/cn_referee-doctor.js') }}"></script>
 <script>
-    // Debounce function to limit search input processing
+    // Debounce function to limit search/filter processing
     function debounce(func, wait) {
         let timeout;
         return function executedFunction(...args) {
@@ -235,90 +148,46 @@
         };
     }
 
-    // Search functionality with debounce
-    document.getElementById('searchInput').addEventListener('keyup', debounce(function() {
-        let filter = this.value.toLowerCase();
-        document.querySelectorAll('#cims_data_table tbody tr').forEach(function(row) {
-            let text = row.innerText.toLowerCase();
-            row.style.display = text.includes(filter) ? '' : 'none';
-        });
-    }, 300));
+    // Combined search and filter function
+    function filterTable() {
+        const searchFilter = document.getElementById('searchInput').value.toLowerCase();
+        const statusFilter = document.getElementById('statusFilter').value.toLowerCase();
+        const rows = document.querySelectorAll('#cims_data_table tbody tr');
 
-    // Status filter functionality
-    document.getElementById('statusFilter').addEventListener('change', function() {
-        let filter = this.value.toLowerCase();
-        document.querySelectorAll('#cims_data_table tbody tr').forEach(function(row) {
-            let status = row.querySelector('.change-status').checked ? 'active' : 'inactive';
-            row.style.display = (filter === '' || status === filter) ? '' : 'none';
-        });
-    });
-
-    // Status toggle with AJAX and loading spinner
-    $(document).on('click', '.change-status', function() {
-        var $this = $(this);
-        var $spinner = $('#loadingSpinner').removeClass('d-none');
-        var id = $this.data('id');
-        var table = $this.data('table');
-        var flash_message = $this.data('flash');
-        var _token = $('meta[name="csrf-token"]').attr('content');
-        
-        $.ajax({
-            url: "{{ url('admin/change-status') }}",
-            type: "POST",
-            data: {
-                id: id,
-                table: table,
-                _token: _token
-            },
-            success: function(response) {
-                $spinner.addClass('d-none');
-                if(response.success) {
-                    toastr.success(flash_message);
-                }
-            },
-            error: function(xhr) {
-                $spinner.addClass('d-none');
-                toastr.error('Error changing status');
-            }
-        });
-    });
-
-    // Delete functionality with confirmation and loading spinner
-    $(document).on('click', '.delete', function() {
-        if(confirm('Are you sure you want to delete this doctor?')) {
-            var $this = $(this);
-            var $spinner = $('#loadingSpinner').removeClass('d-none');
-            var id = $this.data('id');
-            var table = $this.data('table');
-            var flash_message = $this.data('flash');
-            var _token = $('meta[name="csrf-token"]').attr('content');
+        rows.forEach(row => {
+            // Get row text for search
+            const text = row.innerText.toLowerCase();
+            // Get status from toggle switch (handle missing .change-status)
+            const statusElement = row.querySelector('.change-status');
+            const status = statusElement && statusElement.checked ? 'active' : 'inactive';
             
-            $.ajax({
-                url: "{{ url('admin/delete-record') }}",
-                type: "POST",
-                data: {
-                    id: id,
-                    table: table,
-                    _token: _token
-                },
-                success: function(response) {
-                    $spinner.addClass('d-none');
-                    if(response.success) {
-                        toastr.success(flash_message);
-                        location.reload();
-                    }
-                },
-                error: function(xhr) {
-                    $spinner.addClass('d-none');
-                    toastr.error('Error deleting record');
-                }
-            });
-        }
-    });
+            // Check if row matches both search and status filters
+            const matchesSearch = text.includes(searchFilter);
+            const matchesStatus = statusFilter === '' || status === statusFilter;
+            row.style.display = matchesSearch && matchesStatus ? '' : 'none';
+        });
+    }
+
+    // Event listeners for search and filter
+    document.getElementById('searchInput').addEventListener('keyup', debounce(filterTable, 300));
+    document.getElementById('statusFilter').addEventListener('change', filterTable);
+
+    // Listen for table updates (custom event from cn_referee-doctor.js or DataTables)
+    document.addEventListener('tableUpdated', filterTable);
 
     // Initialize Bootstrap tooltips
     $(function () {
         $('[data-bs-toggle="tooltip"]').tooltip();
+    });
+
+    // Ensure filter is applied on page load
+    document.addEventListener('DOMContentLoaded', filterTable);
+
+    // If using DataTables, sync with its draw event
+    $(document).ready(function() {
+        if ($.fn.DataTable && $('#cims_data_table').DataTable()) {
+            $('#cims_data_table').on('draw.dt', filterTable);
+        }
     });
 </script>
 @endsection

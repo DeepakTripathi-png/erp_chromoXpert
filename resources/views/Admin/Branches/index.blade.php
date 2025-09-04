@@ -38,28 +38,6 @@
                 <div class="card-body p-3">
                     <div class="table-responsive">
 
-                        {{-- <table id="cims_data_table" class="table align-middle table-hover">
-                            <thead style="background: linear-gradient(135deg, #ac7fb6 0%, #f6b51d 100%); color: #fff;">
-                                <tr>
-                                    <th>#</th>
-                                    <th>Code</th>
-                                    <th>Lab Image</th>
-                                    <th>Lab Name</th>
-                                    <th>Lab Address</th>
-                                    <th>Lab Incharge</th>
-                                    <th>Phone</th>
-                                    <th>Email</th>
-                                    <th>Test Cases</th>
-                                    <th>Bookings</th>
-                                    <th>Status</th>
-                                    <th class="text-center">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                               
-                            </tbody>
-                        </table> --}}
-
                         <table id="cims_data_table" class="table align-middle table-hover">
                             <thead style="background: linear-gradient(135deg, #ac7fb6 0%, #f6b51d 100%); color: #fff;">
                                 <tr>
@@ -82,15 +60,7 @@
                     </div>
 
                     {{-- Custom Pagination --}}
-                    <nav class="mt-3">
-                        <ul class="pagination justify-content-center custom-pagination">
-                            <li class="page-item disabled"><a class="page-link" href="#">«</a></li>
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item"><a class="page-link" href="#">»</a></li>
-                        </ul>
-                    </nav>
+                   
                 </div>
             </div>
 
@@ -174,59 +144,6 @@
         });
     });
 
-    // Status toggle functionality
-    $(document).on('click', '.change-status', function() {
-        var id = $(this).data('id');
-        var table = $(this).data('table');
-        var flash_message = $(this).data('flash');
-        var _token = $('meta[name="csrf-token"]').attr('content');
-        
-        $.ajax({
-            url: "{{ url('admin/change-status') }}",
-            type: "POST",
-            data: {
-                id: id,
-                table: table,
-                _token: _token
-            },
-            success: function(response) {
-                if(response.success) {
-                    toastr.success(flash_message);
-                }
-            },
-            error: function(xhr) {
-                toastr.error('Error changing status');
-            }
-        });
-    });
 
-    // Delete functionality
-    $(document).on('click', '.delete', function() {
-        if(confirm('Are you sure you want to delete this branch?')) {
-            var id = $(this).data('id');
-            var table = $(this).data('table');
-            var flash_message = $(this).data('flash');
-            var _token = $('meta[name="csrf-token"]').attr('content');
-            
-            $.ajax({
-                url: "{{ url('admin/delete-record') }}",
-                type: "POST",
-                data: {
-                    id: id,
-                    table: table,
-                    _token: _token
-                },
-                success: function(response) {
-                    if(response.success) {
-                        toastr.success(flash_message);
-                        location.reload();
-                    }
-                },
-                error: function(xhr) {
-                    toastr.error('Error deleting record');
-                }
-            });
-        }
-    });
 </script>
 @endsection

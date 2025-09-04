@@ -8,7 +8,7 @@
             {{-- Hero Header with Gradient Background --}}
             <div class="p-4 rounded-4 mb-4 position-relative overflow-hidden shadow-lg"
                  style="background: linear-gradient(135deg, #6267ae 0%, #cc235e 100%); color: #fff;">
-                <h2 class="fw-bold mb-1">Add New Doctor</h2>
+                <h2 class="fw-bold mb-1">Add New Internal Doctor</h2>
                 <p class="mb-0">Fill in the details to create a new doctor record</p>
                 <a href="{{ url()->previous() }}" 
                    class="btn btn-light btn-lg mt-3 fw-semibold rounded-pill shadow-sm"

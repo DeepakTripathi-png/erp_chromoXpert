@@ -1,6 +1,6 @@
 @extends('Admin.Layouts.layout')
 
-@section('meta_title', 'Add Department | ChromoXpert')
+@section('meta_title', isset($department) ? 'Edit Department | ChromoXpert' : 'Add Department | ChromoXpert')
 
 @section('content')
 <div class="content-page">
@@ -10,8 +10,8 @@
             {{-- Hero Header --}}
             <div class="p-4 rounded-4 mb-4 position-relative overflow-hidden shadow-lg"
                  style="background: linear-gradient(135deg, #6267ae 0%, #cc235e 100%); color: #fff;">
-                <h2 class="fw-bold mb-1">Add New Department</h2>
-                <p class="mb-0">Fill in the details to create a new department record</p>
+                <h2 class="fw-bold mb-1">{{ isset($department) ? 'Edit Department' : 'Add New Department' }}</h2>
+                <p class="mb-0">{{ isset($department) ? 'Update the department details' : 'Fill in the details to create a new department record' }}</p>
                 <a href="{{ url()->previous() }}" 
                    class="btn btn-light btn-lg mt-3 fw-semibold rounded-pill shadow-sm"
                    style="background: #f6b51d; color: #1f2937; border: none;">
@@ -28,12 +28,29 @@
                 <div class="card-body p-4">
                     <form action="{{ url('admin/departments/store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
+                        <input type="hidden" name="id" value="{{ $department?->id ?? '' }}">
+
                         <div class="row g-3">
+                            {{-- Department Code (auto-generated, readonly) --}}
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control rounded-3" id="code" 
+                                           name="code" placeholder=" " value="{{ old('code', $department?->code ?? '') }}" 
+                                           {{ isset($department) ? 'readonly' : '' }}
+                                           style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
+                                    <label for="code" style="color: #6267ae;">Department Code</label>
+                                    @error('code')
+                                        <span class="text-danger" style="color: #cc235e;">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+
                             {{-- Department Name --}}
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     <input type="text" class="form-control rounded-3" id="department_name" 
-                                           name="department_name" placeholder=" " required
+                                           name="department_name" placeholder=" "
+                                           value="{{ old('department_name', $department?->department_name ?? '') }}"
                                            style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
                                     <label for="department_name" style="color: #6267ae;">Department Name*</label>
                                     @error('department_name')
@@ -45,12 +62,17 @@
                             {{-- Department Head Name --}}
                             <div class="col-md-6">
                                 <div class="form-floating">
-                                    <select class="form-select rounded-3" id="head_name" name="head_name" required
+                                    <select class="form-select rounded-3" id="head_name" name="head_name"
                                             style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
-                                        <option value="" selected disabled>Select Department Head</option>
-                                        <option value="Dr. Sanjay Verma">Dr. Sanjay Verma</option>
-                                        <option value="Dr. Priya Sharma">Dr. Priya Sharma</option>
-                                        <option value="Prof. Rajesh Kumar">Prof. Rajesh Kumar</option>
+                                        <option value="" {{ !isset($department) ? 'selected' : '' }} disabled>Select Department Head</option>
+                                        @if(!empty($department_heads))
+                                            @foreach($department_heads as $head)
+                                                <option value="{{ $head->id }}" 
+                                                        {{ old('head_name', $department?->department_head ?? '') == $head->id ? 'selected' : '' }}>
+                                                    {{ $head->user_name }}
+                                                </option>
+                                            @endforeach
+                                        @endif
                                     </select>
                                     <label for="head_name" style="color: #6267ae;">Department Head Name*</label>
                                     @error('head_name')
@@ -59,14 +81,17 @@
                                 </div>
                             </div>
 
-                            {{-- Phone Number --}}
+                            {{-- Mobile Number --}}
                             <div class="col-md-6">
                                 <div class="form-floating">
-                                    <input type="tel" class="form-control rounded-3" id="phone" 
-                                           name="phone" placeholder=" " required
+                                    <input type="tel" class="form-control rounded-3" id="mobile" 
+                                           name="mobile" placeholder="+91XXXXXXXXXX"
+                                           value="{{ old('mobile', $department?->mobile ?? '') }}"
+                                           pattern="\+91[0-9]{10}" 
+                                           title="Mobile number must start with +91 followed by 10 digits"
                                            style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
-                                    <label for="phone" style="color: #6267ae;">Phone Number*</label>
-                                    @error('phone')
+                                    <label for="mobile" style="color: #6267ae;">Mobile Number</label>
+                                    @error('mobile')
                                         <span class="text-danger" style="color: #cc235e;">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -76,9 +101,10 @@
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     <input type="email" class="form-control rounded-3" id="email" 
-                                           name="email" placeholder=" " required
+                                           name="email" placeholder=" "
+                                           value="{{ old('email', $department?->email ?? '') }}"
                                            style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
-                                    <label for="email" style="color: #6267ae;">Email Address*</label>
+                                    <label for="email" style="color: #6267ae;">Email Address</label>
                                     @error('email')
                                         <span class="text-danger" style="color: #cc235e;">{{ $message }}</span>
                                     @enderror
@@ -89,26 +115,29 @@
                             <div class="col-12">
                                 <div class="form-floating">
                                     <textarea class="form-control rounded-3" id="description" name="description" 
-                                              rows="3" placeholder=" " style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;"></textarea>
+                                              rows="3" placeholder=" " 
+                                              style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">{{ old('description', $department?->description ?? '') }}</textarea>
                                     <label for="description" style="color: #6267ae;">Description</label>
                                     @error('description')
                                         <span class="text-danger" style="color: #cc235e;">{{ $message }}</span>
                                     @enderror
                                 </div>
                             </div>
+
                         </div>
 
                         {{-- Buttons --}}
                         <div class="mt-4 d-flex gap-2">
                             <button type="submit" class="btn btn-success btn-lg rounded-pill shadow-sm px-4"
                                     style="background: #6267ae; color: #fff; border: none;">
-                                <i class="mdi mdi-content-save me-2"></i> Save Department
+                                <i class="mdi mdi-content-save me-2"></i> {{ isset($department) ? 'Update Department' : 'Save Department' }}
                             </button>
                             <button type="reset" class="btn btn-secondary btn-lg rounded-pill shadow-sm px-4"
                                     style="background: #ac7fb6; color: #fff; border: none;">
                                 <i class="mdi mdi-refresh me-2"></i> Reset
                             </button>
                         </div>
+                        
                     </form>
                 </div>
             </div>
@@ -128,5 +157,20 @@
 @endsection
 
 @section('scripts')
-<!-- No Dropify script needed as there's no file input -->
+<script>
+    $(document).ready(function () {
+        // Mobile number formatting
+        $('#mobile').on('input', function() {
+            let value = $(this).val().replace(/[^0-9]/g, ''); // Remove non-digits
+            if (value.length > 10) {
+                value = value.slice(0, 10); // Limit to 10 digits
+            }
+            if (value.length > 0) {
+                $(this).val('+91' + value); // Prepend +91
+            } else {
+                $(this).val(''); // Clear if no digits
+            }
+        });
+    });
+</script>
 @endsection

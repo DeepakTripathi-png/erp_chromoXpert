@@ -136,71 +136,44 @@ class RefereeDoctorController extends Controller
                 ->addColumn('commission_percent', function ($row) {
                     return !empty($row->commission_percent) ? $row->commission_percent . '%' : '';
                 })
-                ->addColumn('action', function ($row) {
-                    $actionBtn = '';
-                    $role_id = Auth::guard('master_admins')->user()->role_id;
-                    $RolesPrivileges = Role_privilege::where('status', 'active')->where('id', $role_id)->select('privileges')->first();
+
+                    ->addColumn('action', function ($row) {
+                        $actionBtn = '';
+                        $role_id = Auth::guard('master_admins')->user()->role_id;
+                        $RolesPrivileges = Role_privilege::where('status', 'active')->where('id', $role_id)->select('privileges')->first();
+
+
+              
+
 
                     // Edit button
                     if (!empty($RolesPrivileges) && str_contains($RolesPrivileges->privileges, 'referee_doctors_edit')) {
                         $actionBtn .= '<a href="' . url('admin/referee-doctor/edit/' . $row->id) . '" 
-                                       class="btn btn-icon btn-warning me-1" 
-                                       title="Edit Referee Doctor" 
-                                       data-bs-toggle="tooltip" 
-                                       style="background:#fff; color:#f6b51d; border:1px solid #f6b51d;">
-                                       <i class="mdi mdi-pencil"></i>
-                                   </a>';
-                    } else {
-                        $actionBtn .= '<a href="javascript:;" 
-                                       class="btn btn-icon btn-warning me-1" 
-                                       title="Edit Disabled" 
-                                       data-bs-toggle="tooltip" 
-                                       style="background:#fff; color:#f6b51d; border:1px solid #f6b51d;" disabled>
-                                       <i class="mdi mdi-pencil"></i>
-                                   </a>';
-                    }
+                                        class="btn btn-icon btn-warning me-1" 
+                                        title="Edit Internal Doctor" 
+                                        data-bs-toggle="tooltip" 
+                                        style="background:#fff; color:#f6b51d; border:1px solid #f6b51d;">
+                                        <i class="mdi mdi-pencil"></i>
+                                    </a>';
+                    } 
 
                     // Delete button
                     if (!empty($RolesPrivileges) && str_contains($RolesPrivileges->privileges, 'referee_doctors_delete')) {
                         $actionBtn .= '<a href="javascript:void(0)" 
-                                       data-id="' . $row->id . '" 
-                                       data-table="referee_doctors" 
-                                       data-flash="Referee Doctor Deleted Successfully!" 
-                                       class="btn btn-icon btn-danger delete me-1" 
-                                       title="Delete Referee Doctor" 
-                                       data-bs-toggle="tooltip" 
-                                       style="background:#fff; color:#cc235e; border:1px solid #cc235e;">
-                                       <i class="mdi mdi-trash-can"></i>
-                                   </a>';
-                    } else {
-                        $actionBtn .= '<a href="javascript:;" 
-                                       class="btn btn-icon btn-danger me-1" 
-                                       title="Delete Disabled" 
-                                       data-bs-toggle="tooltip" 
-                                       style="background:#fff; color:#cc235e; border:1px solid #cc235e;" disabled>
-                                       <i class="mdi mdi-trash-can"></i>
-                                   </a>';
-                    }
-
+                                        data-id="' . $row->id . '" 
+                                        data-table="referee_doctors" 
+                                        data-flash="Referee doctor deleted  Successfully!" 
+                                        class="btn btn-icon btn-danger delete me-1" 
+                                        title="Delete referee doctor" 
+                                        data-bs-toggle="tooltip" 
+                                        style="background:#fff; color:#cc235e; border:1px solid #cc235e;">
+                                        <i class="mdi mdi-trash-can"></i>
+                                    </a>';
+                    } 
                     return $actionBtn;
                 })
 
-                // ->addColumn('status', function ($row) {
-                //     $role_id = Auth::guard('master_admins')->user()->role_id;
-                //     $RolesPrivileges = Role_privilege::where('status', 'active')->where('id', $role_id)->select('privileges')->first();
-
-                //     $isChecked = $row->status == 'active' ? 'checked' : '';
-
-                //     if (!empty($RolesPrivileges) && str_contains($RolesPrivileges->privileges, 'referee_doctors_status_change')) {
-                //         return '<input type="checkbox" class="change-status" data-id="' . $row->id . '" data-table="referee_doctors" data-flash="Status Changed Successfully!" ' . $isChecked . '>';
-                //     } else {
-                //         return '<input type="checkbox" disabled ' . $isChecked . '>';
-                //     }
-                // })
-
-
-
-
+            
                 ->addColumn('status', function ($row) {
                     $role_id = Auth::guard('master_admins')->user()->role_id;
                     $RolesPrivileges = Role_privilege::where('status', 'active')->where('id', $role_id)->select('privileges')->first();
@@ -214,9 +187,6 @@ class RefereeDoctorController extends Controller
                         return '<input type="checkbox" disabled ' . $isChecked . '>';
                     }
                 })
-
-
-
 
                 ->rawColumns(['action', 'status'])
                 ->make(true);

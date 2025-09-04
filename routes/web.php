@@ -85,10 +85,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['prevent-back-history', 'is_
         Route::post('appointments/store', 'store');
     });
 
-   
-
- 
-
     
     Route::controller(BranchController::class)->group(function (){
         Route::get('branches', 'index');
@@ -97,17 +93,22 @@ Route::group(['prefix' => 'admin', 'middleware' => ['prevent-back-history', 'is_
         Route::get('branches/data-table', 'data_table');
         Route::get('branches/edit/{id}', 'edit');
         Route::get('branches/view/{id}', 'view');
-        Route::get('branches/delete/{id}', 'delete');
+        // Route::get('branches/delete/{id}', 'delete');
+        Route::get('get-states/{countryId}', 'getStates');
+        Route::get('get-cities/{stateId}', 'getCities');
     });
 
 
 
 
-    Route::controller(DepartmentController::class)->group(function (){
-        Route::get('departments', 'index');
+    Route::controller(DepartmentController::class)->group(function () {
+        Route::get('departments', 'index')->name('department.index');
         Route::get('departments/add', 'add');
+        Route::post('departments/store', 'store')->name('department.store');
+        Route::get('departments/edit/{id}', 'edit');
+        Route::get('departments/view/{id}', 'view');
+        Route::get('departments/data-table', 'data_table');
     });
-
 
 
 

@@ -169,15 +169,7 @@ class PetparentController extends Controller
                                     style="background:#fff; color:#f6b51d; border:1px solid #f6b51d;">
                                     <i class="mdi mdi-pencil"></i>
                                 </a>';
-                } else {
-                    $actionBtn .= '<a href="javascript:;" 
-                                    class="btn btn-icon btn-warning me-1" 
-                                    title="Edit Disabled" 
-                                    data-bs-toggle="tooltip" 
-                                    style="background:#fff; color:#f6b51d; border:1px solid #f6b51d;" disabled>
-                                    <i class="mdi mdi-pencil"></i>
-                                </a>';
-                }
+                } 
 
                 // Delete button
                 if (!empty($RolesPrivileges) && str_contains($RolesPrivileges->privileges, 'pet_owners_delete')) {
@@ -191,16 +183,7 @@ class PetparentController extends Controller
                                     style="background:#fff; color:#cc235e; border:1px solid #cc235e;">
                                     <i class="mdi mdi-trash-can"></i>
                                 </a>';
-                } else {
-                    $actionBtn .= '<a href="javascript:;" 
-                                    class="btn btn-icon btn-danger me-1" 
-                                    title="Delete Disabled" 
-                                    data-bs-toggle="tooltip" 
-                                    style="background:#fff; color:#cc235e; border:1px solid #cc235e;" disabled>
-                                    <i class="mdi mdi-trash-can"></i>
-                                </a>';
-                }
-
+                } 
                 return $actionBtn;
             })
 

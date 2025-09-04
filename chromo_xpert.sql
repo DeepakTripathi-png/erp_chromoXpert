@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 02, 2025 at 02:49 PM
+-- Generation Time: Sep 04, 2025 at 07:21 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -55,7 +55,7 @@ CREATE TABLE `branches` (
 --
 
 INSERT INTO `branches` (`id`, `branch_code`, `branch_name`, `email`, `mobile`, `address`, `country_id`, `state_id`, `city_id`, `pincode`, `branch_logo_name`, `branch_logo_path`, `lab_incharge`, `created_ip_address`, `modified_ip_address`, `created_by`, `modified_by`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'BR001', 'PandrPur Lab', 'pndl@gmail.com', '+919173185601', 'Bair Amad Karari', 1, 20, 523, '212216', 'download.jpeg', 'images/branches/IFB45z9J2BTAF4nb3xZc5fIskyzPehAHZv6uGr5I.jpg', 2, '127.0.0.1', '127.0.0.1', 1, 1, 'active', '2025-09-02 06:28:13', '2025-09-02 06:28:13');
+(1, 'BR001', 'PandrPur Lab Deepak', 'pndl1@gmail.com', '+919173185601', 'Bair Amad Karari1', 1, 20, 523, '212216', 'download (1).jpeg', 'images/branches/zq6yXfxtfV3yuZ0TUKf1qYFhpFPDTKrdLi71bG2h.jpg', 2, '127.0.0.1', '127.0.0.1', 1, 1, 'active', '2025-09-02 06:28:13', '2025-09-02 23:59:30');
 
 -- --------------------------------------------------------
 
@@ -604,6 +604,37 @@ INSERT INTO `countries` (`country_id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `departments`
+--
+
+CREATE TABLE `departments` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `code` varchar(255) DEFAULT NULL,
+  `department_name` varchar(255) DEFAULT NULL,
+  `description` text DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `mobile` varchar(255) DEFAULT NULL,
+  `department_head` bigint(20) DEFAULT NULL,
+  `created_ip_address` varchar(255) DEFAULT NULL,
+  `modified_ip_address` varchar(255) DEFAULT NULL,
+  `created_by` bigint(20) DEFAULT NULL,
+  `modified_by` bigint(20) DEFAULT NULL,
+  `status` enum('active','delete','inactive') NOT NULL DEFAULT 'active',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `departments`
+--
+
+INSERT INTO `departments` (`id`, `code`, `department_name`, `description`, `email`, `mobile`, `department_head`, `created_ip_address`, `modified_ip_address`, `created_by`, `modified_by`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'DEPT001', 'Radiology', NULL, 'deepakmegreat@gmail.com', '+917318560108', 14, '127.0.0.1', '127.0.0.1', 1, 1, 'active', '2025-09-03 04:05:29', '2025-09-03 04:05:29'),
+(2, 'DEPT002', 'Pathology1', 'asdsad1', 'deepak1@gmail.com', '+917318560108', 14, '127.0.0.1', '127.0.0.1', 1, 1, 'active', '2025-09-03 04:06:22', '2025-09-03 04:28:36');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `failed_jobs`
 --
 
@@ -683,7 +714,7 @@ CREATE TABLE `internal_doctors` (
 
 INSERT INTO `internal_doctors` (`id`, `code`, `doctor_name`, `gender`, `email`, `mobile`, `address`, `doctor_image_name`, `doctor_image_path`, `doctor_sign_name`, `doctor_sign_path`, `created_ip_address`, `modified_ip_address`, `created_by`, `modified_by`, `status`, `created_at`, `updated_at`) VALUES
 (1, 'ID0001', 'Dr Deepak Internal Doctor1', 'Male', 'drdeepakinternaldoctor1@gmail.com', '+917318560108', 'Bair Amad Karari1', 'SmartSelect_20240905_214054_WhatsApp-sunil-jatania.jpg', 'images/internal_doctors/up3g9sanUufnVqUB4gXDL1Ca0yng801PLstwDHgG.jpg', 'fake-signature-10161016-facsimile-11562888097yoll1qgp4t.png', 'images/internal_doctors/signatures/c6rxVeP6mCZr9J7RDQ8HHcKqTxVJMynICOQ5es3p.png', '127.0.0.1', '127.0.0.1', 1, 1, 'active', '2025-09-02 00:12:14', '2025-09-02 00:44:55'),
-(2, 'ID0002', 'xyz', 'Male', 'xyz@gmail.com', '+917318560108', 'Bair Amad Karari', 'SmartSelect_20240905_214054_WhatsApp-sunil-jatania.jpg', 'images/internal_doctors/AURP5Wbf2WfknZgmdjqwzvPeIRYfbuLOnPokaLQ5.jpg', 'fake-signature-10161016-facsimile-11562888097yoll1qgp4t.png', 'images/internal_doctors/signatures/uRirhRpozDOvJYZ0CNzZsgQMuEXem4fmi2uLaX6n.png', '127.0.0.1', '127.0.0.1', 1, 1, 'inactive', '2025-09-02 00:57:23', '2025-09-02 00:57:23');
+(2, 'ID0002', 'xyz', 'Male', 'xyz@gmail.com', '+917318560108', 'Bair Amad Karari', 'SmartSelect_20240905_214054_WhatsApp-sunil-jatania.jpg', 'images/internal_doctors/AURP5Wbf2WfknZgmdjqwzvPeIRYfbuLOnPokaLQ5.jpg', 'fake-signature-10161016-facsimile-11562888097yoll1qgp4t.png', 'images/internal_doctors/signatures/uRirhRpozDOvJYZ0CNzZsgQMuEXem4fmi2uLaX6n.png', '127.0.0.1', '127.0.0.1', 1, 1, 'active', '2025-09-02 00:57:23', '2025-09-02 00:57:23');
 
 -- --------------------------------------------------------
 
@@ -722,7 +753,7 @@ CREATE TABLE `master_admins` (
 --
 
 INSERT INTO `master_admins` (`id`, `user_type`, `user_id`, `user_name`, `email`, `password`, `mobile_no`, `role_id`, `address`, `user_profile_image_path`, `user_profile_image_name`, `fcm_token`, `access_token`, `last_login`, `remember_token`, `otp`, `status`, `created_ip_address`, `modified_ip_address`, `created_by`, `modified_by`, `created_at`, `updated_at`) VALUES
-(1, 'system', NULL, 'ChromoXpert', 'admin@gmail.com', '$2y$10$InJ0GHoOaHXJHMuEYqTMye.t5E4QfWDrzNLW/pltguVNM/OZCpFUm', NULL, '1', NULL, NULL, NULL, NULL, NULL, '2025-09-02 11:56:35', NULL, NULL, 'active', NULL, NULL, NULL, NULL, NULL, '2025-09-02 06:26:35'),
+(1, 'system', NULL, 'ChromoXpert', 'admin@gmail.com', '$2y$10$InJ0GHoOaHXJHMuEYqTMye.t5E4QfWDrzNLW/pltguVNM/OZCpFUm', NULL, '1', NULL, NULL, NULL, NULL, NULL, '2025-09-04 04:15:56', NULL, NULL, 'active', NULL, NULL, NULL, NULL, NULL, '2025-09-03 22:45:56'),
 (2, 'system', NULL, 'Deepak Tripathi', 'deepakmegreat@gmail.com', '$2y$10$xNQAIXTjEX.0BWxRGhCRQOij7hFkletib0oR9o33ExwSrzTp3EzSi', '07318560108', '2', 'Bair Amad Karari', NULL, NULL, NULL, NULL, '2025-09-02 09:26:03', NULL, NULL, 'active', '127.0.0.1', NULL, 1, NULL, '2025-07-24 03:52:01', '2025-09-02 03:56:03'),
 (3, 'system', NULL, 'Deepak Tripathi', 'rec@gmail.com', '$2y$10$NJsMZ1s/k0ahYflkrDmJcu9BjBRS9URYgC0V8vb3jX.bltSLnMPZ2', '7318560108', '3', 'Bair Amad Karari', NULL, NULL, NULL, NULL, '2025-08-14 08:22:15', NULL, NULL, 'delete', '127.0.0.1', '127.0.0.1', 1, 1, '2025-08-14 02:51:24', '2025-08-14 02:52:15'),
 (4, 'customer', NULL, 'Deepak Tripathi', 'deep@gmail.com', '$2y$10$QpGDu/lTa1t9C5zFgWtOu.eLUj1Qdem5XgTYLBz7oGrC.BRWITHQe', '7318560108', NULL, 'Hello this is Deepak Address', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', '127.0.0.1', '127.0.0.1', 1, 1, '2025-09-01 01:16:48', '2025-09-01 03:44:11'),
@@ -734,7 +765,8 @@ INSERT INTO `master_admins` (`id`, `user_type`, `user_id`, `user_name`, `email`,
 (10, 'customer', NULL, 'aDasDasdDeepak', 'sadasdfd@gmail.com', '$2y$10$jMwetIH1T8Bh24t8x8.jtOkez9fu3rHEgc51Pk2D8.HIZOX5ZmTJi', '07318560108', NULL, 'Bair Amad Karari', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', '127.0.0.1', '127.0.0.1', 1, 1, '2025-09-01 04:31:32', '2025-09-01 04:31:56'),
 (11, 'customer', NULL, 'Deepak Pet Parent', 'deepalpetparent@gmail.com', '$2y$10$1T4VLF319ej97EXANG3RmuzA/mV5ZNrlB9FiK9oe1xpo/HZRg5Pmq', '7318560108', NULL, 'Bair Amad Karari', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', '127.0.0.1', NULL, 1, NULL, '2025-09-01 04:33:00', '2025-09-01 04:33:00'),
 (12, 'doctor', NULL, 'Dr Deepak Internal Doctor1', 'drdeepakinternaldoctor1@gmail.com', '$2y$10$r0GzCP.fOPmFfb9UYp8TeuVm0FAN7rOFP18NqTHl8p5Nyk3b1.Pe.', '+917318560108', NULL, 'Bair Amad Karari1', 'images/internal_doctors/up3g9sanUufnVqUB4gXDL1Ca0yng801PLstwDHgG.jpg', NULL, NULL, NULL, NULL, NULL, NULL, 'active', '127.0.0.1', '127.0.0.1', 1, 1, '2025-09-02 00:12:14', '2025-09-02 00:44:55'),
-(13, 'doctor', NULL, 'xyz', 'xyz@gmail.com', '$2y$10$dbCzWmCbq5ksFnke5X1aI.qrumCLiLKAopZP4xavtfqMvBm.lqvIu', '+917318560108', NULL, 'Bair Amad Karari', 'images/internal_doctors/AURP5Wbf2WfknZgmdjqwzvPeIRYfbuLOnPokaLQ5.jpg', NULL, NULL, NULL, NULL, NULL, NULL, 'active', '127.0.0.1', NULL, 1, NULL, '2025-09-02 00:57:23', '2025-09-02 00:57:23');
+(13, 'doctor', NULL, 'xyz', 'xyz@gmail.com', '$2y$10$dbCzWmCbq5ksFnke5X1aI.qrumCLiLKAopZP4xavtfqMvBm.lqvIu', '+917318560108', NULL, 'Bair Amad Karari', 'images/internal_doctors/AURP5Wbf2WfknZgmdjqwzvPeIRYfbuLOnPokaLQ5.jpg', NULL, NULL, NULL, NULL, NULL, NULL, 'active', '127.0.0.1', NULL, 1, NULL, '2025-09-02 00:57:23', '2025-09-02 00:57:23'),
+(14, 'system', NULL, 'Deepak Department Head', 'ddh@gmail.com', '$2y$10$sNTRXU1UFsEke6sKjyMvn.ohff45.GvbSejfDmPw6VEv.qi/aeUC2', '7318560108', '3', 'Bair Amad Karari', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', '127.0.0.1', NULL, 1, NULL, '2025-09-03 03:16:33', '2025-09-03 03:16:33');
 
 -- --------------------------------------------------------
 
@@ -764,7 +796,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (10, '2025_09_01_045614_create_petparents_table', 2),
 (11, '2025_09_01_112932_create_referee_doctors_table', 3),
 (12, '2025_09_02_050059_create_internal_doctors_table', 4),
-(13, '2025_09_02_093535_create_branches_table', 5);
+(13, '2025_09_02_093535_create_branches_table', 5),
+(15, '2025_09_03_072046_create_departments_table', 6);
 
 -- --------------------------------------------------------
 
@@ -856,7 +889,7 @@ CREATE TABLE `referee_doctors` (
 --
 
 INSERT INTO `referee_doctors` (`id`, `code`, `doctor_name`, `gender`, `email`, `mobile`, `commission_percent`, `address`, `created_ip_address`, `modified_ip_address`, `created_by`, `modified_by`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'RD0001', 'Dr Deepak More', 'Male', 'drmore@gmail.com', '+917318560108', '5', 'Bair Amad Karari', '127.0.0.1', '127.0.0.1', 1, 1, 'inactive', '2025-09-01 06:24:18', '2025-09-01 06:35:46');
+(1, 'RD0001', 'Dr Deepak More', 'Male', 'drmore@gmail.com', '+917318560108', '5', 'Bair Amad Karari', '127.0.0.1', '127.0.0.1', 1, 1, 'active', '2025-09-01 06:24:18', '2025-09-01 06:35:46');
 
 -- --------------------------------------------------------
 
@@ -883,8 +916,8 @@ CREATE TABLE `role_privileges` (
 
 INSERT INTO `role_privileges` (`id`, `role_name`, `privileges`, `created_ip_address`, `modified_ip_address`, `created_by`, `modified_by`, `status`, `created_at`, `updated_at`) VALUES
 (1, 'Super Admin', 'dashboard_view,appointments_view,appointments_add,appointments_edit,appointments_delete,appointments_status_change,reports_view,branch_view,branch_add,branch_edit,branch_delete,branch_status_change,departments_view,departments_add,departments_edit,departments_delete,departments_status_change,doctors_view,doctors_add,doctors_edit,doctors_delete,doctors_status_change,internal_doctors_view,internal_doctors_add,internal_doctors_edit,internal_doctors_delete,internal_doctors_status_change,referee_doctors_view,referee_doctors_add,referee_doctors_edit,referee_doctors_delete,referee_doctors_status_change,pet_owners_view,pet_owners_add,pet_owners_edit,pet_owners_delete,pet_owners_status_change,animals_view,animals_add,animals_edit,animals_delete,animals_status_change,test_management_view,test_management_add,test_management_edit,test_management_delete,test_management_status_change,revenue_view,system_users_view,user_view,user_add,user_edit,user_delete,user_status_change,role_privileges_view,role_privileges_add,role_privileges_edit,role_privileges_delete,role_privileges_status_change,settings_view,general_setting_view,general_setting_add,general_setting_edit,visual_setting_view,visual_setting_add,visual_setting_edit,change_password_view,change_password_edit,notifications_view,logout_view', NULL, '127.0.0.1', NULL, 1, 'active', NULL, '2025-09-02 06:24:08'),
-(2, 'Labhead  Incharge', 'appointments_view,appointments_add,appointments_edit,appointments_delete,appointments_status_change,reports_view,notifications_view,logout_view', '127.0.0.1', '127.0.0.1', 1, 1, 'active', '2025-07-24 03:51:39', '2025-09-02 03:55:39'),
-(3, 'Receptionist', 'appointments_view,appointments_add,appointments_edit,reports_view', '127.0.0.1', NULL, 1, NULL, 'active', '2025-08-14 02:42:34', '2025-08-14 02:42:34');
+(2, 'Lab  Incharge', 'appointments_view,appointments_add,appointments_edit,appointments_delete,appointments_status_change,reports_view,notifications_view,logout_view', '127.0.0.1', '127.0.0.1', 1, 1, 'active', '2025-07-24 03:51:39', '2025-09-03 03:14:50'),
+(3, 'Department Head', 'appointments_view,appointments_add,appointments_edit,reports_view', '127.0.0.1', '127.0.0.1', 1, 1, 'active', '2025-08-14 02:42:34', '2025-09-03 03:15:37');
 
 -- --------------------------------------------------------
 
@@ -1005,6 +1038,13 @@ ALTER TABLE `countries`
   ADD PRIMARY KEY (`country_id`);
 
 --
+-- Indexes for table `departments`
+--
+ALTER TABLE `departments`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `departments_code_unique` (`code`);
+
+--
 -- Indexes for table `failed_jobs`
 --
 ALTER TABLE `failed_jobs`
@@ -1110,6 +1150,12 @@ ALTER TABLE `countries`
   MODIFY `country_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `departments`
+--
+ALTER TABLE `departments`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `failed_jobs`
 --
 ALTER TABLE `failed_jobs`
@@ -1131,13 +1177,13 @@ ALTER TABLE `internal_doctors`
 -- AUTO_INCREMENT for table `master_admins`
 --
 ALTER TABLE `master_admins`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`

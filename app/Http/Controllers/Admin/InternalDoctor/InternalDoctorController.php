@@ -172,6 +172,9 @@ class InternalDoctorController extends Controller
                 ->addColumn('address', function ($row) {
                     return !empty($row->address) ? $row->address : '';
                 })
+
+
+                
                 ->addColumn('status', function ($row) {
                     $role_id = Auth::guard('master_admins')->user()->role_id;
                     $RolesPrivileges = Role_privilege::where('status', 'active')->where('id', $role_id)->select('privileges')->first();
@@ -179,84 +182,65 @@ class InternalDoctorController extends Controller
                     $isChecked = $row->status == 'active' ? 'checked' : '';
 
                     if (!empty($RolesPrivileges) && str_contains($RolesPrivileges->privileges, 'internal_doctors_status_change')) {
-                        return '<label class="switch">
-                                    <input type="checkbox" class="change-status" data-id="' . $row->id . '" data-table="internal_doctors" data-flash="Status Changed Successfully!" ' . $isChecked . '>
-                                    <span class="slider"></span>
-                                </label>';
+                        return '<input type="checkbox" class="change-status" data-id="' . $row->id . '" data-table="internal_doctors" data-flash="Status Changed Successfully!" ' . $isChecked . '>';
                     } else {
-                        return '<label class="switch">
-                                    <input type="checkbox" disabled ' . $isChecked . '>
-                                    <span class="slider"></span>
-                                </label>';
+                        // Disabled checkbox for users without permission
+                        return '<input type="checkbox" disabled ' . $isChecked . '>';
                     }
                 })
+
+
+                
                 ->addColumn('action', function ($row) {
                     $actionBtn = '';
                     $role_id = Auth::guard('master_admins')->user()->role_id;
                     $RolesPrivileges = Role_privilege::where('status', 'active')->where('id', $role_id)->select('privileges')->first();
 
-                    // View button
-                    if (!empty($RolesPrivileges) && str_contains($RolesPrivileges->privileges, 'internal_doctors_view')) {
-                        $actionBtn .= '<a href="' . url('admin/internal-doctor/view/' . $row->id) . '" 
-                                    class="btn btn-icon btn-info me-1" 
-                                    title="View Internal Doctor" 
-                                    data-bs-toggle="tooltip" 
-                                    style="background:#fff; color:#6267ae; border:1px solid #6267ae;">
-                                    <i class="mdi mdi-eye"></i>
-                                </a>';
-                    } else {
-                        $actionBtn .= '<a href="javascript:;" 
-                                    class="btn btn-icon btn-info me-1" 
-                                    title="View Disabled" 
-                                    data-bs-toggle="tooltip" 
-                                    style="background:#fff; color:#6267ae; border:1px solid #6267ae;" disabled>
-                                    <i class="mdi mdi-eye"></i>
-                                </a>';
-                    }
 
-                    // Edit button
-                    if (!empty($RolesPrivileges) && str_contains($RolesPrivileges->privileges, 'internal_doctors_edit')) {
-                        $actionBtn .= '<a href="' . url('admin/internal-doctor/edit/' . $row->id) . '" 
+                // View button
+                if (!empty($RolesPrivileges) && str_contains($RolesPrivileges->privileges, 'internal_doctors_view')) {
+                    $actionBtn .= '<a href="' . url('admin/internal-doctor/view/' . $row->id) . '" 
+                                class="btn btn-icon btn-info me-1" 
+                                title="View Internal Doctor" 
+                                data-bs-toggle="tooltip" 
+                                style="background:#fff; color:#6267ae; border:1px solid #6267ae;">
+                                <i class="mdi mdi-eye"></i>
+                            </a>';
+                } 
+
+
+
+                // Edit button
+                if (!empty($RolesPrivileges) && str_contains($RolesPrivileges->privileges, 'internal_doctors_edit')) {
+                    $actionBtn .= '<a href="' . url('admin/internal-doctor/edit/' . $row->id) . '" 
                                     class="btn btn-icon btn-warning me-1" 
                                     title="Edit Internal Doctor" 
                                     data-bs-toggle="tooltip" 
                                     style="background:#fff; color:#f6b51d; border:1px solid #f6b51d;">
                                     <i class="mdi mdi-pencil"></i>
                                 </a>';
-                    } else {
-                        $actionBtn .= '<a href="javascript:;" 
-                                    class="btn btn-icon btn-warning me-1" 
-                                    title="Edit Disabled" 
-                                    data-bs-toggle="tooltip" 
-                                    style="background:#fff; color:#f6b51d; border:1px solid #f6b51d;" disabled>
-                                    <i class="mdi mdi-pencil"></i>
-                                </a>';
-                    }
+                } 
 
-                    // Delete button
-                    if (!empty($RolesPrivileges) && str_contains($RolesPrivileges->privileges, 'internal_doctors_delete')) {
-                        $actionBtn .= '<a href="javascript:void(0)" 
+                // Delete button
+                if (!empty($RolesPrivileges) && str_contains($RolesPrivileges->privileges, 'internal_doctors_delete')) {
+                    $actionBtn .= '<a href="javascript:void(0)" 
                                     data-id="' . $row->id . '" 
                                     data-table="internal_doctors" 
-                                    data-flash="Internal Doctor Deleted Successfully!" 
+                                    data-flash="Internal doctor deleted  Successfully!" 
                                     class="btn btn-icon btn-danger delete me-1" 
-                                    title="Delete Internal Doctor" 
+                                    title="Delete internal doctor" 
                                     data-bs-toggle="tooltip" 
                                     style="background:#fff; color:#cc235e; border:1px solid #cc235e;">
                                     <i class="mdi mdi-trash-can"></i>
                                 </a>';
-                    } else {
-                        $actionBtn .= '<a href="javascript:;" 
-                                    class="btn btn-icon btn-danger me-1" 
-                                    title="Delete Disabled" 
-                                    data-bs-toggle="tooltip" 
-                                    style="background:#fff; color:#cc235e; border:1px solid #cc235e;" disabled>
-                                    <i class="mdi mdi-trash-can"></i>
-                                </a>';
-                    }
+                } 
+                return $actionBtn;
+            })
 
-                    return $actionBtn;
-                })
+
+
+
+
                 ->rawColumns(['status', 'action'])
                 ->make(true);
         }

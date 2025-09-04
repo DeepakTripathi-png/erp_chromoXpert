@@ -8,13 +8,12 @@
             {{-- Hero Header with Gradient Background --}}
             <div class="p-4 rounded-4 mb-4 position-relative overflow-hidden shadow-lg"
                  style="background: linear-gradient(135deg, #6267ae 0%, #cc235e 100%); color: #fff;">
-                <h2 class="fw-bold mb-1">Doctors</h2>
+                <h2 class="fw-bold mb-1">Internal Doctors</h2>
                 <p class="mb-0">Manage all doctor details and commission statuses</p>
-              
                 <a href="{{ url('admin/internal-doctors/add') }}" 
                    class="btn btn-light btn-lg mt-3 fw-semibold rounded-pill shadow-sm"
                    style="background: #f6b51d; color: #1f2937; border: none;">
-                    <i class="mdi mdi-plus me-2"></i> Add Doctor
+                    <i class="mdi mdi-plus me-2"></i> Add Internal Doctor
                 </a>
                 <div class="position-absolute top-0 end-0 opacity-25" style="font-size: 120px; color: #ac7fb6;">
                     <i class="mdi mdi-doctor"></i>
@@ -24,8 +23,10 @@
             {{-- Search and Filter Inputs --}}
             <div class="d-flex flex-wrap align-items-center gap-2 mb-4">
                 <input type="text" id="searchInput" class="form-control rounded-pill shadow-sm" 
-                       placeholder="Search doctors..." style="max-width: 250px; background: #fff; color: #6267ae; border: 1px solid #f6b51d;padding-top:9px; padding-bottom:9px;">
-                <select id="statusFilter" class="form-select rounded-pill shadow-sm" style="max-width: 200px; background: #fff; color: #6267ae; border: 1px solid #f6b51d;padding-top:9px; padding-bottom:9px;">
+                       placeholder="Search doctors..." aria-label="Search doctors"
+                       style="max-width: 250px; background: #fff; color: #6267ae; border: 1px solid #f6b51d;padding-top:9px; padding-bottom:9px;">
+                <select id="statusFilter" class="form-select rounded-pill shadow-sm" aria-label="Filter by status"
+                        style="max-width: 200px; background: #fff; color: #6267ae; border: 1px solid #f6b51d;padding-top:9px; padding-bottom:9px;">
                     <option value="">All Status</option>
                     <option value="Active">Active</option>
                     <option value="Inactive">Inactive</option>
@@ -37,9 +38,6 @@
                  style="background: rgba(255,255,255,0.85); backdrop-filter: blur(14px);">
                 <div class="card-body p-4">
                     <div class="table-responsive">
-
-             
-
                         <table id="cims_data_table" class="table align-middle table-hover">
                             <thead style="background: linear-gradient(135deg, #ac7fb6 0%, #f6b51d 100%); color: #fff;">
                                 <tr>
@@ -54,15 +52,9 @@
                                     <th style="width: 10%;" class="text-center">Actions</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                               
-                            </tbody>
+                            <tbody></tbody>
                         </table>
-
                     </div>
-
-                  
-
                 </div>
             </div>
         </div>
@@ -141,7 +133,7 @@
 @section('script')
 <script src="{{ URL::asset('admin_panel/controller_js/cn_internal-doctor.js') }}"></script>
 <script>
-    // Debounce function to limit search input processing
+    // Debounce function to limit search/filter processing
     function debounce(func, wait) {
         let timeout;
         return function executedFunction(...args) {
@@ -154,90 +146,39 @@
         };
     }
 
-    // Search functionality with debounce
-    document.getElementById('searchInput').addEventListener('keyup', debounce(function() {
-        let filter = this.value.toLowerCase();
-        document.querySelectorAll('#cims_data_table tbody tr').forEach(function(row) {
-            let text = row.innerText.toLowerCase();
-            row.style.display = text.includes(filter) ? '' : 'none';
-        });
-    }, 300));
+    // Combined search and filter function
+    function filterTable() {
+        const searchFilter = document.getElementById('searchInput').value.toLowerCase();
+        const statusFilter = document.getElementById('statusFilter').value.toLowerCase();
+        const rows = document.querySelectorAll('#cims_data_table tbody tr');
 
-    // Status filter functionality
-    document.getElementById('statusFilter').addEventListener('change', function() {
-        let filter = this.value.toLowerCase();
-        document.querySelectorAll('#cims_data_table tbody tr').forEach(function(row) {
-            let status = row.querySelector('.change-status').checked ? 'active' : 'inactive';
-            row.style.display = (filter === '' || status === filter) ? '' : 'none';
-        });
-    });
-
-    // Status toggle with AJAX and loading spinner
-    $(document).on('click', '.change-status', function() {
-        var $this = $(this);
-        var $spinner = $('#loadingSpinner').removeClass('d-none');
-        var id = $this.data('id');
-        var table = $this.data('table');
-        var flash_message = $this.data('flash');
-        var _token = $('meta[name="csrf-token"]').attr('content');
-        
-        $.ajax({
-            url: "{{ url('admin/change-status') }}",
-            type: "POST",
-            data: {
-                id: id,
-                table: table,
-                _token: _token
-            },
-            success: function(response) {
-                $spinner.addClass('d-none');
-                if(response.success) {
-                    toastr.success(flash_message);
-                }
-            },
-            error: function(xhr) {
-                $spinner.addClass('d-none');
-                toastr.error('Error changing status');
-            }
-        });
-    });
-
-    // Delete functionality with confirmation and loading spinner
-    $(document).on('click', '.delete', function() {
-        if(confirm('Are you sure you want to delete this doctor?')) {
-            var $this = $(this);
-            var $spinner = $('#loadingSpinner').removeClass('d-none');
-            var id = $this.data('id');
-            var table = $this.data('table');
-            var flash_message = $this.data('flash');
-            var _token = $('meta[name="csrf-token"]').attr('content');
+        rows.forEach(row => {
+            // Get row text for search
+            const text = row.innerText.toLowerCase();
+            // Get status from toggle switch (handle missing .change-status)
+            const statusElement = row.querySelector('.change-status');
+            const status = statusElement && statusElement.checked ? 'active' : 'inactive';
             
-            $.ajax({
-                url: "{{ url('admin/delete-record') }}",
-                type: "POST",
-                data: {
-                    id: id,
-                    table: table,
-                    _token: _token
-                },
-                success: function(response) {
-                    $spinner.addClass('d-none');
-                    if(response.success) {
-                        toastr.success(flash_message);
-                        location.reload();
-                    }
-                },
-                error: function(xhr) {
-                    $spinner.addClass('d-none');
-                    toastr.error('Error deleting record');
-                }
-            });
-        }
-    });
+            // Check if row matches both search and status filters
+            const matchesSearch = text.includes(searchFilter);
+            const matchesStatus = statusFilter === '' || status === statusFilter;
+            row.style.display = matchesSearch && matchesStatus ? '' : 'none';
+        });
+    }
+
+    // Event listeners for search and filter
+    document.getElementById('searchInput').addEventListener('keyup', debounce(filterTable, 300));
+    document.getElementById('statusFilter').addEventListener('change', filterTable);
+
+    // Listen for table updates (custom event from cn_internal-doctor.js)
+    document.addEventListener('tableUpdated', filterTable);
 
     // Initialize Bootstrap tooltips
     $(function () {
         $('[data-bs-toggle="tooltip"]').tooltip();
     });
+
+    // Ensure filter is applied on page load
+    document.addEventListener('DOMContentLoaded', filterTable);
 </script>
 @endsection
