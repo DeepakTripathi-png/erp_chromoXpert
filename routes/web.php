@@ -158,7 +158,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['prevent-back-history', 'is_
         Route::get('test-case', 'index');
         Route::get('test-case/add', 'add');
         Route::get('test-case/view', 'view');
+        Route::post('tests/store','store')->name('test.store');
      });
+
+
 
     Route::controller(ReportController::class)->group(function (){
         Route::get('report', 'index');

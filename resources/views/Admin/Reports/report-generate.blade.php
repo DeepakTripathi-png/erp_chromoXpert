@@ -79,6 +79,9 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                         <tr>
+                                            <td colspan="5" class="text-start fw-bold">Component Title</td>
+                                        </tr>
                                         <tr>
                                             <td>test compo</td>
                                             <td>EA</td>
@@ -122,6 +125,9 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <tr>
+                                            <td colspan="5" class="text-start fw-bold">Component Title</td>
+                                        </tr>
                                         <tr>
                                             <td>test compo</td>
                                             <td>EA</td>
