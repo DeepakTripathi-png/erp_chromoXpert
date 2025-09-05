@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 04, 2025 at 02:26 PM
+-- Generation Time: Sep 05, 2025 at 01:56 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -754,7 +754,7 @@ CREATE TABLE `master_admins` (
 --
 
 INSERT INTO `master_admins` (`id`, `user_type`, `user_id`, `user_name`, `email`, `password`, `mobile_no`, `role_id`, `address`, `user_profile_image_path`, `user_profile_image_name`, `fcm_token`, `access_token`, `last_login`, `remember_token`, `otp`, `status`, `created_ip_address`, `modified_ip_address`, `created_by`, `modified_by`, `created_at`, `updated_at`) VALUES
-(1, 'system', NULL, 'ChromoXpert', 'admin@gmail.com', '$2y$10$InJ0GHoOaHXJHMuEYqTMye.t5E4QfWDrzNLW/pltguVNM/OZCpFUm', NULL, '1', NULL, NULL, NULL, NULL, NULL, '2025-09-04 11:53:31', NULL, NULL, 'active', NULL, NULL, NULL, NULL, NULL, '2025-09-04 06:23:31'),
+(1, 'system', NULL, 'ChromoXpert', 'admin@gmail.com', '$2y$10$InJ0GHoOaHXJHMuEYqTMye.t5E4QfWDrzNLW/pltguVNM/OZCpFUm', NULL, '1', NULL, NULL, NULL, NULL, NULL, '2025-09-05 11:35:29', NULL, NULL, 'active', NULL, NULL, NULL, NULL, NULL, '2025-09-05 06:05:29'),
 (2, 'system', NULL, 'Deepak Tripathi', 'deepakmegreat@gmail.com', '$2y$10$xNQAIXTjEX.0BWxRGhCRQOij7hFkletib0oR9o33ExwSrzTp3EzSi', '07318560108', '2', 'Bair Amad Karari', NULL, NULL, NULL, NULL, '2025-09-02 09:26:03', NULL, NULL, 'active', '127.0.0.1', NULL, 1, NULL, '2025-07-24 03:52:01', '2025-09-02 03:56:03'),
 (3, 'system', NULL, 'Deepak Tripathi', 'rec@gmail.com', '$2y$10$NJsMZ1s/k0ahYflkrDmJcu9BjBRS9URYgC0V8vb3jX.bltSLnMPZ2', '7318560108', '3', 'Bair Amad Karari', NULL, NULL, NULL, NULL, '2025-08-14 08:22:15', NULL, NULL, 'delete', '127.0.0.1', '127.0.0.1', 1, 1, '2025-08-14 02:51:24', '2025-08-14 02:52:15'),
 (4, 'customer', NULL, 'Deepak Tripathi', 'deep@gmail.com', '$2y$10$QpGDu/lTa1t9C5zFgWtOu.eLUj1Qdem5XgTYLBz7oGrC.BRWITHQe', '7318560108', NULL, 'Hello this is Deepak Address', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', '127.0.0.1', '127.0.0.1', 1, 1, '2025-09-01 01:16:48', '2025-09-01 03:44:11'),
@@ -766,7 +766,7 @@ INSERT INTO `master_admins` (`id`, `user_type`, `user_id`, `user_name`, `email`,
 (10, 'customer', NULL, 'aDasDasdDeepak', 'sadasdfd@gmail.com', '$2y$10$jMwetIH1T8Bh24t8x8.jtOkez9fu3rHEgc51Pk2D8.HIZOX5ZmTJi', '07318560108', NULL, 'Bair Amad Karari', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', '127.0.0.1', '127.0.0.1', 1, 1, '2025-09-01 04:31:32', '2025-09-01 04:31:56'),
 (11, 'customer', NULL, 'Deepak Pet Parent', 'deepalpetparent@gmail.com', '$2y$10$1T4VLF319ej97EXANG3RmuzA/mV5ZNrlB9FiK9oe1xpo/HZRg5Pmq', '7318560108', NULL, 'Bair Amad Karari', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', '127.0.0.1', NULL, 1, NULL, '2025-09-01 04:33:00', '2025-09-01 04:33:00'),
 (12, 'internal_doctor', NULL, 'Dr Deepak Internal Doctor1', 'drdeepakinternaldoctor1@gmail.com', '$2y$10$r0GzCP.fOPmFfb9UYp8TeuVm0FAN7rOFP18NqTHl8p5Nyk3b1.Pe.', '+917318560108', '4', 'Bair Amad Karari1', 'images/internal_doctors/up3g9sanUufnVqUB4gXDL1Ca0yng801PLstwDHgG.jpg', NULL, NULL, NULL, NULL, NULL, NULL, 'active', '127.0.0.1', '127.0.0.1', 1, 1, '2025-09-02 00:12:14', '2025-09-02 00:44:55'),
-(13, 'internal_doctor', NULL, 'xyz', 'xyz@gmail.com', '$2y$10$dbCzWmCbq5ksFnke5X1aI.qrumCLiLKAopZP4xavtfqMvBm.lqvIu', '+917318560108', '4', 'Bair Amad Karari', 'images/internal_doctors/AURP5Wbf2WfknZgmdjqwzvPeIRYfbuLOnPokaLQ5.jpg', NULL, NULL, NULL, '2025-09-04 11:56:59', NULL, NULL, 'active', '127.0.0.1', NULL, 1, NULL, '2025-09-02 00:57:23', '2025-09-04 06:26:59'),
+(13, 'internal_doctor', NULL, 'xyz', 'xyz@gmail.com', '$2y$10$dbCzWmCbq5ksFnke5X1aI.qrumCLiLKAopZP4xavtfqMvBm.lqvIu', '+917318560108', '4', 'Bair Amad Karari', 'images/internal_doctors/AURP5Wbf2WfknZgmdjqwzvPeIRYfbuLOnPokaLQ5.jpg', NULL, NULL, NULL, '2025-09-05 05:01:07', NULL, NULL, 'active', '127.0.0.1', NULL, 1, NULL, '2025-09-02 00:57:23', '2025-09-04 23:31:07'),
 (14, 'system', NULL, 'Deepak Department Head', 'ddh@gmail.com', '$2y$10$sNTRXU1UFsEke6sKjyMvn.ohff45.GvbSejfDmPw6VEv.qi/aeUC2', '7318560108', '3', 'Bair Amad Karari', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', '127.0.0.1', NULL, 1, NULL, '2025-09-03 03:16:33', '2025-09-03 03:16:33'),
 (15, 'internal_doctor', NULL, 'Internal Doctor', 'internaldoctor@gmail.com', '$2y$10$S7pa8ksDr1twKO3YXa7Md.m4aTd6Pp1lyrQTdZ33AcrRSsxYyoc0a', '+917318560108', '4', 'Bair Amad Karari', 'images/internal_doctors/dfIzVFLaV0QnzrxWS9zDmXuSeZKoGeNoPvwOPBfd.jpg', NULL, NULL, NULL, NULL, NULL, NULL, 'active', '127.0.0.1', NULL, 1, NULL, '2025-09-04 06:09:33', '2025-09-04 06:09:33');
 
@@ -800,7 +800,30 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (12, '2025_09_02_050059_create_internal_doctors_table', 4),
 (13, '2025_09_02_093535_create_branches_table', 5),
 (15, '2025_09_03_072046_create_departments_table', 6),
-(16, '2025_09_04_061330_create_pets_table', 7);
+(16, '2025_09_04_061330_create_pets_table', 7),
+(17, '2025_09_05_080504_create_tests_table', 8),
+(19, '2025_09_05_080749_create_parameter_options_table', 8),
+(20, '2025_09_05_080633_create_test_parameters_table', 9);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `parameter_options`
+--
+
+CREATE TABLE `parameter_options` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `parameter_id` bigint(20) DEFAULT NULL,
+  `option_value` varchar(255) NOT NULL,
+  `sort_order` int(11) NOT NULL DEFAULT 0,
+  `created_ip_address` varchar(255) DEFAULT NULL,
+  `modified_ip_address` varchar(255) DEFAULT NULL,
+  `created_by` bigint(20) DEFAULT NULL,
+  `modified_by` bigint(20) DEFAULT NULL,
+  `status` enum('active','delete','inactive') NOT NULL DEFAULT 'active',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -959,7 +982,7 @@ INSERT INTO `role_privileges` (`id`, `role_name`, `privileges`, `created_ip_addr
 (1, 'Super Admin', 'dashboard_view,appointments_view,appointments_add,appointments_edit,appointments_delete,appointments_status_change,reports_view,branch_view,branch_add,branch_edit,branch_delete,branch_status_change,departments_view,departments_add,departments_edit,departments_delete,departments_status_change,doctors_view,doctors_add,doctors_edit,doctors_delete,doctors_status_change,internal_doctors_view,internal_doctors_add,internal_doctors_edit,internal_doctors_delete,internal_doctors_status_change,referee_doctors_view,referee_doctors_add,referee_doctors_edit,referee_doctors_delete,referee_doctors_status_change,pet_owners_view,pet_owners_add,pet_owners_edit,pet_owners_delete,pet_owners_status_change,pet_view,pet_add,pet_edit,pet_delete,pet_status_change,test_management_view,test_management_add,test_management_edit,test_management_delete,test_management_status_change,revenue_view,system_users_view,user_view,user_add,user_edit,user_delete,user_status_change,role_privileges_view,role_privileges_add,role_privileges_edit,role_privileges_delete,role_privileges_status_change,settings_view,general_setting_view,general_setting_add,general_setting_edit,visual_setting_view,visual_setting_add,visual_setting_edit,change_password_view,change_password_edit,notifications_view,logout_view', NULL, '127.0.0.1', NULL, 1, 'active', NULL, '2025-09-04 02:32:55'),
 (2, 'Lab  Incharge', 'appointments_view,appointments_add,appointments_edit,appointments_delete,appointments_status_change,reports_view,notifications_view,logout_view', '127.0.0.1', '127.0.0.1', 1, 1, 'active', '2025-07-24 03:51:39', '2025-09-03 03:14:50'),
 (3, 'Department Head', 'appointments_view,appointments_add,appointments_edit,reports_view', '127.0.0.1', '127.0.0.1', 1, 1, 'active', '2025-08-14 02:42:34', '2025-09-03 03:15:37'),
-(4, 'Internal Doctor', 'dashboard_view,notifications_view,logout_view', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-04 06:24:11', '2025-09-04 06:24:11');
+(4, 'Internal Doctor', 'dashboard_view,reports_view,notifications_view,logout_view', '127.0.0.1', '127.0.0.1', 1, 1, 'active', '2025-09-04 06:24:11', '2025-09-04 07:02:36');
 
 -- --------------------------------------------------------
 
@@ -1013,6 +1036,49 @@ INSERT INTO `states` (`state_id`, `name`, `country_id`) VALUES
 (33, 'Uttar Pradesh', 1),
 (34, 'Uttarakhand', 1),
 (35, 'West Bengal', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tests`
+--
+
+CREATE TABLE `tests` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `short_name` varchar(255) DEFAULT NULL,
+  `sample_type` varchar(255) DEFAULT NULL,
+  `base_price` decimal(10,2) NOT NULL,
+  `precautions` text DEFAULT NULL,
+  `created_ip_address` varchar(255) DEFAULT NULL,
+  `modified_ip_address` varchar(255) DEFAULT NULL,
+  `created_by` bigint(20) DEFAULT NULL,
+  `modified_by` bigint(20) DEFAULT NULL,
+  `status` enum('active','delete','inactive') NOT NULL DEFAULT 'active',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `test_parameters`
+--
+
+CREATE TABLE `test_parameters` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `test_id` bigint(20) UNSIGNED NOT NULL,
+  `row_type` enum('component','title') NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `unit` varchar(255) DEFAULT NULL,
+  `result_type` enum('text','select') NOT NULL DEFAULT 'text',
+  `reference_range` text DEFAULT NULL,
+  `sort_order` int(11) NOT NULL DEFAULT 0,
+  `status` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1118,6 +1184,12 @@ ALTER TABLE `migrations`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `parameter_options`
+--
+ALTER TABLE `parameter_options`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `password_reset_tokens`
 --
 ALTER TABLE `password_reset_tokens`
@@ -1162,6 +1234,19 @@ ALTER TABLE `role_privileges`
 ALTER TABLE `states`
   ADD PRIMARY KEY (`state_id`),
   ADD KEY `country_id` (`country_id`);
+
+--
+-- Indexes for table `tests`
+--
+ALTER TABLE `tests`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `test_parameters`
+--
+ALTER TABLE `test_parameters`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `test_parameters_test_id_foreign` (`test_id`);
 
 --
 -- Indexes for table `users`
@@ -1232,7 +1317,13 @@ ALTER TABLE `master_admins`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
+--
+-- AUTO_INCREMENT for table `parameter_options`
+--
+ALTER TABLE `parameter_options`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -1271,6 +1362,18 @@ ALTER TABLE `states`
   MODIFY `state_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
+-- AUTO_INCREMENT for table `tests`
+--
+ALTER TABLE `tests`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `test_parameters`
+--
+ALTER TABLE `test_parameters`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
@@ -1297,6 +1400,12 @@ ALTER TABLE `cities`
 --
 ALTER TABLE `states`
   ADD CONSTRAINT `states_ibfk_1` FOREIGN KEY (`country_id`) REFERENCES `countries` (`country_id`);
+
+--
+-- Constraints for table `test_parameters`
+--
+ALTER TABLE `test_parameters`
+  ADD CONSTRAINT `test_parameters_test_id_foreign` FOREIGN KEY (`test_id`) REFERENCES `tests` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
