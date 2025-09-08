@@ -52,88 +52,29 @@
                  style="background: rgba(255,255,255,0.85); backdrop-filter: blur(14px);">
                 <div class="card-body p-4">
                     <div class="table-responsive">
-                        <table id="tests_data_table" class="table align-middle table-hover">
+                        <table id="cims_data_table" class="table align-middle table-hover">
                             <thead style="background: linear-gradient(135deg, #ac7fb6 0%, #f6b51d 100%); color: #fff;">
                                 <tr>
                                     <th style="width: 5%;">#</th>
                                     <th style="width: 10%;">Test Code</th>
                                     <th style="width: 20%;">Test Name</th>
-                                    <th style="width: 15%;">Department</th>
-                                    <th style="width: 15%;">Category</th>
+                                    <th style="width: 20%;">Short Name</th>
+                                    {{-- <th style="width: 15%;">Department</th>
+                                    <th style="width: 15%;">Category</th> --}}
                                     <th style="width: 15%;">Sample Type</th>
                                     <th style="width: 10%;">Base Price (₹)</th>
+                                     <th style="width: 15%;">Parameter Count</th>
                                     <th style="width: 10%;" class="text-center">Status</th>
                                     <th style="width: 15%;" class="text-center">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach([
-                                    ['id' => 1, 'code' => 'HEM-1234', 'name' => 'Complete Blood Count', 'department' => 'Hematology', 'category' => 'Routine', 'sample_type' => 'Blood', 'base_price' => '1500.00', 'status' => 'Active'],
-                                    ['id' => 2, 'code' => 'END-5678', 'name' => 'Thyroid Profile', 'department' => 'Endocrinology', 'category' => 'Profile', 'sample_type' => 'Blood', 'base_price' => '2000.00', 'status' => 'Active'],
-                                    ['id' => 3, 'code' => 'HEP-9012', 'name' => 'Liver Function Test', 'department' => 'Hepatology', 'category' => 'Special', 'sample_type' => 'Blood', 'base_price' => '1800.00', 'status' => 'Inactive']
-                                ] as $index => $test)
-                                <tr class="fade-in-row">
-                                    <td>{{ $index + 1 }}</td>
-                                    <td><strong>{{ $test['code'] }}</strong></td>
-                                    <td>{{ $test['name'] }}</td>
-                                    <td>{{ $test['department'] }}</td>
-                                    <td>{{ $test['category'] }}</td>
-                                    <td>{{ $test['sample_type'] }}</td>
-                                    <td>{{ $test['base_price'] }}</td>
-                                    <td class="text-center">
-                                        <label class="switch">
-                                            <input type="checkbox" class="change-status" 
-                                                   data-id="{{ $test['id'] }}" 
-                                                   data-table="tests" 
-                                                   data-flash="Status Changed Successfully!" 
-                                                   {{ $test['status'] == 'Active' ? 'checked' : '' }}>
-                                            <span class="slider"></span>
-                                        </label>
-                                        <span class="spinner-border spinner-border-sm text-primary ms-2 d-none" id="loadingSpinner" role="status">
-                                            <span class="visually-hidden">Loading...</span>
-                                        </span>
-                                    </td>
-                                    <td class="text-center">
-                                        <a href="{{ url('admin/tests/view/' . $test['id']) }}" 
-                                           class="btn btn-icon btn-info me-1" 
-                                           title="View Test" 
-                                           data-bs-toggle="tooltip" 
-                                           style="background: #fff; color: #6267ae; border: 1px solid #6267ae;">
-                                            <i class="mdi mdi-eye"></i>
-                                        </a>
-                                        <a href="{{ url('admin/tests/edit/' . $test['id']) }}" 
-                                           class="btn btn-icon btn-warning me-1" 
-                                           title="Edit Test" 
-                                           data-bs-toggle="tooltip" 
-                                           style="background: #fff; color: #f6b51d; border: 1px solid #f6b51d;">
-                                            <i class="mdi mdi-pencil"></i>
-                                        </a>
-                                        <a href="javascript:void(0)" 
-                                           data-id="{{ $test['id'] }}" 
-                                           data-table="tests" 
-                                           data-flash="Test Deleted Successfully!" 
-                                           class="btn btn-icon btn-danger delete" 
-                                           title="Delete Test" 
-                                           data-bs-toggle="tooltip" 
-                                           style="background: #fff; color: #cc235e; border: 1px solid #cc235e;">
-                                            <i class="mdi mdi-trash-can"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                                @endforeach
+
+                             
+
                             </tbody>
                         </table>
                     </div>
-
-                    {{-- Custom Pagination with Consistent Styling --}}
-                    <nav class="mt-4">
-                        <ul class="pagination justify-content-center custom-pagination">
-                            <li class="page-item disabled"><a class="page-link" href="#">«</a></li>
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">»</a></li>
-                        </ul>
-                    </nav>
                 </div>
             </div>
         </div>
@@ -248,68 +189,7 @@
         });
     });
 
-    // Status toggle with AJAX and loading spinner
-    $(document).on('click', '.change-status', function() {
-        var $this = $(this);
-        var $spinner = $('#loadingSpinner').removeClass('d-none');
-        var id = $this.data('id');
-        var table = $this.data('table');
-        var flash_message = $this.data('flash');
-        var _token = $('meta[name="csrf-token"]').attr('content');
-        
-        $.ajax({
-            url: "{{ url('admin/change-status') }}",
-            type: "POST",
-            data: {
-                id: id,
-                table: table,
-                _token: _token
-            },
-            success: function(response) {
-                $spinner.addClass('d-none');
-                if(response.success) {
-                    toastr.success(flash_message);
-                }
-            },
-            error: function(xhr) {
-                $spinner.addClass('d-none');
-                toastr.error('Error changing status');
-            }
-        });
-    });
-
-    // Delete functionality with confirmation and loading spinner
-    $(document).on('click', '.delete', function() {
-        if(confirm('Are you sure you want to delete this test?')) {
-            var $this = $(this);
-            var $spinner = $('#loadingSpinner').removeClass('d-none');
-            var id = $this.data('id');
-            var table = $this.data('table');
-            var flash_message = $this.data('flash');
-            var _token = $('meta[name="csrf-token"]').attr('content');
-            
-            $.ajax({
-                url: "{{ url('admin/delete-record') }}",
-                type: "POST",
-                data: {
-                    id: id,
-                    table: table,
-                    _token: _token
-                },
-                success: function(response) {
-                    $spinner.addClass('d-none');
-                    if(response.success) {
-                        toastr.success(flash_message);
-                        location.reload();
-                    }
-                },
-                error: function(xhr) {
-                    $spinner.addClass('d-none');
-                    toastr.error('Error deleting test');
-                }
-            });
-        }
-    });
+   
 
     // Initialize Bootstrap tooltips
     $(function () {

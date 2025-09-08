@@ -155,10 +155,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['prevent-back-history', 'is_
 
 
     Route::controller(TestcaseController::class)->group(function (){
-        Route::get('test-case', 'index');
+        Route::get('test-case', 'index')->name('admin.testcases');
         Route::get('test-case/add', 'add');
-        Route::get('test-case/view', 'view');
-        Route::post('tests/store','store')->name('test.store');
+        Route::get('test-case/edit/{id}', 'edit');
+        Route::get('test-case/view/{id}', 'view');
+        Route::post('tests/store','store')->name('admin.test_case.store');
+        Route::get('test/data-table','data_table');
      });
 
 

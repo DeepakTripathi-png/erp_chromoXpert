@@ -1,5 +1,5 @@
 @extends('Admin.Layouts.layout')
-@section('meta_title') Add Test | ChromoXpert @endsection
+@section('meta_title') {{ !empty($test) ? 'Edit Test | ChromoXpert' : 'Add Test | ChromoXpert' }} @endsection
 
 @section('content')
 <div class="content-page">
@@ -9,8 +9,8 @@
             {{-- Header Section --}}
             <div class="p-4 rounded-4 mb-4 position-relative overflow-hidden shadow-lg"
                  style="background: linear-gradient(135deg, #6267ae 0%, #cc235e 100%); color: #fff;">
-                <h2 class="fw-bold mb-1">Create New Test</h2>
-                <p class="mb-0">Configure your test details below</p>
+                <h2 class="fw-bold mb-1">{{ !empty($test) ? 'Edit Test' : 'Create New Test' }}</h2>
+                <p class="mb-0">{{ !empty($test) ? 'Update the test details below' : 'Configure your test details below' }}</p>
                 <a href="{{ url()->previous() }}" 
                    class="btn btn-light mt-3 fw-semibold rounded-pill shadow-sm"
                    style="background: #f6b51d; color: #1f2937; border: none; transition: transform 0.2s;">
@@ -41,41 +41,52 @@
             {{-- Form --}}
             <div class="card border-0 shadow-lg rounded-4" style="background: rgba(255,255,255,0.95);">
                 <div class="card-body p-4">
-                    <form action="{{ url('admin/tests/store') }}" method="POST" id="testForm">
+                    <form action="{{ route('admin.test_case.store') }}" method="POST" id="testForm">
                         @csrf
+                        <input type="hidden" name="id" value="{{ $test->id ?? '' }}">
 
                         {{-- Basic Test Info --}}
                         <div class="row g-3 mb-4">
                             <div class="col-md-3">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control rounded-3" id="test_name" name="name" required placeholder=" ">
+                                    <input type="text" class="form-control rounded-3" id="test_name" name="name" 
+                                           value="{{ old('name', $test->name ?? '') }}" required placeholder=" ">
                                     <label for="test_name" style="color: #6267ae;">Test Name <span class="text-danger">*</span></label>
+                                    @error('name')<span class="text-danger">{{ $message }}</span>@enderror
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control rounded-3" id="short_name" name="short_name" placeholder=" ">
+                                    <input type="text" class="form-control rounded-3" id="short_name" name="short_name" 
+                                           value="{{ old('short_name', $test->short_name ?? '') }}" placeholder=" ">
                                     <label for="short_name" style="color: #6267ae;">Short Name</label>
+                                    @error('short_name')<span class="text-danger">{{ $message }}</span>@enderror
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control rounded-3" id="sample_type" name="sample_type" placeholder=" ">
+                                    <input type="text" class="form-control rounded-3" id="sample_type" name="sample_type" 
+                                           value="{{ old('sample_type', $test->sample_type ?? '') }}" placeholder=" ">
                                     <label for="sample_type" style="color: #6267ae;">Sample Type</label>
+                                    @error('sample_type')<span class="text-danger">{{ $message }}</span>@enderror
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-floating">
-                                    <input type="number" class="form-control rounded-3" id="base_price" name="base_price" required placeholder=" " step="0.01">
+                                    <input type="number" class="form-control rounded-3" id="base_price" name="base_price" 
+                                           value="{{ old('base_price', $test->base_price ?? '') }}" required placeholder=" " step="0.01">
                                     <label for="base_price" style="color: #6267ae;">Price (₹) <span class="text-danger">*</span></label>
+                                    @error('base_price')<span class="text-danger">{{ $message }}</span>@enderror
                                 </div>
                             </div>
                         </div>
 
                         {{-- Precautions --}}
                         <div class="form-floating mb-4">
-                            <textarea class="form-control rounded-3" id="precautions" name="precautions" placeholder=" " style="height:80px;"></textarea>
+                            <textarea class="form-control rounded-3" id="precautions" name="precautions" 
+                                      placeholder=" " style="height:80px;">{{ old('precautions', $test->precautions ?? '') }}</textarea>
                             <label for="precautions" style="color:#6267ae;">Precautions</label>
+                            @error('precautions')<span class="text-danger">{{ $message }}</span>@enderror
                         </div>
 
                         {{-- Test Components Section --}}
@@ -107,7 +118,115 @@
                                         </tr>
                                     </thead>
                                     <tbody id="parametersTableBody">
-                                        <!-- Rows added by JS -->
+                                        @if(!empty($test) && $test->parameters)
+                                            @foreach($test->parameters as $index => $parameter)
+                                                @if($parameter->row_type == 'title')
+                                                    <tr data-row="{{ $index }}" class="title-row" style="background-color: #f8f9fa;">
+                                                        <td colspan="5">
+                                                            <input type="hidden" name="parameters[{{ $index }}][row_type]" value="title">
+                                                            <input type="hidden" name="parameters[{{ $index }}][id]" value="{{ $parameter->id }}">
+                                                            <input type="hidden" name="parameters[{{ $index }}][status]" value="{{ $parameter->status == 'active' ? '1' : '0' }}">
+                                                            <input type="text" class="form-control fw-bold title-input rounded-3" 
+                                                                   name="parameters[{{ $index }}][title]" 
+                                                                   value="{{ old('parameters.' . $index . '.title', $parameter->title) }}" 
+                                                                   placeholder="Title" required style="background: transparent; border: 1px dashed #ccc;">
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <button type="button" class="btn btn-danger btn-sm remove-row rounded-circle" 
+                                                                    title="Remove" style="background-color: #dc3545; border: none; width: 32px; height: 32px;">
+                                                                <i class="mdi mdi-trash-can" style="color: #fff;"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                @else
+                                                    <tr data-row="{{ $index }}" class="component-row">
+                                                        <td>
+                                                            <input type="hidden" name="parameters[{{ $index }}][row_type]" value="component">
+                                                            <input type="hidden" name="parameters[{{ $index }}][id]" value="{{ $parameter->id }}">
+                                                            <input type="text" class="form-control rounded-3" 
+                                                                   name="parameters[{{ $index }}][name]" 
+                                                                   value="{{ old('parameters.' . $index . '.name', $parameter->name) }}" 
+                                                                   placeholder="Component" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" class="form-control rounded-3" 
+                                                                   name="parameters[{{ $index }}][unit]" 
+                                                                   value="{{ old('parameters.' . $index . '.unit', $parameter->unit) }}" 
+                                                                   placeholder="Unit">
+                                                        </td>
+                                                        <td>
+                                                            <div class="result-container" data-row-index="{{ $index }}">
+                                                                <div class="d-flex flex-column gap-1 result-type-section">
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input result-type" type="radio" 
+                                                                               data-row-index="{{ $index }}" 
+                                                                               name="parameters[{{ $index }}][result_type]" 
+                                                                               value="text" id="text_{{ $index }}" 
+                                                                               {{ old('parameters.' . $index . '.result_type', $parameter->result_type) == 'text' ? 'checked' : '' }}>
+                                                                        <label class="form-check-label" for="text_{{ $index }}">Text</label>
+                                                                    </div>
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input result-type" type="radio" 
+                                                                               data-row-index="{{ $index }}" 
+                                                                               name="parameters[{{ $index }}][result_type]" 
+                                                                               value="select" id="select_{{ $index }}" 
+                                                                               {{ old('parameters.' . $index . '.result_type', $parameter->result_type) == 'select' ? 'checked' : '' }}>
+                                                                        <label class="form-check-label" for="select_{{ $index }}">Select</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="select-options mt-2 p-2 border rounded-3 {{ $parameter->result_type == 'select' ? '' : 'd-none' }}" 
+                                                                     data-options-for="{{ $index }}">
+                                                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                                                        <small class="fw-semibold text-muted">Options</small>
+                                                                        <button type="button" class="btn btn-sm add-option-btn rounded-pill" 
+                                                                                data-row-index="{{ $index }}" title="Add option"
+                                                                                style="background: #6267ae; color: #fff; border: none; padding: 6px 12px;">
+                                                                            <i class="mdi mdi-plus"></i>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="options-list">
+                                                                        @if($parameter->options)
+                                                                            @foreach($parameter->options as $optionIndex => $option)
+                                                                                <div class="d-flex align-items-center mb-2 option-item">
+                                                                                    <input type="text" class="form-control form-control-sm rounded-3" 
+                                                                                           name="parameters[{{ $index }}][options][]" 
+                                                                                           value="{{ old('parameters.' . $index . '.options.' . $optionIndex, $option->option_value) }}" 
+                                                                                           placeholder="Enter option" required>
+                                                                                    <input type="hidden" name="parameters[{{ $index }}][option_ids][]" 
+                                                                                           value="{{ $option->id }}">
+                                                                                    <button type="button" class="btn btn-sm btn-outline-danger ms-2 remove-option rounded-circle" 
+                                                                                            title="Remove option">
+                                                                                        <i class="mdi mdi-minus"></i>
+                                                                                    </button>
+                                                                                </div>
+                                                                            @endforeach
+                                                                        @endif
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" class="form-control rounded-3" 
+                                                                   name="parameters[{{ $index }}][reference_range]" 
+                                                                   value="{{ old('parameters.' . $index . '.reference_range', $parameter->reference_range) }}" 
+                                                                   placeholder="Reference Range">
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <input type="hidden" name="parameters[{{ $index }}][status]" value="0">
+                                                            <input type="checkbox" class="form-check-input" 
+                                                                   name="parameters[{{ $index }}][status]" value="1" 
+                                                                   {{ old('parameters.' . $index . '.status', $parameter->status == 'active' ? 1 : 0) ? 'checked' : '' }}>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <button type="button" class="btn btn-danger btn-sm remove-row rounded-circle" 
+                                                                    title="Remove" style="background-color: #dc3545; border: none; width: 32px; height: 32px;">
+                                                                <i class="mdi mdi-trash-can" style="color: #fff;"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                @endif
+                                            @endforeach
+                                        @endif
                                     </tbody>
                                 </table>
                             </div>
@@ -118,7 +237,7 @@
                             <div class="col-12 text-end">
                                 <button type="submit" class="btn btn-success rounded-pill"
                                         style="background: #6267ae; color: #fff; border: none; padding: 10px 24px; transition: background 0.2s;">
-                                    <i class="mdi mdi-content-save me-2"></i> Save Test
+                                    <i class="mdi mdi-content-save me-2"></i> {{ !empty($test) ? 'Update Test' : 'Save Test' }}
                                 </button>
                             </div>
                         </div>
@@ -135,11 +254,11 @@
 <script>
 document.addEventListener("DOMContentLoaded", function () {
     const tbody = document.getElementById('parametersTableBody');
-    let rowCount = 0;
+    let rowCount = {{ !empty($test) && $test->parameters ? $test->parameters->count() : 0 }};
 
     const optionInputHTML = (rowIdx) => `
         <div class="d-flex align-items-center mb-2 option-item">
-            <input type="text" class="form-control form-control-sm rounded-3" name="parameters[${rowIdx}][options][]" placeholder="Enter option">
+            <input type="text" class="form-control form-control-sm rounded-3" name="parameters[${rowIdx}][options][]" placeholder="Enter option" required>
             <button type="button" class="btn btn-sm btn-outline-danger ms-2 remove-option rounded-circle" title="Remove option">
                 <i class="mdi mdi-minus"></i>
             </button>
@@ -168,11 +287,6 @@ document.addEventListener("DOMContentLoaded", function () {
                             <label class="form-check-label" for="select_${i}">Select</label>
                         </div>
                     </div>
-                    <!-- Textarea visible by default -->
-                    <div class="text-area-section mt-2">
-                       <!-- <textarea class="form-control rounded-3" name="parameters[${i}][text_result]" placeholder="Enter text result" style="height: 80px;"></textarea>-->
-                    </div>
-                    <!-- Options hidden by default -->
                     <div class="select-options mt-2 p-2 border rounded-3 d-none" data-options-for="${i}">
                         <div class="d-flex justify-content-between align-items-center mb-2">
                             <small class="fw-semibold text-muted">Options</small>
@@ -182,7 +296,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             </button>
                         </div>
                         <div class="options-list">
-                            ${optionInputHTML(i)}
+                            <!-- Options added dynamically -->
                         </div>
                     </div>
                 </div>
@@ -205,7 +319,8 @@ document.addEventListener("DOMContentLoaded", function () {
         <tr data-row="${i}" class="title-row" style="background-color: #f8f9fa;">
             <td colspan="5">
                 <input type="hidden" name="parameters[${i}][row_type]" value="title">
-                <input type="text" class="form-control fw-bold title-input rounded-3" name="parameters[${i}][title]" placeholder="Title" required style="background: transparent; border: 1px dashed #ccc;" value="Title">
+                <input type="hidden" name="parameters[${i}][status]" value="1">
+                <input type="text" class="form-control fw-bold title-input rounded-3" name="parameters[${i}][title]" placeholder="Title" required style="background: transparent; border: 1px dashed #ccc;">
             </td>
             <td class="text-center">
                 <button type="button" class="btn btn-danger btn-sm remove-row rounded-circle" title="Remove" style="background-color: #dc3545; border: none; width: 32px; height: 32px;">
@@ -230,15 +345,20 @@ document.addEventListener("DOMContentLoaded", function () {
     tbody.addEventListener('change', (e) => {
         if (e.target.classList.contains('result-type')) {
             const idx = e.target.getAttribute('data-row-index');
-            const textAreaBox = tbody.querySelector(`tr[data-row="${idx}"] .text-area-section`);
             const selectBox = tbody.querySelector(`.select-options[data-options-for="${idx}"]`);
             
             if (e.target.value === 'select') {
-                textAreaBox.classList.add('d-none');
                 selectBox.classList.remove('d-none');
+                // Add an initial option input if none exist
+                const optionsList = selectBox.querySelector('.options-list');
+                if (!optionsList.querySelector('.option-item')) {
+                    optionsList.insertAdjacentHTML('beforeend', optionInputHTML(idx));
+                }
             } else if (e.target.value === 'text') {
                 selectBox.classList.add('d-none');
-                textAreaBox.classList.remove('d-none');
+                // Clear options to prevent sending in form submission
+                const optionsList = selectBox.querySelector('.options-list');
+                optionsList.innerHTML = '';
             }
         }
     });

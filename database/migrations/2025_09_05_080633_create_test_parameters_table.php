@@ -13,15 +13,21 @@ return new class extends Migration
     {
         Schema::create('test_parameters', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('test_id')->constrained()->onDelete('cascade');
-            $table->enum('row_type', ['component', 'title']);
-            $table->string('name')->nullable(); // For components
-            $table->string('title')->nullable(); // For titles
-            $table->string('unit')->nullable();
-            $table->enum('result_type', ['text', 'select'])->default('text');
-            $table->text('reference_range')->nullable();
-            $table->integer('sort_order')->default(0);
-            $table->boolean('status')->default(true);
+                $table->bigInteger('test_id')->nullable();
+                $table->enum('row_type', ['component', 'title']);
+                $table->string('name')->nullable(); // For components
+                $table->string('title')->nullable(); // For titles
+                $table->string('unit')->nullable();
+                $table->enum('result_type', ['text', 'select'])->default('text');
+                $table->text('reference_range')->nullable();
+                $table->integer('sort_order')->default(0);
+                
+                // Add these fields to match your tests table
+                $table->string('created_ip_address')->nullable();
+                $table->string('modified_ip_address')->nullable();
+                $table->bigInteger('created_by')->nullable();
+                $table->bigInteger('modified_by')->nullable();
+                $table->enum('status', ['active', 'delete', 'inactive'])->default('active');
             $table->timestamps();
         });
     }

@@ -282,7 +282,7 @@ $RolesPrivileges = App\Models\Master\Role_privilege::where('status', 'active')->
                 @endif
 
                 {{-- Test Management --}}
-                @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'test_management_view'))
+                @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'test_view'))
                 <li class="{{ Request::is('admin/test-case*') ? 'active' : '' }}">
                     <a href="{{ url('/admin/test-case') }}">
                         <i class="mdi mdi-flask-outline"></i>
