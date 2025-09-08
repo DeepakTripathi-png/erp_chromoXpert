@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 05, 2025 at 01:56 PM
+-- Generation Time: Sep 08, 2025 at 02:40 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -754,7 +754,7 @@ CREATE TABLE `master_admins` (
 --
 
 INSERT INTO `master_admins` (`id`, `user_type`, `user_id`, `user_name`, `email`, `password`, `mobile_no`, `role_id`, `address`, `user_profile_image_path`, `user_profile_image_name`, `fcm_token`, `access_token`, `last_login`, `remember_token`, `otp`, `status`, `created_ip_address`, `modified_ip_address`, `created_by`, `modified_by`, `created_at`, `updated_at`) VALUES
-(1, 'system', NULL, 'ChromoXpert', 'admin@gmail.com', '$2y$10$InJ0GHoOaHXJHMuEYqTMye.t5E4QfWDrzNLW/pltguVNM/OZCpFUm', NULL, '1', NULL, NULL, NULL, NULL, NULL, '2025-09-05 11:35:29', NULL, NULL, 'active', NULL, NULL, NULL, NULL, NULL, '2025-09-05 06:05:29'),
+(1, 'system', NULL, 'ChromoXpert', 'admin@gmail.com', '$2y$10$InJ0GHoOaHXJHMuEYqTMye.t5E4QfWDrzNLW/pltguVNM/OZCpFUm', NULL, '1', NULL, NULL, NULL, NULL, NULL, '2025-09-08 04:19:15', NULL, NULL, 'active', NULL, NULL, NULL, NULL, NULL, '2025-09-07 22:49:15'),
 (2, 'system', NULL, 'Deepak Tripathi', 'deepakmegreat@gmail.com', '$2y$10$xNQAIXTjEX.0BWxRGhCRQOij7hFkletib0oR9o33ExwSrzTp3EzSi', '07318560108', '2', 'Bair Amad Karari', NULL, NULL, NULL, NULL, '2025-09-02 09:26:03', NULL, NULL, 'active', '127.0.0.1', NULL, 1, NULL, '2025-07-24 03:52:01', '2025-09-02 03:56:03'),
 (3, 'system', NULL, 'Deepak Tripathi', 'rec@gmail.com', '$2y$10$NJsMZ1s/k0ahYflkrDmJcu9BjBRS9URYgC0V8vb3jX.bltSLnMPZ2', '7318560108', '3', 'Bair Amad Karari', NULL, NULL, NULL, NULL, '2025-08-14 08:22:15', NULL, NULL, 'delete', '127.0.0.1', '127.0.0.1', 1, 1, '2025-08-14 02:51:24', '2025-08-14 02:52:15'),
 (4, 'customer', NULL, 'Deepak Tripathi', 'deep@gmail.com', '$2y$10$QpGDu/lTa1t9C5zFgWtOu.eLUj1Qdem5XgTYLBz7oGrC.BRWITHQe', '7318560108', NULL, 'Hello this is Deepak Address', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', '127.0.0.1', '127.0.0.1', 1, 1, '2025-09-01 01:16:48', '2025-09-01 03:44:11'),
@@ -801,9 +801,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (13, '2025_09_02_093535_create_branches_table', 5),
 (15, '2025_09_03_072046_create_departments_table', 6),
 (16, '2025_09_04_061330_create_pets_table', 7),
-(17, '2025_09_05_080504_create_tests_table', 8),
 (19, '2025_09_05_080749_create_parameter_options_table', 8),
-(20, '2025_09_05_080633_create_test_parameters_table', 9);
+(25, '2025_09_05_080504_create_tests_table', 10),
+(27, '2025_09_05_080633_create_test_parameters_table', 11);
 
 -- --------------------------------------------------------
 
@@ -824,6 +824,29 @@ CREATE TABLE `parameter_options` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `parameter_options`
+--
+
+INSERT INTO `parameter_options` (`id`, `parameter_id`, `option_value`, `sort_order`, `created_ip_address`, `modified_ip_address`, `created_by`, `modified_by`, `status`, `created_at`, `updated_at`) VALUES
+(1, 4, 'option 1', 0, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-08 03:49:12', '2025-09-08 03:49:12'),
+(2, 4, 'option 2', 1, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-08 03:49:12', '2025-09-08 03:49:12'),
+(3, 4, 'option 3', 2, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-08 03:49:12', '2025-09-08 03:49:12'),
+(4, 4, 'option 4', 3, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-08 03:49:12', '2025-09-08 03:49:12'),
+(5, 10, 'option 1', 0, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-08 06:46:33', '2025-09-08 06:46:33'),
+(6, 10, 'option 1', 1, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-08 06:46:33', '2025-09-08 06:46:33'),
+(7, 14, 'option 1', 0, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-08 06:52:17', '2025-09-08 06:52:17'),
+(8, 14, 'option 1', 1, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-08 06:52:17', '2025-09-08 06:52:17'),
+(9, 14, 'option 1', 2, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-08 06:52:17', '2025-09-08 06:52:17'),
+(10, 14, 'option 1', 3, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-08 06:52:17', '2025-09-08 06:52:17'),
+(11, 18, 'option 1', 0, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-08 06:54:33', '2025-09-08 06:54:33'),
+(12, 18, 'option 1', 1, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-08 06:54:33', '2025-09-08 06:54:33'),
+(13, 18, 'option 1', 2, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-08 06:54:33', '2025-09-08 06:54:33'),
+(14, 20, 'option 1', 0, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-08 06:58:36', '2025-09-08 06:58:36'),
+(15, 20, 'option 1', 1, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-08 06:58:36', '2025-09-08 06:58:36'),
+(16, 21, 'xzcxzc', 0, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-08 06:59:16', '2025-09-08 06:59:16'),
+(17, 21, 'zxczxc', 1, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-08 06:59:16', '2025-09-08 06:59:16');
 
 -- --------------------------------------------------------
 
@@ -979,7 +1002,7 @@ CREATE TABLE `role_privileges` (
 --
 
 INSERT INTO `role_privileges` (`id`, `role_name`, `privileges`, `created_ip_address`, `modified_ip_address`, `created_by`, `modified_by`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Super Admin', 'dashboard_view,appointments_view,appointments_add,appointments_edit,appointments_delete,appointments_status_change,reports_view,branch_view,branch_add,branch_edit,branch_delete,branch_status_change,departments_view,departments_add,departments_edit,departments_delete,departments_status_change,doctors_view,doctors_add,doctors_edit,doctors_delete,doctors_status_change,internal_doctors_view,internal_doctors_add,internal_doctors_edit,internal_doctors_delete,internal_doctors_status_change,referee_doctors_view,referee_doctors_add,referee_doctors_edit,referee_doctors_delete,referee_doctors_status_change,pet_owners_view,pet_owners_add,pet_owners_edit,pet_owners_delete,pet_owners_status_change,pet_view,pet_add,pet_edit,pet_delete,pet_status_change,test_management_view,test_management_add,test_management_edit,test_management_delete,test_management_status_change,revenue_view,system_users_view,user_view,user_add,user_edit,user_delete,user_status_change,role_privileges_view,role_privileges_add,role_privileges_edit,role_privileges_delete,role_privileges_status_change,settings_view,general_setting_view,general_setting_add,general_setting_edit,visual_setting_view,visual_setting_add,visual_setting_edit,change_password_view,change_password_edit,notifications_view,logout_view', NULL, '127.0.0.1', NULL, 1, 'active', NULL, '2025-09-04 02:32:55'),
+(1, 'Super Admin', 'dashboard_view,appointments_view,appointments_add,appointments_edit,appointments_delete,appointments_status_change,reports_view,branch_view,branch_add,branch_edit,branch_delete,branch_status_change,departments_view,departments_add,departments_edit,departments_delete,departments_status_change,doctors_view,doctors_add,doctors_edit,doctors_delete,doctors_status_change,internal_doctors_view,internal_doctors_add,internal_doctors_edit,internal_doctors_delete,internal_doctors_status_change,referee_doctors_view,referee_doctors_add,referee_doctors_edit,referee_doctors_delete,referee_doctors_status_change,pet_owners_view,pet_owners_add,pet_owners_edit,pet_owners_delete,pet_owners_status_change,pet_view,pet_add,pet_edit,pet_delete,pet_status_change,test_view,test_add,test_edit,test_delete,test_status_change,revenue_view,system_users_view,user_view,user_add,user_edit,user_delete,user_status_change,role_privileges_view,role_privileges_add,role_privileges_edit,role_privileges_delete,role_privileges_status_change,settings_view,general_setting_view,general_setting_add,general_setting_edit,visual_setting_view,visual_setting_add,visual_setting_edit,change_password_view,change_password_edit,notifications_view,logout_view', NULL, '127.0.0.1', NULL, 1, 'active', NULL, '2025-09-08 04:06:27'),
 (2, 'Lab  Incharge', 'appointments_view,appointments_add,appointments_edit,appointments_delete,appointments_status_change,reports_view,notifications_view,logout_view', '127.0.0.1', '127.0.0.1', 1, 1, 'active', '2025-07-24 03:51:39', '2025-09-03 03:14:50'),
 (3, 'Department Head', 'appointments_view,appointments_add,appointments_edit,reports_view', '127.0.0.1', '127.0.0.1', 1, 1, 'active', '2025-08-14 02:42:34', '2025-09-03 03:15:37'),
 (4, 'Internal Doctor', 'dashboard_view,reports_view,notifications_view,logout_view', '127.0.0.1', '127.0.0.1', 1, 1, 'active', '2025-09-04 06:24:11', '2025-09-04 07:02:36');
@@ -1045,7 +1068,8 @@ INSERT INTO `states` (`state_id`, `name`, `country_id`) VALUES
 
 CREATE TABLE `tests` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) NOT NULL,
+  `test_code` varchar(255) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
   `short_name` varchar(255) DEFAULT NULL,
   `sample_type` varchar(255) DEFAULT NULL,
   `base_price` decimal(10,2) NOT NULL,
@@ -1059,6 +1083,16 @@ CREATE TABLE `tests` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `tests`
+--
+
+INSERT INTO `tests` (`id`, `test_code`, `name`, `short_name`, `sample_type`, `base_price`, `precautions`, `created_ip_address`, `modified_ip_address`, `created_by`, `modified_by`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'TC001', 'Complete Blood Count', 'CBC', 'Blood', 7000.00, 'NA', '127.0.0.1', '127.0.0.1', NULL, 1, 'active', '2025-09-08 03:49:12', '2025-09-08 03:49:12'),
+(2, 'TC002', 'Deepak', 'CBC', 'Blood', 900.00, 'Kuchh bhi', '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-08 06:46:33', '2025-09-08 06:46:33'),
+(3, 'TC003', 'Deepakzxczx', 'zxczxc', 'czxczx', 90.00, 'zxczxc', '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-08 06:52:17', '2025-09-08 06:52:17'),
+(4, 'TC004', 'Deepak Tripathiefsdasfdas', 'sdfsdfds', 'sdfdsf', 3423423.00, 'esdfadsf', '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-08 06:54:33', '2025-09-08 06:54:33');
+
 -- --------------------------------------------------------
 
 --
@@ -1067,7 +1101,7 @@ CREATE TABLE `tests` (
 
 CREATE TABLE `test_parameters` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `test_id` bigint(20) UNSIGNED NOT NULL,
+  `test_id` bigint(20) DEFAULT NULL,
   `row_type` enum('component','title') NOT NULL,
   `name` varchar(255) DEFAULT NULL,
   `title` varchar(255) DEFAULT NULL,
@@ -1075,10 +1109,38 @@ CREATE TABLE `test_parameters` (
   `result_type` enum('text','select') NOT NULL DEFAULT 'text',
   `reference_range` text DEFAULT NULL,
   `sort_order` int(11) NOT NULL DEFAULT 0,
-  `status` tinyint(1) NOT NULL DEFAULT 1,
+  `created_ip_address` varchar(255) DEFAULT NULL,
+  `modified_ip_address` varchar(255) DEFAULT NULL,
+  `created_by` bigint(20) DEFAULT NULL,
+  `modified_by` bigint(20) DEFAULT NULL,
+  `status` enum('active','delete','inactive') NOT NULL DEFAULT 'active',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `test_parameters`
+--
+
+INSERT INTO `test_parameters` (`id`, `test_id`, `row_type`, `name`, `title`, `unit`, `result_type`, `reference_range`, `sort_order`, `created_ip_address`, `modified_ip_address`, `created_by`, `modified_by`, `status`, `created_at`, `updated_at`) VALUES
+(1, 1, 'title', NULL, 'Hemoglobin', NULL, 'text', NULL, 0, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-08 03:49:12', '2025-09-08 03:49:12'),
+(2, 1, 'component', 'wwwere', NULL, 'g/dl', 'text', '13.0-17.0', 1, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-08 03:49:12', '2025-09-08 03:49:12'),
+(3, 1, 'title', NULL, 'RBC Count', NULL, 'text', NULL, 2, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-08 03:49:12', '2025-09-08 03:49:12'),
+(4, 1, 'component', 'asdmskam', NULL, 'mill/cumm', 'select', '4.5-5.5', 3, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-08 03:49:12', '2025-09-08 03:49:12'),
+(5, 1, 'title', NULL, 'dfsdgsdf', NULL, 'text', NULL, 4, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-08 03:49:12', '2025-09-08 03:49:12'),
+(6, 1, 'component', 'Component 1', NULL, 'ml/ul', 'text', '9-10', 5, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-08 03:49:12', '2025-09-08 03:49:12'),
+(7, 2, 'title', NULL, 'Hemoglobin', NULL, 'text', NULL, 0, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-08 06:46:33', '2025-09-08 06:46:33'),
+(8, 2, 'component', 'wwwere', NULL, 'g/dl', 'text', '13.0-17.0', 1, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-08 06:46:33', '2025-09-08 06:46:33'),
+(9, 2, 'title', NULL, 'RBC Count', NULL, 'text', NULL, 2, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-08 06:46:33', '2025-09-08 06:46:33'),
+(10, 2, 'component', 'asdmskam', NULL, 'mill/cumm', 'select', '4.5-5.5', 3, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-08 06:46:33', '2025-09-08 06:46:33'),
+(11, 3, 'title', NULL, 'Hemoglobin', NULL, 'text', NULL, 0, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-08 06:52:17', '2025-09-08 06:52:17'),
+(12, 3, 'component', 'wwwere', NULL, 'g/dl', 'text', '13.0-17.0', 1, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-08 06:52:17', '2025-09-08 06:52:17'),
+(13, 3, 'title', NULL, 'RBC Count', NULL, 'text', NULL, 2, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-08 06:52:17', '2025-09-08 06:52:17'),
+(14, 3, 'component', 'asdmskam', NULL, 'mill/cumm', 'select', '4.5-5.5', 3, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-08 06:52:17', '2025-09-08 06:52:17'),
+(15, 4, 'title', NULL, 'dsfsdf', NULL, 'text', NULL, 0, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-08 06:54:33', '2025-09-08 06:59:16'),
+(16, 4, 'component', 'dsfds', NULL, 'g/dl', 'text', '4354543', 1, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-08 06:54:33', '2025-09-08 06:59:16'),
+(19, 4, 'title', NULL, 'RBC Count', NULL, 'text', NULL, 2, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-08 06:58:36', '2025-09-08 06:59:16'),
+(21, 4, 'component', 'zxczx', NULL, 'mill/cumm', 'select', '4.5-5.5', 3, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-08 06:59:16', '2025-09-08 06:59:16');
 
 -- --------------------------------------------------------
 
@@ -1245,8 +1307,7 @@ ALTER TABLE `tests`
 -- Indexes for table `test_parameters`
 --
 ALTER TABLE `test_parameters`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `test_parameters_test_id_foreign` (`test_id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `users`
@@ -1317,13 +1378,13 @@ ALTER TABLE `master_admins`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `parameter_options`
 --
 ALTER TABLE `parameter_options`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -1365,13 +1426,13 @@ ALTER TABLE `states`
 -- AUTO_INCREMENT for table `tests`
 --
 ALTER TABLE `tests`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `test_parameters`
 --
 ALTER TABLE `test_parameters`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -1400,12 +1461,6 @@ ALTER TABLE `cities`
 --
 ALTER TABLE `states`
   ADD CONSTRAINT `states_ibfk_1` FOREIGN KEY (`country_id`) REFERENCES `countries` (`country_id`);
-
---
--- Constraints for table `test_parameters`
---
-ALTER TABLE `test_parameters`
-  ADD CONSTRAINT `test_parameters_test_id_foreign` FOREIGN KEY (`test_id`) REFERENCES `tests` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
