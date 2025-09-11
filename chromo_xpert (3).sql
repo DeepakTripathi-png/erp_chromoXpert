@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 08, 2025 at 02:40 PM
+-- Generation Time: Sep 11, 2025 at 02:56 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,6 +20,49 @@ SET time_zone = "+00:00";
 --
 -- Database: `chromo_xpert`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `appointments`
+--
+
+CREATE TABLE `appointments` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `appointment_code` varchar(255) DEFAULT NULL,
+  `lab_id` bigint(20) DEFAULT NULL,
+  `referee_doctor_id` bigint(20) DEFAULT NULL,
+  `appointment_date` date DEFAULT NULL,
+  `appointment_time` time DEFAULT NULL,
+  `pet_id` bigint(20) DEFAULT NULL,
+  `petowner_id` bigint(20) DEFAULT NULL,
+  `notes` text DEFAULT NULL,
+  `subtotal` decimal(10,2) DEFAULT NULL,
+  `discount` decimal(10,2) DEFAULT NULL,
+  `total` decimal(10,2) DEFAULT NULL,
+  `created_ip_address` varchar(255) DEFAULT NULL,
+  `modified_ip_address` varchar(255) DEFAULT NULL,
+  `created_by` bigint(20) DEFAULT NULL,
+  `modified_by` bigint(20) DEFAULT NULL,
+  `status` enum('active','delete','inactive') NOT NULL DEFAULT 'active',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `appointment_tests`
+--
+
+CREATE TABLE `appointment_tests` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `appintment_id` bigint(20) DEFAULT NULL,
+  `test_id` bigint(20) DEFAULT NULL,
+  `price` decimal(10,2) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -754,7 +797,7 @@ CREATE TABLE `master_admins` (
 --
 
 INSERT INTO `master_admins` (`id`, `user_type`, `user_id`, `user_name`, `email`, `password`, `mobile_no`, `role_id`, `address`, `user_profile_image_path`, `user_profile_image_name`, `fcm_token`, `access_token`, `last_login`, `remember_token`, `otp`, `status`, `created_ip_address`, `modified_ip_address`, `created_by`, `modified_by`, `created_at`, `updated_at`) VALUES
-(1, 'system', NULL, 'ChromoXpert', 'admin@gmail.com', '$2y$10$InJ0GHoOaHXJHMuEYqTMye.t5E4QfWDrzNLW/pltguVNM/OZCpFUm', NULL, '1', NULL, NULL, NULL, NULL, NULL, '2025-09-08 04:19:15', NULL, NULL, 'active', NULL, NULL, NULL, NULL, NULL, '2025-09-07 22:49:15'),
+(1, 'system', NULL, 'ChromoXpert', 'admin@gmail.com', '$2y$10$InJ0GHoOaHXJHMuEYqTMye.t5E4QfWDrzNLW/pltguVNM/OZCpFUm', NULL, '1', NULL, NULL, NULL, NULL, NULL, '2025-09-11 04:15:15', NULL, NULL, 'active', NULL, NULL, NULL, NULL, NULL, '2025-09-10 22:45:15'),
 (2, 'system', NULL, 'Deepak Tripathi', 'deepakmegreat@gmail.com', '$2y$10$xNQAIXTjEX.0BWxRGhCRQOij7hFkletib0oR9o33ExwSrzTp3EzSi', '07318560108', '2', 'Bair Amad Karari', NULL, NULL, NULL, NULL, '2025-09-02 09:26:03', NULL, NULL, 'active', '127.0.0.1', NULL, 1, NULL, '2025-07-24 03:52:01', '2025-09-02 03:56:03'),
 (3, 'system', NULL, 'Deepak Tripathi', 'rec@gmail.com', '$2y$10$NJsMZ1s/k0ahYflkrDmJcu9BjBRS9URYgC0V8vb3jX.bltSLnMPZ2', '7318560108', '3', 'Bair Amad Karari', NULL, NULL, NULL, NULL, '2025-08-14 08:22:15', NULL, NULL, 'delete', '127.0.0.1', '127.0.0.1', 1, 1, '2025-08-14 02:51:24', '2025-08-14 02:52:15'),
 (4, 'customer', NULL, 'Deepak Tripathi', 'deep@gmail.com', '$2y$10$QpGDu/lTa1t9C5zFgWtOu.eLUj1Qdem5XgTYLBz7oGrC.BRWITHQe', '7318560108', NULL, 'Hello this is Deepak Address', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', '127.0.0.1', '127.0.0.1', 1, 1, '2025-09-01 01:16:48', '2025-09-01 03:44:11'),
@@ -768,7 +811,8 @@ INSERT INTO `master_admins` (`id`, `user_type`, `user_id`, `user_name`, `email`,
 (12, 'internal_doctor', NULL, 'Dr Deepak Internal Doctor1', 'drdeepakinternaldoctor1@gmail.com', '$2y$10$r0GzCP.fOPmFfb9UYp8TeuVm0FAN7rOFP18NqTHl8p5Nyk3b1.Pe.', '+917318560108', '4', 'Bair Amad Karari1', 'images/internal_doctors/up3g9sanUufnVqUB4gXDL1Ca0yng801PLstwDHgG.jpg', NULL, NULL, NULL, NULL, NULL, NULL, 'active', '127.0.0.1', '127.0.0.1', 1, 1, '2025-09-02 00:12:14', '2025-09-02 00:44:55'),
 (13, 'internal_doctor', NULL, 'xyz', 'xyz@gmail.com', '$2y$10$dbCzWmCbq5ksFnke5X1aI.qrumCLiLKAopZP4xavtfqMvBm.lqvIu', '+917318560108', '4', 'Bair Amad Karari', 'images/internal_doctors/AURP5Wbf2WfknZgmdjqwzvPeIRYfbuLOnPokaLQ5.jpg', NULL, NULL, NULL, '2025-09-05 05:01:07', NULL, NULL, 'active', '127.0.0.1', NULL, 1, NULL, '2025-09-02 00:57:23', '2025-09-04 23:31:07'),
 (14, 'system', NULL, 'Deepak Department Head', 'ddh@gmail.com', '$2y$10$sNTRXU1UFsEke6sKjyMvn.ohff45.GvbSejfDmPw6VEv.qi/aeUC2', '7318560108', '3', 'Bair Amad Karari', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', '127.0.0.1', NULL, 1, NULL, '2025-09-03 03:16:33', '2025-09-03 03:16:33'),
-(15, 'internal_doctor', NULL, 'Internal Doctor', 'internaldoctor@gmail.com', '$2y$10$S7pa8ksDr1twKO3YXa7Md.m4aTd6Pp1lyrQTdZ33AcrRSsxYyoc0a', '+917318560108', '4', 'Bair Amad Karari', 'images/internal_doctors/dfIzVFLaV0QnzrxWS9zDmXuSeZKoGeNoPvwOPBfd.jpg', NULL, NULL, NULL, NULL, NULL, NULL, 'active', '127.0.0.1', NULL, 1, NULL, '2025-09-04 06:09:33', '2025-09-04 06:09:33');
+(15, 'internal_doctor', NULL, 'Internal Doctor', 'internaldoctor@gmail.com', '$2y$10$S7pa8ksDr1twKO3YXa7Md.m4aTd6Pp1lyrQTdZ33AcrRSsxYyoc0a', '+917318560108', '4', 'Bair Amad Karari', 'images/internal_doctors/dfIzVFLaV0QnzrxWS9zDmXuSeZKoGeNoPvwOPBfd.jpg', NULL, NULL, NULL, NULL, NULL, NULL, 'active', '127.0.0.1', NULL, 1, NULL, '2025-09-04 06:09:33', '2025-09-04 06:09:33'),
+(16, 'customer', NULL, 'Michael Maged', 'mm@gmail.com', '$2y$10$/FKxCr3jvqYO8mnt4gFdM.dh7FWUpVGGMkHETIwuQ7Ho9uNySVASW', '+917318560108', NULL, 'Bair Amad Karari', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', '127.0.0.1', NULL, 1, NULL, '2025-09-11 05:22:19', '2025-09-11 05:22:19');
 
 -- --------------------------------------------------------
 
@@ -803,7 +847,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (16, '2025_09_04_061330_create_pets_table', 7),
 (19, '2025_09_05_080749_create_parameter_options_table', 8),
 (25, '2025_09_05_080504_create_tests_table', 10),
-(27, '2025_09_05_080633_create_test_parameters_table', 11);
+(27, '2025_09_05_080633_create_test_parameters_table', 11),
+(28, '2025_09_10_122330_create_appointments_table', 12),
+(29, '2025_09_11_115035_create_appointment_tests_table', 13);
 
 -- --------------------------------------------------------
 
@@ -907,7 +953,8 @@ CREATE TABLE `petparents` (
 --
 
 INSERT INTO `petparents` (`id`, `code`, `name`, `gender`, `email`, `mobile`, `address`, `created_ip_address`, `modified_ip_address`, `created_by`, `modified_by`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'PP0001', 'Deepak Pet Parent', 'Male', 'deepalpetparent@gmail.com', '7318560108', 'Bair Amad Karari', '127.0.0.1', '127.0.0.1', 1, 1, 'active', '2025-09-01 04:33:00', '2025-09-01 04:33:00');
+(1, 'PP0001', 'Deepak Pet Parent', 'Male', 'deepalpetparent@gmail.com', '7318560108', 'Bair Amad Karari', '127.0.0.1', '127.0.0.1', 1, 1, 'active', '2025-09-01 04:33:00', '2025-09-01 04:33:00'),
+(2, 'PP0002', 'Michael Maged', 'Male', 'mm@gmail.com', '+917318560108', 'Bair Amad Karari', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-11 05:22:19', '2025-09-11 05:22:19');
 
 -- --------------------------------------------------------
 
@@ -945,7 +992,8 @@ CREATE TABLE `pets` (
 INSERT INTO `pets` (`id`, `pet_code`, `pet_parent_id`, `name`, `species`, `breed`, `type`, `gender`, `dob`, `age`, `weight`, `image_name`, `image_path`, `created_ip_address`, `modified_ip_address`, `created_by`, `modified_by`, `status`, `created_at`, `updated_at`) VALUES
 (1, 'PET001', 1, 'Jacy1', 'Feline', 'Birman', 'Dog', 'Female', '2025-06-30', '2 months 5 days', '2.5', 'download (2).jpeg', 'images/pets/uHW3C7TWlvfpos75o2KhJLswvpVxp9BQO4Dmh5xu.jpg', '127.0.0.1', '127.0.0.1', 1, 1, 'active', '2025-09-04 02:33:53', '2025-09-04 05:03:11'),
 (2, 'PET002', 1, 'Deepak', 'Feline', 'Persian', 'Dog', 'Male', '2025-08-20', '15 days', '2', 'download (2).jpeg', 'images/pets/2XKvifin4MfnPUQj7jx4nbl5U60BH95RvHsDQEFf.jpg', '127.0.0.1', '127.0.0.1', 1, 1, 'delete', '2025-09-04 02:50:56', '2025-09-04 02:50:56'),
-(3, 'PET003', 1, 'Tommy', 'Canine', 'Labrador Retriever', 'Dog', 'Male', '2025-07-20', '1 month 15 days', '10', 'download (2).jpeg', 'images/pets/64Vv5mxTAcZ8qcuNito2FTNObXtvORJxsjpSrSs4.jpg', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-04 04:54:23', '2025-09-04 04:54:23');
+(3, 'PET003', 1, 'Tommy', 'Canine', 'Labrador Retriever', 'Dog', 'Male', '2025-07-20', '1 month 15 days', '10', 'download (2).jpeg', 'images/pets/64Vv5mxTAcZ8qcuNito2FTNObXtvORJxsjpSrSs4.jpg', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-04 04:54:23', '2025-09-04 04:54:23'),
+(4, 'PET004', 2, 'Deepak ka pet', 'Canine', 'Golden Retriever', 'Dog', 'Male', '2025-07-11', '2 months', '34', 'download (2).jpeg', 'images/pets/GwOQgad5Vp0uZzrcRyhMcJnULdMnA6yrvL9UhGyp.jpg', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-11 05:22:21', '2025-09-11 05:22:21');
 
 -- --------------------------------------------------------
 
@@ -976,7 +1024,8 @@ CREATE TABLE `referee_doctors` (
 --
 
 INSERT INTO `referee_doctors` (`id`, `code`, `doctor_name`, `gender`, `email`, `mobile`, `commission_percent`, `address`, `created_ip_address`, `modified_ip_address`, `created_by`, `modified_by`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'RD0001', 'Dr Deepak More', 'Male', 'drmore@gmail.com', '+917318560108', '5', 'Bair Amad Karari', '127.0.0.1', '127.0.0.1', 1, 1, 'active', '2025-09-01 06:24:18', '2025-09-01 06:35:46');
+(1, 'RD0001', 'Dr Deepak More', 'Male', 'drmore@gmail.com', '+917318560108', '5', 'Bair Amad Karari', '127.0.0.1', '127.0.0.1', 1, 1, 'active', '2025-09-01 06:24:18', '2025-09-01 06:35:46'),
+(2, 'RD0002', 'Dr Deepu', 'Male', 'drdeepu@gmail.com', '+917318560100', '5', 'Bair Amad Karari', '127.0.0.1', '127.0.0.1', 1, 1, 'active', '2025-09-09 05:37:57', '2025-09-09 05:38:28');
 
 -- --------------------------------------------------------
 
@@ -1189,6 +1238,18 @@ CREATE TABLE `visual_settings` (
 --
 
 --
+-- Indexes for table `appointments`
+--
+ALTER TABLE `appointments`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `appointment_tests`
+--
+ALTER TABLE `appointment_tests`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `branches`
 --
 ALTER TABLE `branches`
@@ -1327,6 +1388,18 @@ ALTER TABLE `visual_settings`
 --
 
 --
+-- AUTO_INCREMENT for table `appointments`
+--
+ALTER TABLE `appointments`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `appointment_tests`
+--
+ALTER TABLE `appointment_tests`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `branches`
 --
 ALTER TABLE `branches`
@@ -1372,13 +1445,13 @@ ALTER TABLE `internal_doctors`
 -- AUTO_INCREMENT for table `master_admins`
 --
 ALTER TABLE `master_admins`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `parameter_options`
@@ -1396,19 +1469,19 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT for table `petparents`
 --
 ALTER TABLE `petparents`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `pets`
 --
 ALTER TABLE `pets`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `referee_doctors`
 --
 ALTER TABLE `referee_doctors`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `role_privileges`
