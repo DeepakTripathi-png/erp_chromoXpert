@@ -23,21 +23,26 @@
                  style="background: rgba(255,255,255,0.95); backdrop-filter: blur(14px);">
                 <div class="card-body p-4">
 
-                    <form action="{{ url('admin/appointments/store') }}" method="POST" enctype="multipart/form-data"  novalidate >
+                    <form action="{{ url('admin/appointments/store') }}" method="POST" enctype="multipart/form-data" id="registrationForm" novalidate>
                         @csrf
                         <div class="row g-4">
-                            <!-- Appointment Details Section -->
+
                             <div class="col-12">
                                 <h5 class="fw-bold mb-3" style="color: #6267ae;">Appointment Details</h5>
                             </div>
+
                             <div class="col-md-6">
                                 <div class="form-floating">
-                                    <select class="form-select rounded-3 select2" id="lab_id" name="lab_id" required
+                                    <select class="form-select rounded-3 select2" id="lab_id" name="lab_id" 
                                             style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
                                         <option value="" {{ old('lab_id') ? '' : 'selected' }} disabled>Select Lab</option>
-                                        <option value="1" {{ old('lab_id') == '1' ? 'selected' : '' }}>PetLab Diagnostics</option>
-                                        <option value="2" {{ old('lab_id') == '2' ? 'selected' : '' }}>Animal Health Labs</option>
-                                        <option value="3" {{ old('lab_id') == '3' ? 'selected' : '' }}>PetCare Diagnostics</option>
+                                        @if(!empty($branches))
+                                            @foreach ($branches as $branch)
+                                                <option value="{{ $branch->id }}" {{ old('lab_id') == $branch->id ? 'selected' : '' }}>
+                                                    {{ $branch->branch_name }}
+                                                </option>
+                                            @endforeach
+                                        @endif
                                     </select>
                                     <label for="lab_id" style="color: #6267ae;">Lab*</label>
                                     @error('lab_id')
@@ -45,14 +50,20 @@
                                     @enderror
                                 </div>
                             </div>
+
                             <div class="col-md-6">
                                 <div class="input-group">
                                     <div class="form-floating flex-grow-1">
                                         <select class="form-select rounded-3 select2" id="referee_doctor_id" name="referee_doctor_id" required
                                                 style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
                                             <option value="" {{ old('referee_doctor_id') ? '' : 'selected' }} disabled>Select Referee Doctor</option>
-                                            <option value="1" {{ old('referee_doctor_id') == '1' ? 'selected' : '' }}>Dr. John Doe</option>
-                                            <option value="2" {{ old('referee_doctor_id') == '2' ? 'selected' : '' }}>Dr. Jane Smith</option>
+                                            @if(!empty($refereeDoctors))
+                                                @foreach ($refereeDoctors as $referee)
+                                                    <option value="{{ $referee->id }}" {{ old('referee_doctor_id') == $referee->id ? 'selected' : '' }}>
+                                                        {{ $referee->doctor_name }} ({{ $referee->code }})
+                                                    </option>
+                                                @endforeach
+                                            @endif
                                         </select>
                                         <label for="referee_doctor_id" style="color: #6267ae;">Referee Doctor*</label>
                                     </div>
@@ -65,11 +76,13 @@
                                     <span class="text-danger" style="color: #cc235e;">{{ $message }}</span>
                                 @enderror
                             </div>
+
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     <input type="date" class="form-control rounded-3" id="appointment_date" 
-                                           name="appointment_date" value="{{ old('appointment_date') }}" required
-                                           style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
+                                        name="appointment_date" value="{{ old('appointment_date') }}" required
+                                        style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;"
+                                        onclick="this.showPicker()">
                                     <label for="appointment_date" style="color: #6267ae;">Appointment Date*</label>
                                     @error('appointment_date')
                                         <span class="text-danger" style="color: #cc235e;">{{ $message }}</span>
@@ -79,8 +92,9 @@
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     <input type="time" class="form-control rounded-3" id="appointment_time" 
-                                           name="appointment_time" value="{{ old('appointment_time') }}" required
-                                           style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
+                                        name="appointment_time" value="{{ old('appointment_time') }}" required
+                                        style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;"
+                                        onclick="this.showPicker()">
                                     <label for="appointment_time" style="color: #6267ae;">Appointment Time*</label>
                                     @error('appointment_time')
                                         <span class="text-danger" style="color: #cc235e;">{{ $message }}</span>
@@ -88,67 +102,80 @@
                                 </div>
                             </div>
 
-                            <!-- Pet Details Section -->
-                            <div class="col-12 mt-4">
-                                <h5 class="fw-bold mb-3" style="color: #6267ae;">Pet Details</h5>
+                            <div class="col-12 mt-4 d-flex justify-content-between align-items-center">
+                                <h5 class="fw-bold mb-0" style="color: #6267ae;">Pet Details</h5>
+                                <button type="button" class="btn btn-primary btn-lg rounded-pill shadow-sm px-4" 
+                                        style="background: #6267ae; color: #fff; border: none;" 
+                                        data-bs-toggle="modal" data-bs-target="#addPetModal">
+                                    <i class="mdi mdi-plus me-2"></i> Add Pet/Pet Owner
+                                </button>
                             </div>
+
                             <div class="col-md-6">
                                 <div class="input-group">
                                     <div class="form-floating flex-grow-1">
-                                        <select class="form-select rounded-3 select2" id="pet_id" name="pet_id" required
+                                        <select class="form-select rounded-3 select2" id="pet_id" name="pet_id" 
                                                 style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
                                             <option value="" selected disabled>Select Pet</option>
+                                            @if(!empty($pets))
+                                                @foreach ($pets as $pet)
+                                                    <option value="{{ $pet->id }}">{{ $pet->name }}</option>
+                                                @endforeach
+                                            @endif
+                                            <option value="new">Add New Pet</option>
                                         </select>
-                                        <label for="pet_id" style="color: #6267ae;">Pet*</label>
+                                        <label for="pet_id" style="color: #6267ae;">Pet</label>
                                     </div>
-                                    <!-- <button type="button" id="addPetButton" class="btn btn-outline-secondary rounded-end"
-                                            style="border-color: #f6b51d; color: #6267ae;"
-                                            data-bs-toggle="modal" data-bs-target="#addPetModal">
-                                        <i class="mdi mdi-plus"></i>
-                                    </button> -->
                                 </div>
                                 @error('pet_id')
                                     <span class="text-danger" style="color: #cc235e;">{{ $message }}</span>
                                 @enderror
                             </div>
+
                             <div class="col-md-6">
                                 <div class="form-floating">
-                                    <select class="form-select rounded-3 select2" id="pet_code" name="pet_code"
-                                            style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
-                                        <option value="" selected disabled>Select Pet Code</option>
-                                    </select>
+                                    <input type="text" class="form-control rounded-3" id="pet_code" 
+                                           name="pet_code" value="{{ old('pet_code') }}" readonly 
+                                           style="background: #f8f9fa; color: #6267ae; border: 1px solid #f6b51d;">
                                     <label for="pet_code" style="color: #6267ae;">Pet Code</label>
                                     @error('pet_code')
                                         <span class="text-danger" style="color: #cc235e;">{{ $message }}</span>
                                     @enderror
                                 </div>
                             </div>
+
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     <input type="text" class="form-control rounded-3" id="pet_type" 
-                                           name="pet_type" value="{{ old('pet_type') }}" placeholder=" " required readonly
+                                           name="pet_type" value="{{ old('pet_type') }}" placeholder=" " 
                                            style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
-                                    <label for="pet_type" style="color: #6267ae;">Pet Type/Breed*</label>
+                                    <label for="pet_type" style="color: #6267ae;">Pet Type/Breed</label>
                                     @error('pet_type')
                                         <span class="text-danger" style="color: #cc235e;">{{ $message }}</span>
                                     @enderror
                                 </div>
                             </div>
+
                             <div class="col-md-6">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control rounded-3" id="pet_gender" 
-                                           name="pet_gender" value="{{ old('pet_gender') }}" placeholder=" " readonly
-                                           style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
+                                    <select class="form-select rounded-3" id="pet_gender" name="pet_gender" 
+                                            style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
+                                        <option value="" selected disabled>Select Gender</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Other">Other</option>
+                                    </select>
                                     <label for="pet_gender" style="color: #6267ae;">Pet Gender</label>
                                     @error('pet_gender')
                                         <span class="text-danger" style="color: #cc235e;">{{ $message }}</span>
                                     @enderror
                                 </div>
                             </div>
+
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     <input type="date" class="form-control rounded-3" id="pet_dob" 
-                                           name="pet_dob" value="{{ old('pet_dob') }}" placeholder=" " readonly
+                                           name="pet_dob" value="{{ old('pet_dob') }}" placeholder=" " 
                                            style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
                                     <label for="pet_dob" style="color: #6267ae;">Pet Date of Birth</label>
                                     @error('pet_dob')
@@ -157,33 +184,35 @@
                                 </div>
                             </div>
 
-                            <!-- Pet Owner Details Section -->
                             <div class="col-12 mt-4">
                                 <h5 class="fw-bold mb-3" style="color: #6267ae;">Pet Owner Details</h5>
                             </div>
+
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     <input type="text" class="form-control rounded-3" id="pet_owner_name" 
-                                           name="pet_owner_name" value="{{ old('pet_owner_name') }}" placeholder=" " readonly
+                                           name="pet_owner_name" value="{{ old('pet_owner_name') }}" placeholder=" " 
                                            style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
                                     <label for="pet_owner_name" style="color: #6267ae;">Pet Owner Name</label>
                                     @error('pet_owner_name')
                                         <span class="text-danger" style="color: #cc235e;">{{ $message }}</span>
-                                    @enderror
+                                    @endif
                                 </div>
                             </div>
+
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     <input type="tel" class="form-control rounded-3" id="phone" 
-                                           name="phone" value="{{ old('phone') }}" placeholder=" " required
+                                           name="phone" value="{{ old('phone') }}" placeholder=" " 
                                            pattern="\+91[0-9]{10}" title="Phone number must start with +91 followed by 10 digits"
                                            style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
-                                    <label for="phone" style="color: #6267ae;">Phone Number* (+91)</label>
+                                    <label for="phone" style="color: #6267ae;">Phone Number (+91)</label>
                                     @error('phone')
                                         <span class="text-danger" style="color: #cc235e;">{{ $message }}</span>
                                     @enderror
                                 </div>
                             </div>
+
                             <div class="col-12">
                                 <div class="form-floating">
                                     <textarea class="form-control rounded-3" id="notes" name="notes" 
@@ -195,23 +224,10 @@
                                 </div>
                             </div>
 
-                            <!-- Tests Section -->
                             <div class="col-12 mt-4">
                                 <div class="card border-0 shadow-lg rounded-4" 
                                      style="background: rgba(255,255,255,0.95); backdrop-filter: blur(14px);">
                                     <div class="card-body p-3">
-                                        <div class="d-flex justify-content-between align-items-center mb-3">
-                                            <h5 class="fw-bold mb-0" style="color: #6267ae;">Select Tests</h5>
-                                            <div class="input-group" style="max-width: 300px;">
-                                                <input type="text" class="form-control rounded-3" id="testSearchInput" 
-                                                       placeholder="Search Tests" 
-                                                       style="background: rgba(255,255,255,0.95); color: #6267ae; border: 1px solid #f6b51d; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
-                                                <button class="btn btn-outline-secondary rounded-end" type="button" id="clearSearch"
-                                                        style="background: #f6b51d; color: #1f2937; border: none; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
-                                                    <i class="mdi mdi-close"></i>
-                                                </button>
-                                            </div>
-                                        </div>
                                         <div id="selectedTestsCount" class="text-muted mb-3">0 tests selected</div>
                                         <div class="table-responsive">
                                             <table id="testsDataTable" class="table align-middle table-hover" style="width:100%;">
@@ -223,63 +239,26 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td><input type="checkbox" class="test-checkbox" name="tests[]" value="1" data-price="100.00"></td>
-                                                        <td>Complete Blood Count</td>
-                                                        <td>100.00</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><input type="checkbox" class="test-checkbox" name="tests[]" value="2" data-price="150.00"></td>
-                                                        <td>Urinalysis</td>
-                                                        <td>150.00</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><input type="checkbox" class="test-checkbox" name="tests[]" value="3" data-price="200.00"></td>
-                                                        <td>X-Ray</td>
-                                                        <td>200.00</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><input type="checkbox" class="test-checkbox" name="tests[]" value="4" data-price="50.00"></td>
-                                                        <td>Blood Glucose Test</td>
-                                                        <td>50.00</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><input type="checkbox" class="test-checkbox" name="tests[]" value="5" data-price="300.00"></td>
-                                                        <td>Cardiac Ultrasound</td>
-                                                        <td>300.00</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><input type="checkbox" class="test-checkbox" name="tests[]" value="6" data-price="120.00"></td>
-                                                        <td>Fecal Examination</td>
-                                                        <td>120.00</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><input type="checkbox" class="test-checkbox" name="tests[]" value="7" data-price="80.00"></td>
-                                                        <td>Skin Scraping Test</td>
-                                                        <td>80.00</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><input type="checkbox" class="test-checkbox" name="tests[]" value="8" data-price="250.00"></td>
-                                                        <td>MRI Scan</td>
-                                                        <td>250.00</td>
-                                                    </tr>
+                                                    @if($tests)
+                                                        @foreach ($tests as $test)
+                                                            <tr>
+                                                                <td><input type="checkbox" class="test-checkbox" name="tests[]" value="{{ $test->id ?? '' }}" data-price="{{ $test->base_price ?? 0 }}"></td>
+                                                                <td>{{ $test->name ?? '' }}</td>
+                                                                <td>{{ $test->base_price ?? '' }}</td>
+                                                            </tr>  
+                                                        @endforeach
+                                                    @endif
                                                 </tbody>
                                             </table>
                                         </div>
-                                          {{-- Custom Pagination with Consistent Styling --}}
-                                    <nav class="mt-4">
-                                        <ul class="pagination justify-content-center custom-pagination">
-                                            <li class="page-item disabled"><a class="page-link" href="#">«</a></li>
-                                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">»</a></li>
-                                        </ul>
-                                    </nav>
+
+                                        <div class="mt-4">
+                                            {{ $tests->links('vendor.pagination.bootstrap-5') }}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Receipt Section -->
                             <div class="col-12 mt-4">
                                 <div class="card border-0 shadow-lg rounded-4" 
                                      style="background: rgba(255,255,255,0.95); backdrop-filter: blur(14px);">
@@ -308,7 +287,7 @@
                                             <div class="col-md-4">
                                                 <div class="form-floating">
                                                     <input type="number" step="0.01" class="form-control rounded-3" id="total" 
-                                                           name="total" vplaceholder="0.00" readonly
+                                                           name="total" placeholder="0.00" readonly
                                                            style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
                                                     <label for="total" style="color: #6267ae;">Total (₹)</label>
                                                 </div>
@@ -321,10 +300,10 @@
 
                         </div>
 
-                        <!-- Form Action Buttons -->
                         <div class="mt-4 d-flex gap-2">
                             <button type="submit" class="btn btn-success btn-lg rounded-pill shadow-sm px-4"
                                     style="background: #6267ae; color: #fff; border: none;" id="submitBtn">
+                                <span class="spinner-border spinner-border-sm d-none me-1" id="submitSpinner"></span>
                                 <i class="mdi mdi-content-save me-2"></i> Add Appointment
                             </button>
                             <button type="reset" class="btn btn-secondary btn-lg rounded-pill shadow-sm px-4"
@@ -335,6 +314,256 @@
                     </form>
 
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Pet/Pet Owner Modal -->
+<div class="modal fade" id="addPetModal" tabindex="-1" aria-labelledby="addPetModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+            <div class="modal-header border-0" style="background: linear-gradient(135deg, #6267ae 0%, #cc235e 100%);">
+                <h5 class="modal-title text-white" id="addPetModalLabel">Add New Pet and Owner</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form id="addPetForm" enctype="multipart/form-data">
+                    @csrf
+                    <h6 class="fw-semibold mb-3" style="color: #6267ae;">Pet Owner Details</h6>
+                    <div class="row g-3">
+                        <!-- Pet Parent Name -->
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control rounded-3" id="owner_name" name="owner_name" 
+                                       required style="background: rgba(255,255,255,0.95); border: 1px solid #f6b51d;">
+                                <label for="owner_name" style="color: #6267ae;">Owner Name*</label>
+                                @error('owner_name')
+                                    <span class="text-danger small mt-1" style="color: #cc235e;">
+                                        <i class="mdi mdi-alert-circle me-1"></i> {{ $message }}
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <!-- Pet Parent Gender -->
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <select class="form-select rounded-3" id="owner_gender" name="owner_gender" required
+                                        style="background: rgba(255,255,255,0.95); border: 1px solid #f6b51d;">
+                                    <option value="" selected disabled>Select Gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                                <label for="owner_gender" style="color: #6267ae;">Owner Gender*</label>
+                                @error('owner_gender')
+                                    <span class="text-danger small mt-1" style="color: #cc235e;">
+                                        <i class="mdi mdi-alert-circle me-1"></i> {{ $message }}
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <!-- Pet Parent Email -->
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="email" class="form-control rounded-3" id="owner_email" name="owner_email" 
+                                       required style="background: rgba(255,255,255,0.95); border: 1px solid #f6b51d;">
+                                <label for="owner_email" style="color: #6267ae;">Owner Email*</label>
+                                <div class="text-danger small mt-1 d-none" id="email_existence_message">
+                                    <i class="mdi mdi-alert-circle me-1"></i> This Email has already been taken
+                                </div>
+                                @error('owner_email')
+                                    <span class="text-danger small mt-1" style="color: #cc235e;">
+                                        <i class="mdi mdi-alert-circle me-1"></i> {{ $message }}
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <!-- Pet Parent Mobile -->
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="tel" class="form-control rounded-3" id="owner_mobile" name="owner_mobile" 
+                                       pattern="\+91[0-9]{10}" title="Phone number must start with +91 followed by 10 digits"
+                                       required style="background: rgba(255,255,255,0.95); border: 1px solid #f6b51d;">
+                                <label for="owner_mobile" style="color: #6267ae;">Owner Mobile (+91)*</label>
+                                @error('owner_mobile')
+                                    <span class="text-danger small mt-1" style="color: #cc235e;">
+                                        <i class="mdi mdi-alert-circle me-1"></i> {{ $message }}
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <!-- Pet Parent Address -->
+                        <div class="col-12">
+                            <div class="form-floating">
+                                <textarea class="form-control rounded-3" id="owner_address" name="owner_address" 
+                                          placeholder=" " style="height: 100px; background: rgba(255,255,255,0.95); border: 1px solid #f6b51d;"></textarea>
+                                <label for="owner_address" style="color: #6267ae;">Owner Address</label>
+                                @error('owner_address')
+                                    <span class="text-danger small mt-1" style="color: #cc235e;">
+                                        <i class="mdi mdi-alert-circle me-1"></i> {{ $message }}
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+
+                    <h6 class="fw-semibold mt-4 mb-3" style="color: #6267ae;">Pet Details</h6>
+                    <div class="row g-3">
+                        <!-- Pet Name -->
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control rounded-3" id="pet_name" name="pet_name" 
+                                       required style="background: rgba(255,255,255,0.95); border: 1px solid #f6b51d;">
+                                <label for="pet_name" style="color: #6267ae;">Pet Name*</label>
+                                @error('pet_name')
+                                    <span class="text-danger small mt-1" style="color: #cc235e;">
+                                        <i class="mdi mdi-alert-circle me-1"></i> {{ $message }}
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <!-- Pet Code (Readonly) -->
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control rounded-3" id="pet_code" name="pet_code" 
+                                       readonly style="background: #f8f9fa; border: 1px solid #f6b51d;">
+                                <label for="pet_code" style="color: #6267ae;">Pet Code</label>
+                            </div>
+                        </div>
+                        <!-- Pet Species -->
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <select class="form-select rounded-3" id="pet_species" name="pet_species" required
+                                        style="background: rgba(255,255,255,0.95); border: 1px solid #f6b51d;">
+                                    <option value="" selected disabled>Select Species</option>
+                                    <option value="Canine">Canine</option>
+                                    <option value="Feline">Feline</option>
+                                    <option value="Avian">Avian</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                                <label for="pet_species" style="color: #6267ae;">Species*</label>
+                                @error('pet_species')
+                                    <span class="text-danger small mt-1" style="color: #cc235e;">
+                                        <i class="mdi mdi-alert-circle me-1"></i> {{ $message }}
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <!-- Pet Breed -->
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control rounded-3" id="pet_breed" name="pet_breed" 
+                                       list="breedOptions" style="background: rgba(255,255,255,0.95); border: 1px solid #f6b51d;">
+                                <datalist id="breedOptions"></datalist>
+                                <label for="pet_breed" style="color: #6267ae;">Breed</label>
+                                @error('pet_breed')
+                                    <span class="text-danger small mt-1" style="color: #cc235e;">
+                                        <i class="mdi mdi-alert-circle me-1"></i> {{ $message }}
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <!-- Pet Type -->
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <select class="form-select rounded-3" id="pet_type" name="pet_type" required
+                                        style="background: rgba(255,255,255,0.95); border: 1px solid #f6b51d;">
+                                    <option value="" selected disabled>Select Type</option>
+                                    <option value="Dog">Dog</option>
+                                    <option value="Cat">Cat</option>
+                                    <option value="Bird">Bird</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                                <label for="pet_type" style="color: #6267ae;">Pet Type*</label>
+                                @error('pet_type')
+                                    <span class="text-danger small mt-1" style="color: #cc235e;">
+                                        <i class="mdi mdi-alert-circle me-1"></i> {{ $message }}
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <!-- Pet Gender -->
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <select class="form-select rounded-3" id="pet_gender" name="pet_gender" required
+                                        style="background: rgba(255,255,255,0.95); border: 1px solid #f6b51d;">
+                                    <option value="" selected disabled>Select Gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
+                                <label for="pet_gender" style="color: #6267ae;">Pet Gender*</label>
+                                @error('pet_gender')
+                                    <span class="text-danger small mt-1" style="color: #cc235e;">
+                                        <i class="mdi mdi-alert-circle me-1"></i> {{ $message }}
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <!-- Pet DOB -->
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="date" class="form-control rounded-3" id="pet_dob" name="pet_dob" 
+                                       max="{{ date('Y-m-d') }}" style="background: rgba(255,255,255,0.95); border: 1px solid #f6b51d;">
+                                <label for="pet_dob" style="color: #6267ae;">Pet Date of Birth</label>
+                                @error('pet_dob')
+                                    <span class="text-danger small mt-1" style="color: #cc235e;">
+                                        <i class="mdi mdi-alert-circle me-1"></i> {{ $message }}
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <!-- Pet Age -->
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control rounded-3" id="pet_age" name="pet_age" 
+                                       style="background: rgba(255,255,255,0.95); border: 1px solid #f6b51d;">
+                                <label for="pet_age" style="color: #6267ae;">Pet Age</label>
+                                @error('pet_age')
+                                    <span class="text-danger small mt-1" style="color: #cc235e;">
+                                        <i class="mdi mdi-alert-circle me-1"></i> {{ $message }}
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <!-- Pet Weight -->
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="number" step="0.1" min="0" class="form-control rounded-3" id="pet_weight" name="pet_weight" 
+                                       style="background: rgba(255,255,255,0.95); border: 1px solid #f6b51d;">
+                                <label for="pet_weight" style="color: #6267ae;">Pet Weight (kg)</label>
+                                @error('pet_weight')
+                                    <span class="text-danger small mt-1" style="color: #cc235e;">
+                                        <i class="mdi mdi-alert-circle me-1"></i> {{ $message }}
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <!-- Pet Image -->
+                        <div class="col-12">
+                            <label class="form-label fw-semibold" style="color: #6267ae;">Pet Image</label>
+                            <input type="file" data-plugins="dropify" name="pet_image" id="pet_image" 
+                                   accept="image/*" style="border: 1px solid #f6b51d;" />
+                            <p class="text-center mt-2 mb-0 text-muted">Pet Profile Image</p>
+                            @error('pet_image')
+                                <span class="text-danger small mt-1" style="color: #cc235e;">
+                                    <i class="mdi mdi-alert-circle me-1"></i> {{ $message }}
+                                </span>
+                            @enderror
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal"
+                        style="background: #ac7fb6; color: #fff; border: none;">
+                    <i class="mdi mdi-close me-2"></i> Cancel
+                </button>
+                <button type="button" class="btn btn-primary rounded-pill px-4" id="savePet"
+                        style="background: #6267ae; color: #fff; border: none;">
+                    <span class="spinner-border spinner-border-sm d-none me-1" id="petSpinner"></span>
+                    <i class="mdi mdi-content-save me-2"></i> Save
+                </button>
             </div>
         </div>
     </div>
@@ -354,31 +583,43 @@
                     <div class="row g-3">
                         <div class="col-12">
                             <div class="form-floating">
-                                <input type="text" class="form-control rounded-3" id="doctor_name" name="name" required
+                                <input type="text" class="form-control rounded-3" id="doctor_name" name="doctor_name" 
                                        style="background: rgba(255,255,255,0.95); border: 1px solid #f6b51d;">
-                                <label for="doctor_name" style="color: #6267ae;">Name*</label>
+                                <label for="doctor_name" style="color: #6267ae;">Doctor Name*</label>
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="form-floating">
-                                <input type="tel" class="form-control rounded-3" id="doctor_phone" name="phone" 
-                                       pattern="\+91[0-9]{10}" required
-                                       style="background: rgba(255,255,255,0.95); border: 1px solid #f6b51d;">
-                                <label for="doctor_phone" style="color: #6267ae;">Phone* (+91)</label>
+                                <select class="form-select rounded-3" id="gender" name="gender" 
+                                        style="background: rgba(255,255,255,0.95); border: 1px solid #f6b51d;">
+                                    <option value="" selected disabled>Select Gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                                <label for="gender" style="color: #6267ae;">Gender*</label>
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="form-floating">
-                                <input type="email" class="form-control rounded-3" id="doctor_email" name="email"
+                                <input type="email" class="form-control rounded-3" id="doctor_email" name="email" 
                                        style="background: rgba(255,255,255,0.95); border: 1px solid #f6b51d;">
-                                <label for="doctor_email" style="color: #6267ae;">Email (Optional)</label>
+                                <label for="doctor_email" style="color: #6267ae;">Email*</label>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-floating">
+                                <input type="tel" class="form-control rounded-3" id="doctor_mobile" name="mobile" 
+                                       pattern="\+91[0-9]{10}" title="Phone number must start with +91 followed by 10 digits"
+                                       style="background: rgba(255,255,255,0.95); border: 1px solid #f6b51d;">
+                                <label for="doctor_mobile" style="color: #6267ae;">Mobile* (+91)</label>
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="form-floating">
                                 <textarea class="form-control rounded-3" id="doctor_address" name="address"
                                           style="background: rgba(255,255,255,0.95); border: 1px solid #f6b51d; height: 100px;"></textarea>
-                                <label for="doctor_address" style="color: #6267ae;">Address (Optional)</label>
+                                <label for="doctor_address" style="color: #6267ae;">Address</label>
                             </div>
                         </div>
                     </div>
@@ -397,111 +638,9 @@
     </div>
 </div>
 
-<!-- Add Pet Modal -->
-{{-- <div class="modal fade" id="addPetModal" tabindex="-1" aria-labelledby="addPetModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content border-0 shadow-lg rounded-4">
-            <div class="modal-header border-0" style="background: linear-gradient(135deg, #6267ae 0%, #cc235e 100%);">
-                <h5 class="modal-title text-white" id="addPetModalLabel">Add New Pet</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body p-4">
-                <form id="addPetForm" enctype="multipart/form-data">
-                    @csrf
-                    <input type="hidden" name="pet_parent_id" id="new_pet_parent_id">
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <div class="form-floating">
-                                <input type="text" class="form-control rounded-3" id="pet_name" name="name" required
-                                       style="background: rgba(255,255,255,0.95); border: 1px solid #f6b51d;">
-                                <label for="pet_name" style="color: #6267ae;">Pet Name*</label>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-floating">
-                                <input type="text" class="form-control rounded-3" id="pet_code_input" name="code" required
-                                       style="background: rgba(255,255,255,0.95); border: 1px solid #f6b51d;">
-                                <label for="pet_code_input" style="color: #6267ae;">Pet Code*</label>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-floating">
-                                <select class="form-select rounded-3 select2" id="pet_species" name="species" required
-                                        style="background: rgba(255,255,255,0.95); border: 1px solid #f6b51d;">
-                                    <option value="" selected disabled>Select Species</option>
-                                    <option value="Canine">Canine</option>
-                                    <option value="Feline">Feline</option>
-                                    <option value="Avian">Avian</option>
-                                    <option value="Other">Other</option>
-                                </select>
-                                <label for="pet_species" style="color: #6267ae;">Species*</label>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-floating">
-                                <input type="text" class="form-control rounded-3" id="pet_breed" name="breed"
-                                       style="background: rgba(255,255,255,0.95); border: 1px solid #f6b51d;">
-                                <label for="pet_breed" style="color: #6267ae;">Breed</label>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-floating">
-                                <select class="form-select rounded-3 select2" id="pet_gender" name="gender" required
-                                        style="background: rgba(255,255,255,0.95); border: 1px solid #f6b51d;">
-                                    <option value="" selected disabled>Select Gender</option>
-                                    <option value="Male">Male</option>
-                                    <option value="Female">Female</option>
-                                </select>
-                                <label for="pet_gender" style="color: #6267ae;">Gender*</label>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-floating">
-                                <input type="date" class="form-control rounded-3" id="pet_dob" name="dob" 
-                                       max="{{ date('Y-m-d') }}"
-                                       style="background: rgba(255,255,255,0.95); border: 1px solid #f6b51d;">
-                                <label for="pet_dob" style="color: #6267ae;">Date of Birth</label>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-floating">
-                                <input type="number" step="0.1" min="0" class="form-control rounded-3" id="pet_weight" name="weight"
-                                       style="background: rgba(255,255,255,0.95); border: 1px solid #f6b51d;">
-                                <label for="pet_weight" style="color: #6267ae;">Weight (kg)</label>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-floating">
-                                <input type="text" class="form-control rounded-3" id="pet_age" name="age"
-                                       style="background: rgba(255,255,255,0.95); border: 1px solid #f6b51d;">
-                                <label for="pet_age" style="color: #6267ae;">Age</label>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label fw-semibold" style="color: #6267ae;">Pet Image</label>
-                            <input type="file" class="form-control rounded-3" name="image" id="pet_image" 
-                                   accept="image/*" style="border: 1px solid #f6b51d;" />
-                            <p class="text-center mt-2 mb-0 text-muted">Pet Profile Image</p>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer border-0">
-                <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal"
-                        style="background: #ac7fb6; color: #fff; border: none;">Cancel</button>
-                <button type="button" class="btn btn-primary rounded-pill px-4" id="savePet"
-                        style="background: #6267ae; color: #fff; border: none;">
-                    <span class="spinner-border spinner-border-sm d-none me-1" id="petSpinner"></span>
-                    Save
-                </button>
-            </div>
-        </div>
-    </div>
-</div> --}}
 @endsection
 
 @section('style')
-
 <style>
     .form-floating>.form-control, 
     .form-floating>.form-select {
@@ -514,6 +653,14 @@
     }
     .spinner-border {
         vertical-align: middle;
+    }
+    .dropify-wrapper {
+        border-radius: 1rem !important;
+        border: 1px solid #f6b51d !important;
+        background: #fff !important;
+    }
+    .dropify-wrapper .dropify-message p {
+        color: #6267ae !important;
     }
     @media (max-width: 768px) {
         .btn-lg {
@@ -677,7 +824,7 @@
         color: #fff;
     }
     .dataTables_wrapper .dataTables_filter {
-        display: none; /* Hide default DataTable search */
+        display: none; 
     }
     #testSearchInput:focus {
         border-color: #f6b51d;
@@ -700,18 +847,44 @@
 <script src="{{ asset('assets/libs/select2/js/select2.min.js') }}"></script>
 <script src="{{ asset('assets/libs/datatable/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('assets/libs/datatable/dataTables.bootstrap5.min.js') }}"></script>
-
+<script src="{{ asset('assets/libs/dropify/js/dropify.min.js') }}"></script>
 
 <script>
-$(document).ready(function (){
+$(document).ready(function () {
+    // Initialize DataTable for tests
+    let testsTable = $('#testsDataTable').DataTable({
+        paging: false,
+        info: false,
+        searching: true,
+        ordering: false,
+        language: {
+            search: "",
+            searchPlaceholder: "Search tests..."
+        },
+        columnDefs: [
+            { orderable: false, targets: 0 }
+        ]
+    });
 
-    // Calculate total
-    function updateTotal(){
+    // Search functionality
+    $('#testSearchInput').on('keyup', function () {
+        testsTable.search(this.value).draw();
+    });
+
+    // Clear search
+    $('#clearSearch').on('click', function () {
+        $('#testSearchInput').val('');
+        testsTable.search('').draw();
+    });
+
+    // Update total function
+    function updateTotal() {
         let subtotal = 0;
         const selectedTests = $('.test-checkbox:checked');
         
         selectedTests.each(function () {
-            subtotal += parseFloat($(this).data('price')) || 0;
+            const price = parseFloat($(this).data('price')) || 0;
+            subtotal += price;
         });
 
         let discount = parseFloat($('#discount').val()) || 0;
@@ -732,24 +905,17 @@ $(document).ready(function (){
         $('#selectedTestsCount').text(`${selectedCount} test${selectedCount !== 1 ? 's' : ''} selected`);
     }
 
-    $('#selectAllTests').on('change', function () {
-        $('.test-checkbox').prop('checked', this.checked);
+    // Event listeners for checkbox changes
+    $('#testsDataTable').on('change', '.test-checkbox', function () {
         updateTotal();
     });
 
-    
-    $(document).on('change', '.test-checkbox', function () {
-        const allChecked = $('.test-checkbox:checked').length === $('.test-checkbox').length;
-        $('#selectAllTests').prop('checked', allChecked);
-        updateTotal();
-    });
-
-   
+    // Event listener for discount input
     $('#discount').on('input', function () {
         updateTotal();
     });
 
-
+    // Form validation
     $('#registrationForm').on('submit', function (e) {
         if ($('.test-checkbox:checked').length === 0) {
             e.preventDefault();
@@ -761,6 +927,333 @@ $(document).ready(function (){
         $('#submitBtn').prop('disabled', true);
     });
 
+    // Initialize Dropify
+    $('#pet_image').dropify({
+        messages: {
+            'default': 'Drag and drop an image here or click',
+            'replace': 'Drag and drop or click to replace',
+            'remove': 'Remove',
+            'error': 'Oops, something went wrong.'
+        }
+    });
+
+    // Breed data for species
+    const breedData = {
+        'Canine': ['Labrador Retriever', 'German Shepherd', 'Golden Retriever', 'Bulldog', 'Beagle', 
+                  'Poodle', 'Rottweiler', 'Yorkshire Terrier', 'Boxer', 'Dachshund'],
+        'Feline': ['Persian', 'Maine Coon', 'Siamese', 'Ragdoll', 'Bengal', 
+                  'British Shorthair', 'Abyssinian', 'Scottish Fold', 'Sphynx', 'Birman'],
+        'Avian': ['Parakeet', 'Cockatiel', 'Lovebird', 'Canary', 'Finch', 
+                 'African Grey', 'Macaw', 'Cockatoo', 'Amazon Parrot', 'Conure'],
+        'Other': ['Rabbit', 'Hamster', 'Guinea Pig', 'Ferret', 'Turtle', 
+                 'Snake', 'Lizard', 'Hedgehog', 'Chinchilla', 'Rat']
+    };
+
+    // Update breed options when species changes
+    $('#pet_species').on('change', function() {
+        const species = $(this).val();
+        const breedOptions = $('#breedOptions');
+        breedOptions.empty();
+        if (species && breedData[species]) {
+            breedData[species].forEach(breed => {
+                breedOptions.append(`<option value="${breed}">`);
+            });
+        }
+    });
+
+    // Email existence check with debounce
+    let emailCheckTimeout;
+    $('#owner_email').on('input', function() {
+        clearTimeout(emailCheckTimeout);
+        emailCheckTimeout = setTimeout(() => {
+            $.ajax({
+                type: 'GET',
+                url: '{{ url("/admin/system-user/check-user-exist") }}',
+                data: { email: $(this).val() },
+                success: function(response) {
+                    if (response.trim() === 'true') {
+                        $('#savePet').attr('disabled', true);
+                        $('#email_existence_message').removeClass('d-none');
+                    } else {
+                        $('#savePet').removeAttr('disabled');
+                        $('#email_existence_message').addClass('d-none');
+                    }
+                },
+                error: function() {
+                    $('#email_existence_message').addClass('d-none');
+                    $('#savePet').removeAttr('disabled');
+                }
+            });
+        }, 300);
+    });
+
+    // Parse age input (e.g., "1 year 2 months 10 days")
+    function parseAgeInput(ageStr) {
+        ageStr = ageStr.toLowerCase().trim();
+        const regex = /(\d+)\s*(year|yr|y|month|mon|m|day|d)/g;
+        let years = 0, months = 0, days = 0;
+        let match;
+        while ((match = regex.exec(ageStr)) !== null) {
+            const val = parseInt(match[1], 10);
+            const unit = match[2];
+            if (['year', 'yr', 'y'].includes(unit)) years = val;
+            else if (['month', 'mon', 'm'].includes(unit)) months = val;
+            else if (['day', 'd'].includes(unit)) days = val;
+        }
+        return { years, months, days };
+    }
+
+    // Format age string
+    function formatAgeString(years, months, days) {
+        let parts = [];
+        if (years > 0) parts.push(years + ' year' + (years > 1 ? 's' : ''));
+        if (months > 0) parts.push(months + ' month' + (months > 1 ? 's' : ''));
+        if (days > 0) parts.push(days + ' day' + (days > 1 ? 's' : ''));
+        if (parts.length === 0) parts.push('0 days');
+        return parts.join(' ');
+    }
+
+    // Calculate age from DOB
+    function calculateAgeFromDOB(dob) {
+        const today = new Date();
+        let ageYears = today.getFullYear() - dob.getFullYear();
+        let ageMonths = today.getMonth() - dob.getMonth();
+        let ageDays = today.getDate() - dob.getDate();
+        if (ageDays < 0) {
+            ageMonths--;
+            const lastMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+            ageDays += lastMonth.getDate();
+        }
+        if (ageMonths < 0) {
+            ageYears--;
+            ageMonths += 12;
+        }
+        return { years: ageYears, months: ageMonths, days: ageDays };
+    }
+
+    // Calculate DOB from age
+    function calculateDOBFromAge(years, months, days) {
+        const today = new Date();
+        let dob = new Date(today.getFullYear() - years, today.getMonth() - months, today.getDate() - days);
+        if (dob.getMonth() > today.getMonth()) {
+            dob.setFullYear(dob.getFullYear() - 1);
+        }
+        return dob;
+    }
+
+    // DOB and Age handling
+    $('#pet_dob').on('change', function() {
+        const dobVal = $(this).val();
+        if (dobVal) {
+            const dob = new Date(dobVal);
+            if (!isNaN(dob.getTime())) {
+                const age = calculateAgeFromDOB(dob);
+                const ageStr = formatAgeString(age.years, age.months, age.days);
+                $('#pet_age').val(ageStr).prop('readonly', true).css('background', '#f8f9fa');
+            } else {
+                $('#pet_age').val('').prop('readonly', false).css('background', 'rgba(255,255,255,0.95)');
+            }
+        } else {
+            $('#pet_age').val('').prop('readonly', false).css('background', 'rgba(255,255,255,0.95)');
+        }
+    });
+
+    $('#pet_age').on('blur', function() {
+        if (!$(this).prop('readonly')) {
+            const ageStr = $(this).val();
+            if (ageStr.trim() === '') {
+                $('#pet_dob').val('');
+                return;
+            }
+            const age = parseAgeInput(ageStr);
+            if (age.years === 0 && age.months === 0 && age.days === 0) {
+                toastr.error('Please enter age in format like "1 year 2 months 10 days" or "10 days" etc.');
+                return;
+            }
+            const dob = calculateDOBFromAge(age.years, age.months, age.days);
+            const yyyy = dob.getFullYear();
+            const mm = ('0' + (dob.getMonth() + 1)).slice(-2);
+            const dd = ('0' + dob.getDate()).slice(-2);
+            $('#pet_dob').val(`${yyyy}-${mm}-${dd}`);
+            const formattedAge = formatAgeString(age.years, age.months, age.days);
+            $('#pet_age').val(formattedAge).prop('readonly', true).css('background', '#f8f9fa');
+        }
+    });
+
+    $('#pet_age').on('click', function() {
+        if ($(this).prop('readonly')) {
+            $(this).prop('readonly', false).css('background', 'rgba(255,255,255,0.95)').val('');
+            $('#pet_dob').val('');
+        }
+    });
+
+    // Weight validation
+    $('#pet_weight').on('input', function() {
+        const value = parseFloat($(this).val());
+        if (value < 0) {
+            $(this).val('');
+            toastr.error('Weight cannot be negative.');
+        }
+    });
+
+    // Add referee doctor functionality
+    $('#saveRefereeDoctor').on('click', function () {
+        let $btn = $(this);
+        let $spinner = $('#refDoctorSpinner');
+        let $form = $('#addRefereeDoctorForm');
+
+        if (!$form[0].checkValidity()) {
+            $form[0].reportValidity();
+            return;
+        }
+
+        $spinner.removeClass('d-none');
+        $btn.prop('disabled', true);
+
+        $.ajax({
+            url: '{{ route("refereedoctor.store-ajax") }}',
+            method: 'POST',
+            data: $form.serialize(),
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function (response) {
+                console.log(response)
+                if (response.success) {
+                    let newOption = new Option(
+                        `${response.doctor.doctor_name} (${response.doctor.code})`,
+                        response.doctor.id,
+                        true,
+                        true
+                    );
+                    $('#referee_doctor_id').append(newOption).trigger('change');
+                    $('#addRefereeDoctorModal').modal('hide');
+                    toastr.success(response.message);
+                }
+            },
+            error: function (xhr) {
+                let errors = xhr.responseJSON.errors;
+                let errorMessage = 'An error occurred while adding the doctor.';
+                if (errors) {
+                    errorMessage = Object.values(errors).flat().join('<br>');
+                }
+                toastr.error(errorMessage);
+            },
+            complete: function () {
+                $spinner.addClass('d-none');
+                $btn.prop('disabled', false);
+            }
+        });
+    });
+
+    $('#addRefereeDoctorModal').on('hidden.bs.modal', function () {
+        $('#addRefereeDoctorForm')[0].reset();
+        $('#doctor_mobile').inputmask('+919999999999'); 
+    });
+
+    // Add pet functionality
+    $('#savePet').on('click', function () {
+        let $btn = $(this);
+        let $spinner = $('#petSpinner');
+        let $form = $('#addPetForm');
+
+        if (!$form[0].checkValidity()) {
+            $form[0].reportValidity();
+            return;
+        }
+
+        const formData = new FormData($form[0]);
+        $spinner.removeClass('d-none');
+        $btn.prop('disabled', true);
+
+        $.ajax({
+            url: '{{ route("pet-and-parent.store") }}',
+            method: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function (response) {
+                if (response.success) {
+                    let newOption = new Option(response.pet.name, response.pet.id, true, true);
+                    $('#pet_id').append(newOption).trigger('change');
+                    $('#pet_code').val(response.pet.pet_code);
+                    $('#pet_type').val(response.pet.type);
+                    $('#pet_gender').val(response.pet.gender);
+                    $('#pet_dob').val(response.pet.dob);
+                    $('#pet_owner_name').val(response.pet_parent.name);
+                    $('#phone').val(response.pet_parent.mobile);
+                    $('#addPetModal').modal('hide');
+                    toastr.success(response.message);
+                }
+            },
+            error: function (xhr) {
+                let errors = xhr.responseJSON.errors;
+                let errorMessage = 'An error occurred while adding the pet and owner.';
+                if (errors) {
+                    errorMessage = Object.values(errors).flat().join('<br>');
+                    Object.keys(errors).forEach(field => {
+                        $(`#${field}`).next('.text-danger').removeClass('d-none').text(errors[field][0]);
+                    });
+                }
+                toastr.error(errorMessage);
+            },
+            complete: function () {
+                $spinner.addClass('d-none');
+                $btn.prop('disabled', false);
+            }
+        });
+    });
+
+    $('#addPetModal').on('hidden.bs.modal', function () {
+        $('#addPetForm')[0].reset();
+        $('#pet_image').dropify('reset');
+        $('.text-danger').addClass('d-none');
+    });
+
+    // Handle pet selection
+    $('#pet_id').on('change', function () {
+        const petId = $(this).val();
+        if (petId === 'new') {
+            $('#addPetModal').modal('show');
+        } else if (petId) {
+            $.ajax({
+                url: '{{ route("get.pet.details", ":pet_id") }}'.replace(':pet_id', petId),
+                method: 'GET',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function (data) {
+                    $('#pet_code').val(data.pet_code);
+                    $('#pet_type').val(data.type || data.pet_type);
+                    $('#pet_gender').val(data.gender || data.pet_gender);
+                    $('#pet_dob').val(data.dob || data.pet_dob);
+                    $('#pet_owner_name').val(data.owner_name);
+                    $('#phone').val(data.owner_phone || data.phone);
+                },
+                error: function () {
+                    toastr.error('Error fetching pet details.');
+                    $('#pet_code').val('');
+                    $('#pet_type').val('');
+                    $('#pet_gender').val('');
+                    $('#pet_dob').val('');
+                    $('#pet_owner_name').val('');
+                    $('#phone').val('');
+                }
+            });
+        } else {
+            $('#pet_code').val('');
+            $('#pet_type').val('');
+            $('#pet_gender').val('');
+            $('#pet_dob').val('');
+            $('#pet_owner_name').val('');
+            $('#phone').val('');
+        }
+    });
+
+    // Initialize total calculation
     updateTotal();
 });
 </script>

@@ -38,9 +38,16 @@
 
             {{-- Search and Filter Inputs --}}
             <div class="d-flex flex-wrap align-items-center gap-2 mb-4">
-                <input type="text" id="searchInput" class="form-control rounded-pill shadow-sm" 
-                       placeholder="Search tests..." style="max-width: 250px; background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
-                <select id="statusFilter" class="form-select rounded-pill shadow-sm" style="max-width: 200px; background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
+                <div class="input-group rounded-pill shadow-sm" 
+                     style="max-width: 280px; background: #fff; border: 1px solid #f6b51d;">
+                    <span class="input-group-text bg-transparent border-0 pe-1">
+                        <i class="mdi mdi-magnify" style="color: #6267ae;"></i>
+                    </span>
+                    <input type="text" id="searchInput" class="form-control border-0 ps-1 rounded-pill" 
+                           placeholder="Search tests..." style="color: #6267ae;">
+                </div>
+                <select id="statusFilter" class="form-select rounded-pill shadow-sm" 
+                        style="max-width: 200px; background: #fff; color: #6267ae; border: 1px solid #f6b51d; padding-top:9px; padding-bottom:9px;">
                     <option value="">All Status</option>
                     <option value="Active">Active</option>
                     <option value="Inactive">Inactive</option>
@@ -59,22 +66,30 @@
                                     <th style="width: 10%;">Test Code</th>
                                     <th style="width: 20%;">Test Name</th>
                                     <th style="width: 20%;">Short Name</th>
-                                    {{-- <th style="width: 15%;">Department</th>
-                                    <th style="width: 15%;">Category</th> --}}
                                     <th style="width: 15%;">Sample Type</th>
                                     <th style="width: 10%;">Base Price (₹)</th>
-                                     <th style="width: 15%;">Parameter Count</th>
+                                    <th style="width: 15%;">Parameter Count</th>
                                     <th style="width: 10%;" class="text-center">Status</th>
                                     <th style="width: 15%;" class="text-center">Actions</th>
                                 </tr>
                             </thead>
-                            <tbody>
-
-                             
-
-                            </tbody>
+                            <tbody></tbody>
                         </table>
                     </div>
+                </div>
+            </div>
+
+            {{-- No Results Message --}}
+            <div id="noResultsMessage" class="alert alert-info text-center d-none" 
+                 style="background: #6267ae; color: #fff; border: none; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+                No tests found matching your criteria.
+            </div>
+
+            {{-- Loading Spinner --}}
+            <div id="loadingSpinner" class="d-none position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" 
+                 style="background: rgba(0,0,0,0.1); z-index: 9999;">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
                 </div>
             </div>
         </div>
@@ -171,29 +186,72 @@
         };
     }
 
-    // Search functionality with debounce
-    document.getElementById('searchInput').addEventListener('keyup', debounce(function() {
-        let filter = this.value.toLowerCase();
-        document.querySelectorAll('#tests_data_table tbody tr').forEach(function(row) {
-            let text = row.innerText.toLowerCase();
-            row.style.display = text.includes(filter) ? '' : 'none';
-        });
-    }, 300));
+    // Combined search and filter function
+    function applyFilters() {
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+        const statusFilter = document.getElementById('statusFilter').value.toLowerCase();
+        const noResultsMessage = document.getElementById('noResultsMessage');
+        let visibleRowCount = 0;
 
-    // Status filter functionality
-    document.getElementById('statusFilter').addEventListener('change', function() {
-        let filter = this.value.toLowerCase();
-        document.querySelectorAll('#tests_data_table tbody tr').forEach(function(row) {
-            let status = row.querySelector('.change-status').checked ? 'active' : 'inactive';
-            row.style.display = (filter === '' || status === filter) ? '' : 'none';
+        document.querySelectorAll('#cims_data_table tbody tr').forEach(function(row) {
+            const text = row.innerText.toLowerCase();
+            const statusElement = row.querySelector('.change-status');
+            const status = statusElement ? (statusElement.checked ? 'active' : 'inactive') : 'inactive';
+            
+            const matchesSearch = text.includes(searchTerm);
+            const matchesStatus = statusFilter === '' || status === statusFilter;
+            
+            if (matchesSearch && matchesStatus) {
+                row.style.display = '';
+                visibleRowCount++;
+            } else {
+                row.style.display = 'none';
+            }
         });
+
+        // Show/hide no results message
+        noResultsMessage.classList.toggle('d-none', visibleRowCount > 0);
+    }
+
+    // Event listeners for search and filter
+    document.getElementById('searchInput').addEventListener('keyup', debounce(applyFilters, 300));
+    document.getElementById('statusFilter').addEventListener('change', applyFilters);
+
+    // Re-apply filters when status toggle changes
+    document.getElementById('cims_data_table').addEventListener('change', function(event) {
+        if (event.target.classList.contains('change-status')) {
+            applyFilters();
+        }
     });
-
-   
 
     // Initialize Bootstrap tooltips
     $(function () {
         $('[data-bs-toggle="tooltip"]').tooltip();
     });
+
+    // Optional: Example of server-side integration (uncomment if needed)
+    /*
+    function fetchFilteredData() {
+        const search = document.getElementById('searchInput').value;
+        const status = document.getElementById('statusFilter').value;
+        document.getElementById('loadingSpinner').classList.remove('d-none');
+
+        fetch('/admin/test-case/filter', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ search, status })
+        })
+        .then(response => response.json())
+        .then(data => {
+            updateTable(data); // Implement this function in cn_test.js to update table rows
+            applyFilters(); // Re-apply client-side filters after table update
+            document.getElementById('loadingSpinner').classList.add('d-none');
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+            document.getElementById('loadingSpinner').classList.add('d-none');
+        });
+    }
+    */
 </script>
 @endsection

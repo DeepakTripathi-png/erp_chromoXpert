@@ -17,7 +17,7 @@ class VisualSettings extends Controller
         $RolesPrivileges = Role_privilege::where('id', $role_id)->where('status', 'active')->select('privileges')->first();
         if (!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'general_setting_view')){
             $visual_settings = Visual_setting::where('status', 'active')->first();
-            return view('admin.settings.visual-setting', compact('visual_settings'));
+            return view('Admin.Settings.visual-setting', compact('visual_settings'));
         } else {
             return redirect()->back()->with('error', 'Sorry, You Have No Permission For This Request!');
         } 

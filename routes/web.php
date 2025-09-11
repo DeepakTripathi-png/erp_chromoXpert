@@ -88,6 +88,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['prevent-back-history', 'is_
         Route::get('appointments/add', 'add');
         Route::get('appointments/reciept', 'viewReciept');
         Route::post('appointments/store', 'store');
+        Route::get('get-pet-details/{pet_id}', 'getPetDetails')->name('get.pet.details');
+        Route::get('get-pet-details-by-code/{pet_code}', 'getPetDetailsByCode')->name('get.pet.details.by.code');
+        Route::get('apointment/test/data-table', 'add_data_table');
+        Route::post('appointments/pet-and-petparent/store', 'petAndPetparentStore')->name('pet-and-parent.store');
     });
 
     
@@ -150,6 +154,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['prevent-back-history', 'is_
         Route::post('referee-doctor/store', 'store')->name('refereedoctor.store');
         Route::get('referee-doctor/data-table', 'data_table');
         Route::get('referee-doctor/edit/{id}', 'edit');
+        //Route::post('refereedoctor/store-ajax','storeAjax')->name('refereedoctor.store-ajax');
+        Route::post('refereedoctor/store-ajax', 'storeAjax')->name('refereedoctor.store-ajax');
      });
 
 

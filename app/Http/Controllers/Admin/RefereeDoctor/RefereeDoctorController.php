@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\DataTables;
-
+use Illuminate\Support\Facades\Validator;
 class RefereeDoctorController extends Controller
 {
     
@@ -206,5 +206,68 @@ class RefereeDoctorController extends Controller
         return view('Admin.Doctor.add-referee-doctor', compact('refereedoctor'));
     }
 
+
+
+    public function storeAjax(Request $request)
+    {
+        $role_id = Auth::guard('master_admins')->user()->role_id;
+        $RolesPrivileges = Role_privilege::where('id', $role_id)
+            ->where('status', 'active')
+            ->select('privileges')
+            ->first();
+
+        if (!$RolesPrivileges || !str_contains($RolesPrivileges->privileges, 'referee_doctors_add')) {
+            return response()->json([
+                'success' => false,
+                'errors' => ['permission' => 'Sorry, You Have No Permission For This Request!']
+            ], 403);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'doctor_name' => 'required|string|max:255',
+            'gender' => 'required|in:Male,Female,Other',
+            'email' => 'required|email|max:255|unique:referee_doctors,email',
+            'mobile' => 'required|string|regex:/^\+91[0-9]{10}$/|unique:referee_doctors,mobile',
+            'address' => 'nullable|string|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        return DB::transaction(function () use ($request) {
+            $refereeDoctorInput = [
+                'doctor_name' => $request->doctor_name,
+                'gender' => $request->gender,
+                'email' => $request->email,
+                'mobile' => $request->mobile,
+                'commission_percent' => $request->commission_percent??0,
+                'address' => $request->address,
+                'status' => 'active',
+                'created_by' => Auth::guard('master_admins')->user()->id,
+                'created_ip_address' => $request->ip(),
+            ];
+
+            // Create RefereeDoctor
+            $refereeDoctor = RefereeDoctor::create($refereeDoctorInput);
+
+            // Generate code using ID
+            $refereeDoctor->code = 'RD' . str_pad($refereeDoctor->id, 4, '0', STR_PAD_LEFT); // e.g., RD0001
+            $refereeDoctor->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Referee Doctor added successfully!',
+                'doctor' => [
+                    'id' => $refereeDoctor->id,
+                    'doctor_name' => $refereeDoctor->doctor_name,
+                    'code' => $refereeDoctor->code,
+                ]
+            ], 201);
+        });
+    }
   
 }
