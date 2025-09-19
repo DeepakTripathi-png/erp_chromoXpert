@@ -240,7 +240,7 @@
                                             <!-- Suggestions -->
                                             <ul id="testSuggestions" 
                                                 class="list-group position-absolute w-100 mt-1 shadow-sm"
-                                                style="z-index: 1000; display: none;">
+                                                style="z-index: 1000; display: none;" onclick="hideSuggestions()">
                                             </ul>
                                         </div>
 
@@ -1424,6 +1424,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
                             li.addEventListener("click", function () {
                                 addTestCard(test);
+                                // Clear the search input and hide suggestions
+                                searchInput.value = "";
+                                suggestionsBox.style.display = "none";
                             });
 
                             suggestionsBox.appendChild(li);
@@ -1438,6 +1441,13 @@ document.addEventListener("DOMContentLoaded", function () {
                     suggestionsBox.style.display = "none";
                 });
         }, 300);
+    });
+
+    // Hide suggestions when clicking outside
+    document.addEventListener("click", function (e) {
+        if (!searchInput.contains(e.target) && !suggestionsBox.contains(e.target)) {
+            suggestionsBox.style.display = "none";
+        }
     });
 
     function addTestCard(test) {
@@ -1465,29 +1475,44 @@ document.addEventListener("DOMContentLoaded", function () {
             card.remove();
             selectedTests = selectedTests.filter(id => id !== test.id);
             updateCount();
-            updateTotal(); // Ensure total is updated when a test is removed
+            updateTotal();
         });
 
         testCards.appendChild(card);
         updateCount();
-        updateTotal(); // Update total when a test is added
-        searchInput.value = ""; // Clear the search input
-        suggestionsBox.style.display = "none"; // Hide the suggestions
-    }
-
-    function clearSearch() {
-        searchInput.value = "";
-        suggestionsBox.style.display = "none";
-    }
-
-    function hideSuggestions() {
-        setTimeout(() => {
-            suggestionsBox.style.display = "none";
-        }, 200);
+        updateTotal();
     }
 
     function updateCount() {
         selectedTestsCount.textContent = `${selectedTests.length} test${selectedTests.length !== 1 ? 's' : ''} selected`;
+    }
+
+    // Update total function
+    function updateTotal() {
+        let subtotal = 0;
+        const selectedTests = $('.test-checkbox:checked');
+        
+        selectedTests.each(function () {
+            const price = parseFloat($(this).data('price')) || 0;
+            subtotal += price;
+        });
+
+        let discount = parseFloat($('#discount').val()) || 0;
+
+        if (discount > subtotal) {
+            discount = subtotal;
+            $('#discount').val(discount.toFixed(2));
+            toastr.warning('Discount cannot exceed subtotal.');
+        }
+
+        let total = Math.max(0, subtotal - discount);
+
+        $('#subtotal').val(subtotal.toFixed(2));
+        $('#total_amount').val(total.toFixed(2));
+        $('#total').val(total.toFixed(2));
+
+        const selectedCount = selectedTests.length;
+        $('#selectedTestsCount').text(`${selectedCount} test${selectedCount !== 1 ? 's' : ''} selected`);
     }
 });
 </script>
