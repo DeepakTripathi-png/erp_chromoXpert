@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('test_code')->nullable();
             $table->string('name')->nullable();
             $table->string('short_name')->nullable();
+            $table->bigInteger('department_id')->nullable();
             $table->string('sample_type')->nullable();
             $table->decimal('base_price', 10, 2);
             $table->text('precautions')->nullable();
@@ -36,3 +37,4 @@ return new class extends Migration
         Schema::dropIfExists('tests');
     }
 };
+ 

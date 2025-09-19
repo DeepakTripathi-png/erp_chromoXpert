@@ -9,12 +9,11 @@ class AppointmentTest extends Model
 {
     use HasFactory;
 
+    protected $table = 'appointment_tests';
 
-    protected $table = 'appointments';
-
-     protected $fillable = [
-            'appintment_id',
-            'test_id',
-            'price'
+    protected $fillable = [
+        'appointment_id',
+        'test_id',
+        'price',
     ];
 }

@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\Dashboard\DashboardController;
 use App\Http\Controllers\Admin\Petparent\PetparentController;
 use App\Http\Controllers\Admin\Pet\PetController;
 use App\Http\Controllers\Admin\Appointments\AppointmentsController;
+use App\Http\Controllers\Admin\Barcode\BarcodeController;
 use App\Http\Controllers\Admin\Branch\BranchController;
 use App\Http\Controllers\Admin\Departments\DepartmentController;
 use App\Http\Controllers\Admin\Testcase\TestcaseController;
@@ -21,8 +22,11 @@ use App\Http\Controllers\Admin\Report\ReportController;
 use App\Http\Controllers\Admin\Revenu\RevenuController;
 use App\Http\Controllers\Admin\RefereeDoctor\RefereeDoctorController;
 use App\Http\Controllers\Admin\InternalDoctor\InternalDoctorController;
+use App\Http\Controllers\Admin\Invoice\InvoiceController;
 use App\Http\Controllers\Admin\Notification\NotificationController;
 use App\Http\Controllers\Admin\Location\LocationController;
+use Illuminate\Support\Facades\Storage;
+
 // End Common Controllers Needed For All Project
 
 // Project Controller Start Here
@@ -72,6 +76,20 @@ Route::get('/', function () {
 // Start Backend Routes
 Route::group(['prefix' => 'admin', 'middleware' => ['prevent-back-history', 'is_admin']], function () {
 
+        Route::controller(InvoiceController::class)->group(function (){
+           Route::get('/invoice/{id}', 'generateInvoice')->name('invoice.print');
+        }); 
+
+        Route::controller(BarcodeController::class)->group(function (){
+             Route::get('barcode/{appointment_id}', 'show')->name('barcode.show');
+             Route::post('barcode-save', 'save')->name('barcode.save');
+            //  Route::get('barcode-print/{appointment_id}/{sampleCount?}','printBarcodeDirectly')->name('barcode.print');
+        }); 
+
+
+  
+       
+
   
 
        Route::controller(DashboardController::class)->group(function (){
@@ -86,12 +104,14 @@ Route::group(['prefix' => 'admin', 'middleware' => ['prevent-back-history', 'is_
     Route::controller(AppointmentsController::class)->group(function (){
         Route::get('appointments', 'index');
         Route::get('appointments/add', 'add');
-        Route::get('appointments/reciept', 'viewReciept');
+        Route::get('appointments/reciept/{id}', 'viewReciept');
         Route::post('appointments/store', 'store');
         Route::get('get-pet-details/{pet_id}', 'getPetDetails')->name('get.pet.details');
         Route::get('get-pet-details-by-code/{pet_code}', 'getPetDetailsByCode')->name('get.pet.details.by.code');
         Route::get('apointment/test/data-table', 'add_data_table');
         Route::post('appointments/pet-and-petparent/store', 'petAndPetparentStore')->name('pet-and-parent.store');
+        Route::get('apointment/data-table', 'data_table');
+        Route::get('appointment/edit/{id}','edit');
     });
 
     
@@ -126,6 +146,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['prevent-back-history', 'is_
         Route::post('parent/store', 'store')->name('petparent.store');
         Route::get('parent/data-table', 'data_table');
         Route::get('parent/edit/{id}', 'edit');
+        Route::get('get-owner-pets-by-phone/{phone}','getOwnerPetsByPhone')->name('get.owner.pets.by.phone');
      });
 
 
@@ -167,6 +188,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['prevent-back-history', 'is_
         Route::get('test-case/view/{id}', 'view');
         Route::post('tests/store','store')->name('admin.test_case.store');
         Route::get('test/data-table','data_table');
+        Route::get('tests/search', 'search')->name('tests.search');
      });
 
 

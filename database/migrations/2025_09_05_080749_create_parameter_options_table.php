@@ -14,9 +14,8 @@ return new class extends Migration
         Schema::create('parameter_options', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('parameter_id')->nullable();
-            $table->string('option_value');
+            $table->string('option_value')->nullable();
             $table->integer('sort_order')->default(0);
-
             $table->string('created_ip_address')->nullable();
             $table->string('modified_ip_address')->nullable();
             $table->bigInteger('created_by')->nullable();

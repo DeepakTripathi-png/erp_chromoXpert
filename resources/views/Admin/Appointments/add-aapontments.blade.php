@@ -89,6 +89,7 @@
                                     @enderror
                                 </div>
                             </div>
+
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     <input type="time" class="form-control rounded-3" id="appointment_time" 
@@ -103,12 +104,41 @@
                             </div>
 
                             <div class="col-12 mt-4 d-flex justify-content-between align-items-center">
-                                <h5 class="fw-bold mb-0" style="color: #6267ae;">Pet Details</h5>
+                                <h5 class="fw-bold mb-0" style="color: #6267ae;">Pet Owner Details</h5>
                                 <button type="button" class="btn btn-primary btn-lg rounded-pill shadow-sm px-4" 
                                         style="background: #6267ae; color: #fff; border: none;" 
                                         data-bs-toggle="modal" data-bs-target="#addPetModal">
                                     <i class="mdi mdi-plus me-2"></i> Add Pet/Pet Owner
                                 </button>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control rounded-3" id="pet_owner_name" 
+                                        name="pet_owner_name" value="{{ old('pet_owner_name') }}" placeholder=" " 
+                                        style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
+                                    <label for="pet_owner_name" style="color: #6267ae;">Pet Owner Name</label>
+                                    @error('pet_owner_name')
+                                        <span class="text-danger" style="color: #cc235e;">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="tel" class="form-control rounded-3" id="phone" 
+                                        name="phone" value="{{ old('phone') }}" placeholder=" " 
+                                        pattern="\+91[0-9]{10}" title="Phone number must start with +91 followed by 10 digits"
+                                        style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
+                                    <label for="phone" style="color: #6267ae;">Phone Number (+91)</label>
+                                    @error('phone')
+                                        <span class="text-danger" style="color: #cc235e;">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="col-12 mt-4">
+                                <h5 class="fw-bold mb-3" style="color: #6267ae;">Pet Details</h5>
                             </div>
 
                             <div class="col-md-6">
@@ -135,8 +165,8 @@
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     <input type="text" class="form-control rounded-3" id="pet_code" 
-                                           name="pet_code" value="{{ old('pet_code') }}" readonly 
-                                           style="background: #f8f9fa; color: #6267ae; border: 1px solid #f6b51d;">
+                                        name="pet_code" value="{{ old('pet_code') }}" readonly 
+                                        style="background: #f8f9fa; color: #6267ae; border: 1px solid #f6b51d;">
                                     <label for="pet_code" style="color: #6267ae;">Pet Code</label>
                                     @error('pet_code')
                                         <span class="text-danger" style="color: #cc235e;">{{ $message }}</span>
@@ -147,8 +177,8 @@
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     <input type="text" class="form-control rounded-3" id="pet_type" 
-                                           name="pet_type" value="{{ old('pet_type') }}" placeholder=" " 
-                                           style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
+                                        name="pet_type" value="{{ old('pet_type') }}" placeholder=" " 
+                                        style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
                                     <label for="pet_type" style="color: #6267ae;">Pet Type/Breed</label>
                                     @error('pet_type')
                                         <span class="text-danger" style="color: #cc235e;">{{ $message }}</span>
@@ -175,39 +205,10 @@
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     <input type="date" class="form-control rounded-3" id="pet_dob" 
-                                           name="pet_dob" value="{{ old('pet_dob') }}" placeholder=" " 
-                                           style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
+                                        name="pet_dob" value="{{ old('pet_dob') }}" placeholder=" " 
+                                        style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
                                     <label for="pet_dob" style="color: #6267ae;">Pet Date of Birth</label>
                                     @error('pet_dob')
-                                        <span class="text-danger" style="color: #cc235e;">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="col-12 mt-4">
-                                <h5 class="fw-bold mb-3" style="color: #6267ae;">Pet Owner Details</h5>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <input type="text" class="form-control rounded-3" id="pet_owner_name" 
-                                           name="pet_owner_name" value="{{ old('pet_owner_name') }}" placeholder=" " 
-                                           style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
-                                    <label for="pet_owner_name" style="color: #6267ae;">Pet Owner Name</label>
-                                    @error('pet_owner_name')
-                                        <span class="text-danger" style="color: #cc235e;">{{ $message }}</span>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <input type="tel" class="form-control rounded-3" id="phone" 
-                                           name="phone" value="{{ old('phone') }}" placeholder=" " 
-                                           pattern="\+91[0-9]{10}" title="Phone number must start with +91 followed by 10 digits"
-                                           style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
-                                    <label for="phone" style="color: #6267ae;">Phone Number (+91)</label>
-                                    @error('phone')
                                         <span class="text-danger" style="color: #cc235e;">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -225,35 +226,25 @@
                             </div>
 
                             <div class="col-12 mt-4">
-                                <div class="card border-0 shadow-lg rounded-4" 
-                                     style="background: rgba(255,255,255,0.95); backdrop-filter: blur(14px);">
+                                <div class="card border-0 shadow-lg rounded-4 test-search-card" 
+                                     style="background: rgba(255,255,255,0.95); backdrop-filter: blur(14px); z-index: 10;">
                                     <div class="card-body p-3">
                                         <div id="selectedTestsCount" class="text-muted mb-3">0 tests selected</div>
-                                        <div class="table-responsive">
-                                            <table id="testsDataTable" class="table align-middle table-hover" style="width:100%;">
-                                                <thead style="background: linear-gradient(135deg, #ac7fb6 0%, #f6b51d 100%); color: #fff;">
-                                                    <tr>
-                                                        <th></th>
-                                                        <th>Test Name</th>
-                                                        <th>Price (₹)</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @if($tests)
-                                                        @foreach ($tests as $test)
-                                                            <tr>
-                                                                <td><input type="checkbox" class="test-checkbox" name="tests[]" value="{{ $test->id ?? '' }}" data-price="{{ $test->base_price ?? 0 }}"></td>
-                                                                <td>{{ $test->name ?? '' }}</td>
-                                                                <td>{{ $test->base_price ?? '' }}</td>
-                                                            </tr>  
-                                                        @endforeach
-                                                    @endif
-                                                </tbody>
-                                            </table>
+                                        
+                                        <div class="form-floating mb-3 position-relative">
+                                            <input type="text" id="testSearch" class="form-control rounded-3" 
+                                                placeholder="Search Test"
+                                                style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
+                                            <label for="testSearch" style="color: #6267ae;">Search Test</label>
+
+                                            <!-- Suggestions -->
+                                            <ul id="testSuggestions" 
+                                                class="list-group position-absolute w-100 mt-1 shadow-sm"
+                                                style="z-index: 1000; display: none;">
+                                            </ul>
                                         </div>
 
-                                        <div class="mt-4">
-                                            {{ $tests->links('vendor.pagination.bootstrap-5') }}
+                                        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3" id="testCards">
                                         </div>
                                     </div>
                                 </div>
@@ -268,16 +259,16 @@
                                             <div class="col-md-4">
                                                 <div class="form-floating">
                                                     <input type="number" step="0.01" class="form-control rounded-3" id="subtotal" 
-                                                           name="subtotal" placeholder="0.00" readonly
-                                                           style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
+                                                        name="subtotal" placeholder="0.00" readonly
+                                                        style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
                                                     <label for="subtotal" style="color: #6267ae;">Subtotal (₹)</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-floating">
                                                     <input type="number" step="0.01" min="0" class="form-control rounded-3" id="discount" 
-                                                           name="discount" placeholder="0.00"
-                                                           style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
+                                                        name="discount" placeholder="0.00"
+                                                        style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
                                                     <label for="discount" style="color: #6267ae;">Discount (₹)</label>
                                                     @error('discount')
                                                         <span class="text-danger" style="color: #cc235e;">{{ $message }}</span>
@@ -287,9 +278,63 @@
                                             <div class="col-md-4">
                                                 <div class="form-floating">
                                                     <input type="number" step="0.01" class="form-control rounded-3" id="total" 
-                                                           name="total" placeholder="0.00" readonly
-                                                           style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
+                                                        name="total" placeholder="0.00" readonly
+                                                        style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
                                                     <label for="total" style="color: #6267ae;">Total (₹)</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-floating">
+                                                    <select class="form-select rounded-3" id="payment_mode" name="payment_mode" 
+                                                            style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
+                                                        <option value="" selected disabled>Select Payment Mode</option>
+                                                        <option value="Cash">Cash</option>
+                                                        <option value="Card">Card</option>
+                                                        <option value="UPI">UPI</option>
+                                                        <option value="Bank Transfer">Bank Transfer</option>
+                                                    </select>
+                                                    <label for="payment_mode" style="color: #6267ae;">Payment Mode*</label>
+                                                    @error('payment_mode')
+                                                        <span class="text-danger" style="color: #cc235e;">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-floating">
+                                                    <input type="text" class="form-control rounded-3" id="transaction_id" 
+                                                        name="transaction_id" placeholder="Enter Transaction ID"
+                                                        style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
+                                                    <label for="transaction_id" style="color: #6267ae;">Transaction ID</label>
+                                                    @error('transaction_id')
+                                                        <span class="text-danger" style="color: #cc235e;">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-floating">
+                                                    <select class="form-select rounded-3" id="payment_status" name="payment_status" 
+                                                            style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
+                                                        <option value="" selected disabled>Select Payment Status</option>
+                                                        <option value="Pending">Pending</option>
+                                                        <option value="Completed">Completed</option>
+                                                        <option value="Failed">Failed</option>
+                                                    </select>
+                                                    <label for="payment_status" style="color: #6267ae;">Payment Status*</label>
+                                                    @error('payment_status')
+                                                        <span class="text-danger" style="color: #cc235e;">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-floating">
+                                                    <input type="date" class="form-control rounded-3" id="payment_date" 
+                                                        name="payment_date" value="{{ old('payment_date') }}" 
+                                                        style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;"
+                                                        onclick="this.showPicker()">
+                                                    <label for="payment_date" style="color: #6267ae;">Payment Date</label>
+                                                    @error('payment_date')
+                                                        <span class="text-danger" style="color: #cc235e;">{{ $message }}</span>
+                                                    @enderror
                                                 </div>
                                             </div>
                                             <input type="hidden" id="total_amount" name="total_amount" value="">
@@ -788,43 +833,23 @@
     .form-floating .select2-container--default .select2-selection--single .select2-selection__rendered {
         margin-top: -0.5rem;
     }
-    #testsDataTable th:first-child, #testsDataTable td:first-child {
-        width: 5%;
+    .test-search-card {
+        z-index: 10 !important;
     }
-    #testsDataTable th:nth-child(2), #testsDataTable td:nth-child(2) {
-        width: 70%;
+    #testSuggestions {
+        z-index: 1000 !important;
     }
-    #testsDataTable th:nth-child(3), #testsDataTable td:nth-child(3) {
-        width: 25%;
+    #testCards .card {
+        transition: transform 0.2s, box-shadow 0.2s;
+        position: relative;
     }
-    .test-checkbox {
-        margin: 0;
+    #testCards .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(98, 103, 174, 0.2);
     }
-    .dataTables_paginate .pagination {
-        margin-top: 1rem;
-        justify-content: center;
-    }
-    .dataTables_paginate .pagination .page-link {
-        border-radius: 50%;
-        margin: 0 4px;
-        padding: 8px 14px;
-        color: #6267ae;
-        font-weight: 600;
-        border: none;
-        background: rgba(255,255,255,0.95);
-        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        transition: all 0.3s ease;
-    }
-    .dataTables_paginate .pagination .page-link:hover {
-        background: #f6b51d;
-        color: #fff;
-    }
-    .dataTables_paginate .pagination .page-item.active .page-link {
-        background: linear-gradient(135deg, #6267ae 0%, #cc235e 100%);
-        color: #fff;
-    }
-    .dataTables_wrapper .dataTables_filter {
-        display: none; 
+    #testCards .card .form-check-input:checked + .form-check-label {
+        color: #cc235e;
+        font-weight: bold;
     }
     #testSearchInput:focus {
         border-color: #f6b51d;
@@ -838,6 +863,26 @@
         background: #cc235e;
         color: #fff;
     }
+    .remove-test-btn {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        background: #cc235e;
+        color: #fff;
+        border: none;
+        border-radius: 50%;
+        width: 25px;
+        height: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.875rem;
+        z-index: 1;
+        transition: background 0.2s;
+    }
+    .remove-test-btn:hover {
+        background: #a81c47;
+    }
 </style>
 @endsection
 
@@ -845,36 +890,18 @@
 <script src="{{ asset('assets/libs/inputmask/jquery.inputmask.min.js') }}"></script>
 <script src="{{ asset('assets/libs/toastr/toastr.min.js') }}"></script>
 <script src="{{ asset('assets/libs/select2/js/select2.min.js') }}"></script>
-<script src="{{ asset('assets/libs/datatable/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset('assets/libs/datatable/dataTables.bootstrap5.min.js') }}"></script>
 <script src="{{ asset('assets/libs/dropify/js/dropify.min.js') }}"></script>
 
 <script>
 $(document).ready(function () {
-    // Initialize DataTable for tests
-    let testsTable = $('#testsDataTable').DataTable({
-        paging: false,
-        info: false,
-        searching: true,
-        ordering: false,
-        language: {
-            search: "",
-            searchPlaceholder: "Search tests..."
-        },
-        columnDefs: [
-            { orderable: false, targets: 0 }
-        ]
-    });
-
-    // Search functionality
-    $('#testSearchInput').on('keyup', function () {
-        testsTable.search(this.value).draw();
-    });
-
-    // Clear search
-    $('#clearSearch').on('click', function () {
-        $('#testSearchInput').val('');
-        testsTable.search('').draw();
+    // Initialize Dropify
+    $('#pet_image').dropify({
+        messages: {
+            'default': 'Drag and drop an image here or click',
+            'replace': 'Drag and drop or click to replace',
+            'remove': 'Remove',
+            'error': 'Oops, something went wrong.'
+        }
     });
 
     // Update total function
@@ -906,8 +933,56 @@ $(document).ready(function () {
     }
 
     // Event listeners for checkbox changes
-    $('#testsDataTable').on('change', '.test-checkbox', function () {
+    $('#testCards').on('change', '.test-checkbox', function () {
         updateTotal();
+    });
+
+    // Event listener for remove test button
+    $('#testCards').on('click', '.remove-test-btn', function () {
+        if (confirm('Are you sure you want to remove this test?')) {
+            $(this).closest('.col').remove();
+            updateTotal();
+            toastr.info('Test removed.');
+        }
+    });
+
+    // Add test card on select change
+    $('#testSelect').on('change', function() {
+        const testId = $(this).val();
+        if (!testId) return;
+
+        const selectedOption = $(this).find(`option[value="${testId}"]`);
+        const name = selectedOption.text();
+        const price = selectedOption.data('price');
+
+        // Check if already added
+        if ($(`#test_${testId}`).length > 0) {
+            toastr.warning('Test already added.');
+            $(this).val('').trigger('change');
+            return;
+        }
+
+        // Add card
+        const cardHtml = `
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm rounded-3 position-relative" style="background: rgba(255,255,255,0.95); border: 1px solid #f6b51d;">
+                <button type="button" class="remove-test-btn" title="Remove Test">
+                    <i class="mdi mdi-close"></i>
+                </button>
+                <div class="card-body p-3">
+                    <h6 class="card-title mb-2" style="color: #6267ae;">${name}</h6>
+                    <p class="card-text mb-1" style="color: #ac7fb6;">Price: ₹${price}</p>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input test-checkbox" name="tests[]" value="${testId}" data-price="${price}" id="test_${testId}" checked>
+                        <label class="form-check-label" for="test_${testId}" style="color: #6267ae;">Select</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        `;
+        $('#testCards').append(cardHtml);
+        updateTotal();
+        $(this).val('').trigger('change');
     });
 
     // Event listener for discount input
@@ -925,16 +1000,6 @@ $(document).ready(function () {
 
         $('#submitSpinner').removeClass('d-none');
         $('#submitBtn').prop('disabled', true);
-    });
-
-    // Initialize Dropify
-    $('#pet_image').dropify({
-        messages: {
-            'default': 'Drag and drop an image here or click',
-            'replace': 'Drag and drop or click to replace',
-            'remove': 'Remove',
-            'error': 'Oops, something went wrong.'
-        }
     });
 
     // Breed data for species
@@ -986,60 +1051,6 @@ $(document).ready(function () {
             });
         }, 300);
     });
-
-    // Parse age input (e.g., "1 year 2 months 10 days")
-    function parseAgeInput(ageStr) {
-        ageStr = ageStr.toLowerCase().trim();
-        const regex = /(\d+)\s*(year|yr|y|month|mon|m|day|d)/g;
-        let years = 0, months = 0, days = 0;
-        let match;
-        while ((match = regex.exec(ageStr)) !== null) {
-            const val = parseInt(match[1], 10);
-            const unit = match[2];
-            if (['year', 'yr', 'y'].includes(unit)) years = val;
-            else if (['month', 'mon', 'm'].includes(unit)) months = val;
-            else if (['day', 'd'].includes(unit)) days = val;
-        }
-        return { years, months, days };
-    }
-
-    // Format age string
-    function formatAgeString(years, months, days) {
-        let parts = [];
-        if (years > 0) parts.push(years + ' year' + (years > 1 ? 's' : ''));
-        if (months > 0) parts.push(months + ' month' + (months > 1 ? 's' : ''));
-        if (days > 0) parts.push(days + ' day' + (days > 1 ? 's' : ''));
-        if (parts.length === 0) parts.push('0 days');
-        return parts.join(' ');
-    }
-
-    // Calculate age from DOB
-    function calculateAgeFromDOB(dob) {
-        const today = new Date();
-        let ageYears = today.getFullYear() - dob.getFullYear();
-        let ageMonths = today.getMonth() - dob.getMonth();
-        let ageDays = today.getDate() - dob.getDate();
-        if (ageDays < 0) {
-            ageMonths--;
-            const lastMonth = new Date(today.getFullYear(), today.getMonth(), 0);
-            ageDays += lastMonth.getDate();
-        }
-        if (ageMonths < 0) {
-            ageYears--;
-            ageMonths += 12;
-        }
-        return { years: ageYears, months: ageMonths, days: ageDays };
-    }
-
-    // Calculate DOB from age
-    function calculateDOBFromAge(years, months, days) {
-        const today = new Date();
-        let dob = new Date(today.getFullYear() - years, today.getMonth() - months, today.getDate() - days);
-        if (dob.getMonth() > today.getMonth()) {
-            dob.setFullYear(dob.getFullYear() - 1);
-        }
-        return dob;
-    }
 
     // DOB and Age handling
     $('#pet_dob').on('change', function() {
@@ -1118,7 +1129,6 @@ $(document).ready(function () {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function (response) {
-                console.log(response)
                 if (response.success) {
                     let newOption = new Option(
                         `${response.doctor.doctor_name} (${response.doctor.code})`,
@@ -1253,8 +1263,232 @@ $(document).ready(function () {
         }
     });
 
+    let phoneCheckTimeout;
+    $('#phone').on('input', function () {
+        clearTimeout(phoneCheckTimeout);
+        phoneCheckTimeout = setTimeout(() => {
+            let phone = $(this).val().trim();
+            const phoneRegex = /^(\+91)?[0-9]{10}$/;
+
+            if (!phoneRegex.test(phone)) {
+                $('#pet_id').html('<option value="" selected disabled>Select Pet</option><option value="new">Add New Pet</option>');
+                $('#pet_owner_name').val('');
+                $('#pet_code').val('');
+                $('#pet_type').val('');
+                $('#pet_gender').val('');
+                $('#pet_dob').val('');
+                return;
+            }
+
+            // Normalize phone to always send without '+91'
+            if (phone.startsWith('+91')) {
+                phone = phone.slice(3);
+            }
+
+            $.ajax({
+                url: '{{ route("get.owner.pets.by.phone", ":phone") }}'.replace(':phone', phone),
+                method: 'GET',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function (response) {
+                    if (response.success) {
+                        $('#pet_owner_name').val(response.owner.name);
+                        const $petSelect = $('#pet_id');
+                        $petSelect.html('<option value="" selected disabled>Select Pet</option>');
+                        if (response.pets && response.pets.length > 0) {
+                            response.pets.forEach(pet => {
+                                $petSelect.append(new Option(pet.name, pet.id));
+                            });
+                        }
+                        $petSelect.append(new Option('Add New Pet', 'new'));
+                        $('#pet_code').val('');
+                        $('#pet_type').val('');
+                        $('#pet_gender').val('');
+                        $('#pet_dob').val('');
+                    } else {
+                        toastr.warning(response.message || 'No owner found with this phone number.');
+                        $('#pet_owner_name').val('');
+                        $('#pet_id').html('<option value="" selected disabled>Select Pet</option><option value="new">Add New Pet</option>');
+                        $('#pet_code').val('');
+                        $('#pet_type').val('');
+                        $('#pet_gender').val('');
+                        $('#pet_dob').val('');
+                    }
+                },
+                error: function (xhr) {
+                    toastr.error('Error fetching owner details.');
+                    $('#pet_owner_name').val('');
+                    $('#pet_id').html('<option value="" selected disabled>Select Pet</option><option value="new">Add New Pet</option>');
+                    $('#pet_code').val('');
+                    $('#pet_type').val('');
+                    $('#pet_gender').val('');
+                    $('#pet_dob').val('');
+                }
+            });
+        }, 500);
+    });
+
     // Initialize total calculation
     updateTotal();
+
+    // Parse age input (e.g., "1 year 2 months 10 days")
+    function parseAgeInput(ageStr) {
+        ageStr = ageStr.toLowerCase().trim();
+        const regex = /(\d+)\s*(year|yr|y|month|mon|m|day|d)/g;
+        let years = 0, months = 0, days = 0;
+        let match;
+        while ((match = regex.exec(ageStr)) !== null) {
+            const val = parseInt(match[1], 10);
+            const unit = match[2];
+            if (['year', 'yr', 'y'].includes(unit)) years = val;
+            else if (['month', 'mon', 'm'].includes(unit)) months = val;
+            else if (['day', 'd'].includes(unit)) days = val;
+        }
+        return { years, months, days };
+    }
+
+    // Format age string
+    function formatAgeString(years, months, days) {
+        let parts = [];
+        if (years > 0) parts.push(years + ' year' + (years > 1 ? 's' : ''));
+        if (months > 0) parts.push(months + ' month' + (months > 1 ? 's' : ''));
+        if (days > 0) parts.push(days + ' day' + (days > 1 ? 's' : ''));
+        if (parts.length === 0) parts.push('0 days');
+        return parts.join(' ');
+    }
+
+    // Calculate age from DOB
+    function calculateAgeFromDOB(dob) {
+        const today = new Date();
+        let ageYears = today.getFullYear() - dob.getFullYear();
+        let ageMonths = today.getMonth() - dob.getMonth();
+        let ageDays = today.getDate() - dob.getDate();
+        if (ageDays < 0) {
+            ageMonths--;
+            const lastMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+            ageDays += lastMonth.getDate();
+        }
+        if (ageMonths < 0) {
+            ageYears--;
+            ageMonths += 12;
+        }
+        return { years: ageYears, months: ageMonths, days: ageDays };
+    }
+
+    // Calculate DOB from age
+    function calculateDOBFromAge(years, months, days) {
+        const today = new Date();
+        let dob = new Date(today.getFullYear() - years, today.getMonth() - months, today.getDate() - days);
+        if (dob.getMonth() > today.getMonth()) {
+            dob.setFullYear(dob.getFullYear() - 1);
+        }
+        return dob;
+    }
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    let searchInput = document.getElementById("testSearch");
+    let suggestionsBox = document.getElementById("testSuggestions");
+    let testCards = document.getElementById("testCards");
+    let selectedTestsCount = document.getElementById("selectedTestsCount");
+
+    let selectedTests = [];
+    let searchTimeout;
+
+    // Search input event with debouncing
+    searchInput.addEventListener("keyup", function () {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+            let query = this.value.trim();
+            if (query.length < 2) {
+                suggestionsBox.style.display = "none";
+                return;
+            }
+
+            fetch("{{ route('tests.search') }}?q=" + encodeURIComponent(query))
+                .then(response => response.json())
+                .then(data => {
+                    suggestionsBox.innerHTML = "";
+                    if (data.length > 0) {
+                        data.forEach(test => {
+                            let li = document.createElement("li");
+                            li.classList.add("list-group-item", "list-group-item-action");
+                            li.style.cursor = "pointer";
+                            li.textContent = `${test.name} (${test.test_code ?? ''}) - ₹${test.base_price}`;
+                            li.dataset.id = test.id;
+                            li.dataset.name = test.name;
+                            li.dataset.price = test.base_price;
+
+                            li.addEventListener("click", function () {
+                                addTestCard(test);
+                            });
+
+                            suggestionsBox.appendChild(li);
+                        });
+                        suggestionsBox.style.display = "block";
+                    } else {
+                        suggestionsBox.style.display = "none";
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching tests:', error);
+                    suggestionsBox.style.display = "none";
+                });
+        }, 300);
+    });
+
+    function addTestCard(test) {
+        if (selectedTests.includes(test.id)) {
+            toastr.warning('Test already added.');
+            return;
+        }
+
+        selectedTests.push(test.id);
+
+        let card = document.createElement("div");
+        card.classList.add("col");
+        card.innerHTML = `
+            <div class="card border-0 shadow rounded-3 h-100">
+                <div class="card-body">
+                    <h6 class="card-title mb-2">${test.name}</h6>
+                    <p class="text-muted small mb-1">Code: ${test.test_code ?? ''}</p>
+                    <p class="fw-bold mb-0">₹${test.base_price}</p>
+                    <button class="btn btn-sm btn-danger mt-2 remove-test-btn float-end" title="Remove Test">X</button>
+                </div>
+            </div>
+        `;
+
+        card.querySelector(".remove-test-btn").addEventListener("click", function () {
+            card.remove();
+            selectedTests = selectedTests.filter(id => id !== test.id);
+            updateCount();
+            updateTotal(); // Ensure total is updated when a test is removed
+        });
+
+        testCards.appendChild(card);
+        updateCount();
+        updateTotal(); // Update total when a test is added
+        searchInput.value = ""; // Clear the search input
+        suggestionsBox.style.display = "none"; // Hide the suggestions
+    }
+
+    function clearSearch() {
+        searchInput.value = "";
+        suggestionsBox.style.display = "none";
+    }
+
+    function hideSuggestions() {
+        setTimeout(() => {
+            suggestionsBox.style.display = "none";
+        }, 200);
+    }
+
+    function updateCount() {
+        selectedTestsCount.textContent = `${selectedTests.length} test${selectedTests.length !== 1 ? 's' : ''} selected`;
+    }
 });
 </script>
 

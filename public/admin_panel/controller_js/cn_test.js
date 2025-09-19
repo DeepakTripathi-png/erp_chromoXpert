@@ -1,6 +1,11 @@
 
 
 $(function () {
+    
+    if ($.fn.DataTable.isDataTable('#cims_data_table')) {
+        $('#cims_data_table').DataTable().destroy();
+    }
+    
     var table = $('#cims_data_table').DataTable({
         processing: true,
         serverSide: true,
@@ -23,6 +28,10 @@ $(function () {
             {
                 data: 'short_name',
                 name: 'short_name'
+            },
+            {
+                data: 'department_name',
+                name: 'department_name'
             },
             {
                 data: 'sample_type',

@@ -4,7 +4,7 @@ $(function () {
         processing: true,
         serverSide: true,
         searching: false,
-        ajax: base_url + "/admin/test/data-table",
+        ajax: base_url + "/admin/apointment/test/data-table",
         columns: [
             {
                 data: 'DT_RowIndex',

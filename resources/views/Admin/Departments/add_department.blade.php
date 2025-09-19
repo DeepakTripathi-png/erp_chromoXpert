@@ -32,6 +32,7 @@
 
                         <div class="row g-3">
                             {{-- Department Code (auto-generated, readonly) --}}
+                            @if(!empty($department))
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     <input type="text" class="form-control rounded-3" id="code" 
@@ -44,6 +45,7 @@
                                     @enderror
                                 </div>
                             </div>
+                            @endif
 
                             {{-- Department Name --}}
                             <div class="col-md-6">
@@ -157,7 +159,7 @@
 @endsection
 
 @section('scripts')
-<script>
+{{-- <script>
     $(document).ready(function () {
         // Mobile number formatting
         $('#mobile').on('input', function() {
@@ -172,5 +174,5 @@
             }
         });
     });
-</script>
+</script> --}}
 @endsection

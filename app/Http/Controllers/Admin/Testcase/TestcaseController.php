@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\DataTables;
 use App\Models\Master\Role_privilege;
+use App\Models\Department;
 class TestcaseController extends Controller
 {
     public function index()
@@ -23,7 +24,8 @@ class TestcaseController extends Controller
 
     public function add()
     {
-        return view('Admin.Testcases.testcase-add'); 
+        $departments = Department::where('status', 'active')->get();
+        return view('Admin.Testcases.testcase-add',compact('departments')); 
     }
 
 
@@ -33,15 +35,18 @@ class TestcaseController extends Controller
             ->where('status', '!=', 'delete')
             ->findOrFail($id);
 
-        return view('Admin.Testcases.testcase-add', compact('test'));
+        $departments = Department::where('status', 'active')->get();    
+
+        return view('Admin.Testcases.testcase-add', compact('test', 'departments'));
     }
 
     public function view($id)
     {
-        $test = Test::with(['parameters.options'])
-            ->where('status', '!=', 'delete')
-            ->find($id);
-
+        $test = Test::with(['parameters.options', 'department'])
+             ->where('status', '!=', 'delete')
+             ->find($id);
+       
+       
         if (!$test) {
             return redirect()->route('admin.testcases')->with('error', 'Test case not found.');
         }
@@ -155,6 +160,8 @@ class TestcaseController extends Controller
 
     public function store(Request $request)
     {
+        // dd($request->all());
+
         $role_id = Auth::guard('master_admins')->user()->role_id;
         $RolesPrivileges = Role_privilege::where('id', $role_id)
             ->where('status', 'active')
@@ -165,6 +172,7 @@ class TestcaseController extends Controller
             'id' => 'nullable|exists:tests,id',
             'name' => 'required|string|max:255',
             'short_name' => 'nullable|string|max:100',
+            'department' => 'required|exists:departments,id',
             'sample_type' => 'nullable|string|max:255',
             'base_price' => 'required|numeric|min:0',
             'precautions' => 'nullable|string',
@@ -190,6 +198,7 @@ class TestcaseController extends Controller
                 $testInput = [
                     'name' => $request->name,
                     'short_name' => $request->short_name ?? null,
+                    'department_id' => $request->department,
                     'sample_type' => $request->sample_type ?? null,
                     'base_price' => $request->base_price,
                     'precautions' => $request->precautions ?? null,
@@ -256,16 +265,16 @@ class TestcaseController extends Controller
                         TestParameters::where('id', $param['id'])->update($parameterInput);
                         $parameter = TestParameters::find($param['id']);
                     } else {
-                        // Create new parameter
+                        
                         $parameter = TestParameters::create($parameterInput);
                     }
 
                     if ($param['row_type'] === 'component' && $param['result_type'] === 'select' && !empty($param['options'])) {
-                        // Handle options
+                       
                         $existingOptionIds = $parameter->options()->pluck('id')->toArray();
                         $submittedOptionIds = array_filter($param['option_ids'] ?? []);
 
-                        // Delete options that are not in the submitted list
+                        
                         ParameterOptions::where('parameter_id', $parameter->id)
                             ->whereNotIn('id', $submittedOptionIds)
                             ->delete();
@@ -284,26 +293,22 @@ class TestcaseController extends Controller
                                 ];
 
                                 if (!empty($param['option_ids'][$optionIndex])) {
-                                    // Update existing option
                                     ParameterOptions::where('id', $param['option_ids'][$optionIndex])
                                         ->update($optionInput);
                                 } else {
-                                    // Create new option
                                     ParameterOptions::create($optionInput);
                                 }
                             }
                         }
                     } else {
-                        // Delete all options if result_type is not select
                         ParameterOptions::where('parameter_id', $parameter->id)->delete();
                     }
                 }
 
-                // Return true to indicate successful transaction
                 return true;
             });
 
-            // Redirect after successful transaction
+
             return redirect()->route('admin.testcases')
                 ->with('success', !empty($request->id) ? 'Test updated successfully.' : 'Test created successfully.');
         } catch (\Exception $e) {
@@ -320,7 +325,7 @@ class TestcaseController extends Controller
 
     public function data_table(Request $request)
     {
-        $tests = Test::with(['parameters'])
+        $tests = Test::with(['parameters', 'department'])
             ->where('status', '!=', 'delete')
             ->orderBy('id', 'DESC')
             ->get();
@@ -338,6 +343,10 @@ class TestcaseController extends Controller
                 })
                 ->addColumn('short_name', function ($row) {
                     return !empty($row->short_name) ? $row->short_name : '';
+                })
+
+                ->addColumn('department_name', function ($row) {
+                    return !empty($row->department->department_name) ? $row->department->department_name : '';
                 })
 
                 ->addColumn('sample_type', function ($row) {
@@ -409,6 +418,24 @@ class TestcaseController extends Controller
                 ->rawColumns(['status', 'action'])
                 ->make(true);
         }
+    }
+
+
+
+    public function search(Request $request)
+    {
+        $query = $request->input('q');
+        $tests = Test::where('status', 'active')
+            ->where(function ($q) use ($query) {
+                $q->where('name', 'LIKE', "%{$query}%")
+                  ->orWhere('test_code', 'LIKE', "%{$query}%")
+                  ->orWhere('short_name', 'LIKE', "%{$query}%");
+            })
+            ->select('id', 'name', 'test_code', 'base_price')
+            ->take(10) 
+            ->get();
+
+        return response()->json($tests);
     }
 
 

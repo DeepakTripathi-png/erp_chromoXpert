@@ -66,6 +66,7 @@
                                     <th style="width: 10%;">Test Code</th>
                                     <th style="width: 20%;">Test Name</th>
                                     <th style="width: 20%;">Short Name</th>
+                                      <th style="width: 20%;">Department Name</th>
                                     <th style="width: 15%;">Sample Type</th>
                                     <th style="width: 10%;">Base Price (₹)</th>
                                     <th style="width: 15%;">Parameter Count</th>

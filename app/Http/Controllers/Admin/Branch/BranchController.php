@@ -225,24 +225,7 @@ class BranchController extends Controller
         }
     }
 
-    // public function edit($id)
-    // {
-    //     $branch = Branch::find($id);
-    //     if (!$branch) {
-    //         return redirect('admin/branches')->with('error', 'Branch not found!');
-    //     }
-    //     $countries = Country::get();
-    //     $states = State::where('country_id', $branch->country_id)->get();
-    //     $cities = City::where('state_id', $branch->state_id)->get();
 
-    //     $labIncharges = Master_admin::where('status', 'active')->where('role_id', '2')->get();
-
-    //      $labincharge= Master_admin::where('status','active')->where('role_id',2)->get();
-
-      
-
-    //     return view('Admin.Branches.add-branches', compact('branch', 'countries', 'states', 'cities', 'labIncharges','labincharge'));
-    // }
 
 
     public function edit($id)

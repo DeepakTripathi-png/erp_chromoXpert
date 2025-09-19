@@ -106,92 +106,92 @@ class PetController extends Controller
     }
 
   public function data_table(Request $request)
-{
-    if ($request->ajax()) {
-        $pets = Pet::with(['petParent'])
-            ->where('status', '!=', 'delete')
-            ->select('id', 'pet_code', 'pet_parent_id', 'name', 'gender', 'dob', 'status', 'image_path');
-            
-        return DataTables::eloquent($pets)
-            ->addIndexColumn()
-            ->addColumn('pet_code', function ($row) {
-                return !empty($row->pet_code) ? $row->pet_code : '';
-            })
-            ->addColumn('pet_parent', function ($row) {
-                return $row->petParent ? $row->petParent->name : 'N/A';
-            })
-            ->addColumn('name', function ($row) {
-                return !empty($row->name) ? $row->name : '';
-            })
-            ->addColumn('gender', function ($row) {
-                return !empty($row->gender) ? $row->gender : '';
-            })
-            ->addColumn('dob', function ($row) {
-                return !empty($row->dob) ? $row->dob : 'N/A';
-            })
-            ->addColumn('image', function ($row) {
-                return $row->image_path 
-                    ? '<img src="' . asset('storage/' . $row->image_path) . '" alt="' . $row->name . '" style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;">'
-                    : 'N/A';
-            })
-            ->addColumn('status', function ($row) {
-                $role_id = Auth::guard('master_admins')->user()->role_id;
-                $RolesPrivileges = Role_privilege::where('status', 'active')->where('id', $role_id)->select('privileges')->first();
+    {
+        if ($request->ajax()) {
+            $pets = Pet::with(['petParent'])
+                ->where('status', '!=', 'delete')
+                ->select('id', 'pet_code', 'pet_parent_id', 'name', 'gender', 'dob', 'status', 'image_path');
+                
+            return DataTables::eloquent($pets)
+                ->addIndexColumn()
+                ->addColumn('pet_code', function ($row) {
+                    return !empty($row->pet_code) ? $row->pet_code : '';
+                })
+                ->addColumn('pet_parent', function ($row) {
+                    return $row->petParent ? $row->petParent->name : 'N/A';
+                })
+                ->addColumn('name', function ($row) {
+                    return !empty($row->name) ? $row->name : '';
+                })
+                ->addColumn('gender', function ($row) {
+                    return !empty($row->gender) ? $row->gender : '';
+                })
+                ->addColumn('dob', function ($row) {
+                    return !empty($row->dob) ? $row->dob : 'N/A';
+                })
+                ->addColumn('image', function ($row) {
+                    return $row->image_path 
+                        ? '<img src="' . asset('storage/' . $row->image_path) . '" alt="' . $row->name . '" style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;">'
+                        : 'N/A';
+                })
+                ->addColumn('status', function ($row) {
+                    $role_id = Auth::guard('master_admins')->user()->role_id;
+                    $RolesPrivileges = Role_privilege::where('status', 'active')->where('id', $role_id)->select('privileges')->first();
 
-                $isChecked = $row->status == 'active' ? 'checked' : '';
+                    $isChecked = $row->status == 'active' ? 'checked' : '';
 
-                if (!empty($RolesPrivileges) && str_contains($RolesPrivileges->privileges, 'pet_status_change')) {
-                    return '<label class="switch"><input type="checkbox" class="change-status" data-id="' . $row->id . '" data-table="pets" data-flash="Status Changed Successfully!" ' . $isChecked . '><span class="slider"></span></label>';
-                } else {
-                    return '<label class="switch"><input type="checkbox" disabled ' . $isChecked . '><span class="slider"></span></label>';
-                }
-            })
-            ->addColumn('action', function ($row) {
-                $actionBtn = '';
-                $role_id = Auth::guard('master_admins')->user()->role_id;
-                $RolesPrivileges = Role_privilege::where('status', 'active')->where('id', $role_id)->select('privileges')->first();
+                    if (!empty($RolesPrivileges) && str_contains($RolesPrivileges->privileges, 'pet_status_change')) {
+                        return '<label class="switch"><input type="checkbox" class="change-status" data-id="' . $row->id . '" data-table="pets" data-flash="Status Changed Successfully!" ' . $isChecked . '><span class="slider"></span></label>';
+                    } else {
+                        return '<label class="switch"><input type="checkbox" disabled ' . $isChecked . '><span class="slider"></span></label>';
+                    }
+                })
+                ->addColumn('action', function ($row) {
+                    $actionBtn = '';
+                    $role_id = Auth::guard('master_admins')->user()->role_id;
+                    $RolesPrivileges = Role_privilege::where('status', 'active')->where('id', $role_id)->select('privileges')->first();
 
-                if (!empty($RolesPrivileges) && str_contains($RolesPrivileges->privileges, 'pet_view')) {
-                    $actionBtn .= '<a href="' . url('admin/pet/view/' . $row->id) . '" 
-                                    class="btn btn-icon btn-info me-1" 
-                                    title="View Pet" 
-                                    data-bs-toggle="tooltip" 
-                                    style="background:#fff; color:#6267ae; border:1px solid #6267ae;">
-                                    <i class="mdi mdi-eye"></i>
-                                </a>';
-                }
+                    if (!empty($RolesPrivileges) && str_contains($RolesPrivileges->privileges, 'pet_view')) {
+                        $actionBtn .= '<a href="' . url('admin/pet/view/' . $row->id) . '" 
+                                        class="btn btn-icon btn-info me-1" 
+                                        title="View Pet" 
+                                        data-bs-toggle="tooltip" 
+                                        style="background:#fff; color:#6267ae; border:1px solid #6267ae;">
+                                        <i class="mdi mdi-eye"></i>
+                                    </a>';
+                    }
 
-                if (!empty($RolesPrivileges) && str_contains($RolesPrivileges->privileges, 'pet_edit')) {
-                    $actionBtn .= '<a href="' . url('admin/pet/edit/' . $row->id) . '" 
-                                    class="btn btn-icon btn-warning me-1" 
-                                    title="Edit Pet" 
-                                    data-bs-toggle="tooltip" 
-                                    style="background:#fff; color:#f6b51d; border:1px solid #f6b51d;">
-                                    <i class="mdi mdi-pencil"></i>
-                                </a>';
-                }
+                    if (!empty($RolesPrivileges) && str_contains($RolesPrivileges->privileges, 'pet_edit')) {
+                        $actionBtn .= '<a href="' . url('admin/pet/edit/' . $row->id) . '" 
+                                        class="btn btn-icon btn-warning me-1" 
+                                        title="Edit Pet" 
+                                        data-bs-toggle="tooltip" 
+                                        style="background:#fff; color:#f6b51d; border:1px solid #f6b51d;">
+                                        <i class="mdi mdi-pencil"></i>
+                                    </a>';
+                    }
 
-                if (!empty($RolesPrivileges) && str_contains($RolesPrivileges->privileges, 'pet_delete')) {
-                    $actionBtn .= '<a href="javascript:void(0)" 
-                                    data-id="' . $row->id . '" 
-                                    data-table="pets" 
-                                    data-flash="Pet Deleted Successfully!" 
-                                    class="btn btn-icon btn-danger delete" 
-                                    title="Delete Pet" 
-                                    data-bs-toggle="tooltip" 
-                                    style="background:#fff; color:#cc235e; border:1px solid #cc235e;">
-                                    <i class="mdi mdi-trash-can"></i>
-                                </a>';
-                }
+                    if (!empty($RolesPrivileges) && str_contains($RolesPrivileges->privileges, 'pet_delete')) {
+                        $actionBtn .= '<a href="javascript:void(0)" 
+                                        data-id="' . $row->id . '" 
+                                        data-table="pets" 
+                                        data-flash="Pet Deleted Successfully!" 
+                                        class="btn btn-icon btn-danger delete" 
+                                        title="Delete Pet" 
+                                        data-bs-toggle="tooltip" 
+                                        style="background:#fff; color:#cc235e; border:1px solid #cc235e;">
+                                        <i class="mdi mdi-trash-can"></i>
+                                    </a>';
+                    }
 
-                return $actionBtn;
-            })
-            ->rawColumns(['image', 'status', 'action'])
-            ->make(true);
+                    return $actionBtn;
+                })
+                ->rawColumns(['image', 'status', 'action'])
+                ->make(true);
+        }
+        
+        return response()->json(['error' => 'Invalid request'], 400);
     }
-    
-    return response()->json(['error' => 'Invalid request'], 400);
-}
 
 
     public function view($id)

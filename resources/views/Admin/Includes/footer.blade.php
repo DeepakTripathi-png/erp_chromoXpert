@@ -247,3 +247,4 @@
 </script>
 
 @yield('script')
+@yield('scripts')
