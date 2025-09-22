@@ -77,8 +77,12 @@
                                 <span><strong>Total</strong></span><span>{{ number_format($appointmentDetails->total, 2) }} ₹</span>
                             </p>
                             <p class="d-flex justify-content-between mb-1">
-                                <span><strong>Paid</strong></span><span>{{ $appointmentDetails->payment_status == 'Completed' ? number_format($appointmentDetails->total, 2) : '0.00' }} ₹</span>
+                                <span><strong>Paid Amount</strong></span><span>{{ number_format($appointmentDetails->paid_amount, 2) }} ₹</span>
                             </p>
+                            <p class="d-flex justify-content-between mb-0">
+                                <span><strong>Due Amount</strong></span><span>{{ number_format($appointmentDetails->due_amount, 2) }} ₹</span>
+                            </p>
+                            
                         </div>
                     </div>
 

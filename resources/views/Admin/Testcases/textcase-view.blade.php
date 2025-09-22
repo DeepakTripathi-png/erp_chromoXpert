@@ -79,6 +79,14 @@
                                 <p class="fs-4 fw-semibold text-dark">{{ $test->sample_type ?? 'N/A' }}</p>
                             </div>
                         </div>
+
+                         <div class="col">
+                            <div class="bg-light p-3 rounded shadow-sm">
+                                <label class="form-label text-muted small">Test For</label>
+                                <p class="fs-4 fw-semibold text-dark text-capitalize">{{ $test->test_for?? 'All' }}</p>
+                            </div>
+                        </div>
+
                         <div class="col">
                             <div class="bg-light p-3 rounded shadow-sm">
                                 <label class="form-label text-muted small">Price (₹)</label>

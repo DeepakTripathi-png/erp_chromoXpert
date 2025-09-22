@@ -17,11 +17,23 @@ class TestResults extends Model
             'test_id',
             'result',
             'priority', 
-            'status',
+            'status',   
             'comment',
             'created_ip_address',
             'modified_ip_address',
             'created_by',
             'modified_by',
     ];
+
+    public function appointment()
+    {
+        return $this->belongsTo(Appointment::class, 'appointment_id');
+    }
+
+    public function test()
+    {
+        return $this->belongsTo(Test::class, 'test_id');
+    }
+
+    
 }

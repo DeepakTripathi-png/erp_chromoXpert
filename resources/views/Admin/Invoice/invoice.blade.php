@@ -130,16 +130,17 @@
 
         @php
             $discount = $appointmentDetails->discount ?? 0;
-            $amountPaid = $appointmentDetails->subtotal ?? 0;
+            $subtotal = $appointmentDetails->subtotal ?? 0;
             $payableAmount =$appointmentDetails->total ?? 0;
-            $dueAmount = $payableAmount - $amountPaid;
+            $paidAmount = $appointmentDetails->paid_amount ?? 0;
+            $dueAmount = $appointmentDetails->due_amount ?? 0;
+            
         @endphp
 
         <div class="summary">
-            <p><strong>Total Amount (Rs):</strong> {{ number_format($totalAmount, 2) }}</p>
-            {{-- <p><strong>Discount (₹):</strong> {{ number_format($discount, 2) }}</p> --}}
-            {{-- <p><strong>Amount Payable (₹):</strong> {{ number_format($payableAmount, 2) }}</p> --}}
-            <p><strong>Amount Paid (Rs):</strong> {{ number_format($amountPaid, 2) }}</p>
+        
+            <p><strong>Payable Amount (Rs):</strong> {{ number_format($payableAmount, 2) }}</p>
+            <p><strong>Amount Paid (Rs):</strong> {{ number_format($paidAmount, 2) }}</p>
             <p><strong>Due Amount (Rs):</strong> {{ number_format($dueAmount, 2) }}</p>
         </div>
 

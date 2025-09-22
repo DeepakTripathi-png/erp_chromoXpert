@@ -197,6 +197,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['prevent-back-history', 'is_
         Route::get('report', 'index');
         Route::get('generate-reports', 'getGenerateReport');
         Route::get('reports/view', 'viewReport');
+        Route::get('report/data-table','data_table');
     });
 
 

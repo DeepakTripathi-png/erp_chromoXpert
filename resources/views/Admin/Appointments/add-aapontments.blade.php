@@ -1,3 +1,8 @@
+
+<?php
+date_default_timezone_set('Asia/Kolkata');
+?>
+
 @extends('Admin.Layouts.layout')
 @section('meta_title', 'Add New Registration | ChromoXpert')
 
@@ -80,7 +85,8 @@
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     <input type="date" class="form-control rounded-3" id="appointment_date" 
-                                        name="appointment_date" value="{{ old('appointment_date') }}" required
+                                        name="appointment_date" value="{{ old('appointment_date', date('Y-m-d')) }}" required
+                                        min="{{ date('Y-m-d') }}"
                                         style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;"
                                         onclick="this.showPicker()">
                                     <label for="appointment_date" style="color: #6267ae;">Appointment Date*</label>
@@ -93,7 +99,7 @@
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     <input type="time" class="form-control rounded-3" id="appointment_time" 
-                                        name="appointment_time" value="{{ old('appointment_time') }}" required
+                                        name="appointment_time" value="{{ old('appointment_time', date('H:i')) }}" required
                                         style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;"
                                         onclick="this.showPicker()">
                                     <label for="appointment_time" style="color: #6267ae;">Appointment Time*</label>
@@ -147,12 +153,12 @@
                                         <select class="form-select rounded-3 select2" id="pet_id" name="pet_id" 
                                                 style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
                                             <option value="" selected disabled>Select Pet</option>
-                                            @if(!empty($pets))
+                                            {{-- @if(!empty($pets))
                                                 @foreach ($pets as $pet)
                                                     <option value="{{ $pet->id }}">{{ $pet->name }}</option>
                                                 @endforeach
-                                            @endif
-                                            <option value="new">Add New Pet</option>
+                                            @endif --}}
+                                            {{-- <option value="new">Add New Pet</option> --}}
                                         </select>
                                         <label for="pet_id" style="color: #6267ae;">Pet</label>
                                     </div>
@@ -275,6 +281,7 @@
                                                     @enderror
                                                 </div>
                                             </div>
+
                                             <div class="col-md-4">
                                                 <div class="form-floating">
                                                     <input type="number" step="0.01" class="form-control rounded-3" id="total" 
@@ -283,6 +290,19 @@
                                                     <label for="total" style="color: #6267ae;">Total (₹)</label>
                                                 </div>
                                             </div>
+
+                                             <div class="col-md-4">
+                                                <div class="form-floating">
+                                                    <input type="number" step="0.01" class="form-control rounded-3" id="paid_amount" 
+                                                        name="paid_amount" placeholder="0.00" 
+                                                        style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
+                                                    <label for="total" style="color: #6267ae;">Paid Amount (₹)</label>
+                                                </div>
+                                            </div>
+
+
+                                            
+
                                             <div class="col-md-4">
                                                 <div class="form-floating">
                                                     <select class="form-select rounded-3" id="payment_mode" name="payment_mode" 
@@ -325,18 +345,23 @@
                                                     @enderror
                                                 </div>
                                             </div>
-                                            <div class="col-md-4">
-                                                <div class="form-floating">
-                                                    <input type="date" class="form-control rounded-3" id="payment_date" 
-                                                        name="payment_date" value="{{ old('payment_date') }}" 
-                                                        style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;"
-                                                        onclick="this.showPicker()">
-                                                    <label for="payment_date" style="color: #6267ae;">Payment Date</label>
-                                                    @error('payment_date')
-                                                        <span class="text-danger" style="color: #cc235e;">{{ $message }}</span>
-                                                    @enderror
-                                                </div>
+
+                                            
+                                           
+                                        <div class="col-md-4">
+                                            <div class="form-floating">
+                                                <input type="datetime-local" class="form-control rounded-3" id="payment_date" 
+                                                    name="payment_date" 
+                                                    value="{{ old('payment_date', date('Y-m-d\TH:i')) }}" 
+                                                    style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
+                                                <label for="payment_date" style="color: #6267ae;">Payment Date & Time</label>
+                                                @error('payment_date')
+                                                    <span class="text-danger" style="color: #cc235e;">{{ $message }}</span>
+                                                @enderror
                                             </div>
+                                        </div>
+
+
                                             <input type="hidden" id="total_amount" name="total_amount" value="">
                                         </div>
                                     </div>
@@ -907,9 +932,7 @@ $(document).ready(function () {
     // Update total function
     function updateTotal() {
         let subtotal = 0;
-        const selectedTests = $('.test-checkbox:checked');
-        
-        selectedTests.each(function () {
+        $('input[name="tests[]"]').each(function () {
             const price = parseFloat($(this).data('price')) || 0;
             subtotal += price;
         });
@@ -928,62 +951,9 @@ $(document).ready(function () {
         $('#total_amount').val(total.toFixed(2));
         $('#total').val(total.toFixed(2));
 
-        const selectedCount = selectedTests.length;
+        const selectedCount = $('input[name="tests[]"]').length;
         $('#selectedTestsCount').text(`${selectedCount} test${selectedCount !== 1 ? 's' : ''} selected`);
     }
-
-    // Event listeners for checkbox changes
-    $('#testCards').on('change', '.test-checkbox', function () {
-        updateTotal();
-    });
-
-    // Event listener for remove test button
-    $('#testCards').on('click', '.remove-test-btn', function () {
-        if (confirm('Are you sure you want to remove this test?')) {
-            $(this).closest('.col').remove();
-            updateTotal();
-            toastr.info('Test removed.');
-        }
-    });
-
-    // Add test card on select change
-    $('#testSelect').on('change', function() {
-        const testId = $(this).val();
-        if (!testId) return;
-
-        const selectedOption = $(this).find(`option[value="${testId}"]`);
-        const name = selectedOption.text();
-        const price = selectedOption.data('price');
-
-        // Check if already added
-        if ($(`#test_${testId}`).length > 0) {
-            toastr.warning('Test already added.');
-            $(this).val('').trigger('change');
-            return;
-        }
-
-        // Add card
-        const cardHtml = `
-        <div class="col">
-            <div class="card h-100 border-0 shadow-sm rounded-3 position-relative" style="background: rgba(255,255,255,0.95); border: 1px solid #f6b51d;">
-                <button type="button" class="remove-test-btn" title="Remove Test">
-                    <i class="mdi mdi-close"></i>
-                </button>
-                <div class="card-body p-3">
-                    <h6 class="card-title mb-2" style="color: #6267ae;">${name}</h6>
-                    <p class="card-text mb-1" style="color: #ac7fb6;">Price: ₹${price}</p>
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input test-checkbox" name="tests[]" value="${testId}" data-price="${price}" id="test_${testId}" checked>
-                        <label class="form-check-label" for="test_${testId}" style="color: #6267ae;">Select</label>
-                    </div>
-                </div>
-            </div>
-        </div>
-        `;
-        $('#testCards').append(cardHtml);
-        updateTotal();
-        $(this).val('').trigger('change');
-    });
 
     // Event listener for discount input
     $('#discount').on('input', function () {
@@ -992,7 +962,7 @@ $(document).ready(function () {
 
     // Form validation
     $('#registrationForm').on('submit', function (e) {
-        if ($('.test-checkbox:checked').length === 0) {
+        if ($('input[name="tests[]"]').length === 0) {
             e.preventDefault();
             toastr.error('Please select at least one test.');
             return false;
@@ -1398,6 +1368,15 @@ document.addEventListener("DOMContentLoaded", function () {
     let selectedTests = [];
     let searchTimeout;
 
+    // Set minimum date for appointment_date to today (client-side for accuracy)
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = ('0' + (today.getMonth() + 1)).slice(-2);
+    const dd = ('0' + today.getDate()).slice(-2);
+    const todayStr = `${yyyy}-${mm}-${dd}`;
+    const appointmentDateInput = document.getElementById("appointment_date");
+    appointmentDateInput.setAttribute("min", todayStr);
+
     // Search input event with debouncing
     searchInput.addEventListener("keyup", function () {
         clearTimeout(searchTimeout);
@@ -1424,7 +1403,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
                             li.addEventListener("click", function () {
                                 addTestCard(test);
-                                // Clear the search input and hide suggestions
                                 searchInput.value = "";
                                 suggestionsBox.style.display = "none";
                             });
@@ -1466,6 +1444,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     <h6 class="card-title mb-2">${test.name}</h6>
                     <p class="text-muted small mb-1">Code: ${test.test_code ?? ''}</p>
                     <p class="fw-bold mb-0">₹${test.base_price}</p>
+                    <input type="hidden" name="tests[]" value="${test.id}" data-price="${test.base_price}">
                     <button class="btn btn-sm btn-danger mt-2 remove-test-btn float-end" title="Remove Test">X</button>
                 </div>
             </div>
@@ -1490,9 +1469,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // Update total function
     function updateTotal() {
         let subtotal = 0;
-        const selectedTests = $('.test-checkbox:checked');
         
-        selectedTests.each(function () {
+        $('input[name="tests[]"]').each(function () {
             const price = parseFloat($(this).data('price')) || 0;
             subtotal += price;
         });
@@ -1511,7 +1489,7 @@ document.addEventListener("DOMContentLoaded", function () {
         $('#total_amount').val(total.toFixed(2));
         $('#total').val(total.toFixed(2));
 
-        const selectedCount = selectedTests.length;
+        const selectedCount = $('input[name="tests[]"]').length;
         $('#selectedTestsCount').text(`${selectedCount} test${selectedCount !== 1 ? 's' : ''} selected`);
     }
 });

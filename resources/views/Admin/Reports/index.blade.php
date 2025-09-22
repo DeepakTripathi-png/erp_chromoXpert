@@ -58,24 +58,26 @@
                 style="background: rgba(255,255,255,0.85); backdrop-filter: blur(14px);">
                 <div class="card-body p-3">
                     <div class="table-responsive">
-                        <table id="reports_data_table" class="table align-middle table-hover">
+                        <table id="cims_data_table" class="table align-middle table-hover">
                             <thead style="background: linear-gradient(135deg, #ac7fb6 0%, #f6b51d 100%); color: #fff;">
                                 <tr>
                                     <th>#</th>
-                                    <th>Barcode</th>
-                                    <th>Animal Code</th>
-                                    <th>Animal Name</th>
-                                    <th>Owner Code</th>
+                                    <th>Code</th>
+                                    <th>Patient Code</th>
+                                    <th>Patient Name</th>
                                     <th>Owner Name</th>
+                                    <th>Owner Contact</th>
                                     <th>Tests</th>
                                     <th>Date</th>
                                     <th>Done</th>
                                     <th>Signed</th>
-                                    <th class="text-center">Action</th>
+                                    <th class="text-center">Action</th> 
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="fade-in-row">
+                                
+
+                                {{-- <tr class="fade-in-row">
                                     <td>135</td>
                                     <td>987739580884</td>
                                     <td>1632984040827</td>
@@ -110,43 +112,9 @@
                                         </a>
                                     </td>
 
-                                </tr>
+                                </tr> --}}
 
-                                <tr class="fade-in-row">
-                                    <td>134</td>
-                                    <td>351821746260</td>
-                                    <td>1630857328155</td>
-                                    <td>dog</td>
-                                    <td>1593914720</td>
-                                    <td>text</td>
-                                    <td>
-                                        <ul class="mb-0 ps-3">
-                                            <li>DeepTest</li>
-                                        </ul>
-                                    </td>
-                                    <td>26-08-2025 05:06</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                   <td class="text-center">
-                                        <a href="{{ url('admin/reports/view') }}" class="btn btn-icon btn-info me-1" title="Show"
-                                        style="background: #fff; color: #6267ae; border: 1px solid #6267ae;">
-                                            <i class="mdi mdi-eye"></i>
-                                        </a>
-                                        <a href="{{ url('admin/generate-reports') }}" class="btn btn-icon btn-warning me-1" title="Edit Report"
-                                        style="background: #fff; color: #f6b51d; border: 1px solid #f6b51d;">
-                                            <i class="mdi mdi-pencil"></i>
-                                        </a>
-                                        <a href="{{ url('admin/test-report/sign/135') }}" class="btn btn-icon btn-success me-1" title="Sign Report"
-                                        style="background: #fff; color: #28a745; border: 1px solid #28a745;">
-                                            <i class="mdi mdi-signature-text"></i>
-                                        </a>
-                                        <a href="{{ url('admin/test-report/barcode/135') }}" class="btn btn-icon btn-primary" 
-                                        style="background: #fff; color: #000; border: 1px solid #000;" data-bs-toggle="modal" data-bs-target="#barcodeModal">
-                                            <i class="mdi mdi-barcode"></i>
-                                        </a>
-                                    </td>
-
-                                </tr>
+                         
 
                                 {{-- Add more rows dynamically here --}}
                             </tbody>
@@ -154,7 +122,7 @@
                     </div>
 
                     {{-- Custom Pagination --}}
-                    <nav class="mt-3">
+                    {{-- <nav class="mt-3">
                         <ul class="pagination justify-content-center custom-pagination">
                             <li class="page-item disabled"><a class="page-link" href="#">«</a></li>
                             <li class="page-item active"><a class="page-link" href="#">1</a></li>
@@ -162,7 +130,9 @@
                             <li class="page-item"><a class="page-link" href="#">3</a></li>
                             <li class="page-item"><a class="page-link" href="#">»</a></li>
                         </ul>
-                    </nav>
+                    </nav> --}}
+
+
                 </div>
             </div>
 

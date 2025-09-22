@@ -188,6 +188,7 @@ class TestcaseController extends Controller
             'parameters.*.options.*' => 'nullable|string|max:255',
             'parameters.*.option_ids' => 'nullable|array',
             'parameters.*.option_ids.*' => 'nullable|exists:parameter_options,id',
+            'test_for' => 'nullable'
         ]);
 
         $userIp = $request->ip();
@@ -202,8 +203,11 @@ class TestcaseController extends Controller
                     'sample_type' => $request->sample_type ?? null,
                     'base_price' => $request->base_price,
                     'precautions' => $request->precautions ?? null,
+                    'test_for' => $request->test_for ??null,
                     'status' => 'active',
                 ];
+
+            
 
                 if (!empty($request->id)) {
                     // Update mode

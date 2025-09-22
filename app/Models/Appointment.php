@@ -25,6 +25,8 @@ class Appointment extends Model
         'subtotal',
         'discount',
         'total',
+        'paid_amount',
+        'due_amount',
         'created_ip_address',
         'modified_ip_address',
         'created_by',

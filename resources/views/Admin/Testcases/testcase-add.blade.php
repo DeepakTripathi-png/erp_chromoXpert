@@ -64,6 +64,7 @@
                                     @error('short_name')<span class="text-danger">{{ $message }}</span>@enderror
                                 </div>
                             </div>
+
                             <div class="col-md-3">
                                 <div class="form-floating">
                                     <select class="form-control rounded-3" id="department" name="department" required>
@@ -80,6 +81,7 @@
                                     @error('department')<span class="text-danger">{{ $message }}</span>@enderror
                                 </div>
                             </div>
+
                             <div class="col-md-3">
                                 <div class="form-floating">
                                     <input type="text" class="form-control rounded-3" id="sample_type" name="sample_type" 
@@ -88,6 +90,22 @@
                                     @error('sample_type')<span class="text-danger">{{ $message }}</span>@enderror
                                 </div>
                             </div>
+
+                            <div class="col-md-3">
+                                <div class="form-floating">
+                                    <select class="form-control rounded-3" id="test_for" name="test_for" required>
+                                        <option value="" {{ old('test_for', $test->test_for ?? '') == '' ? 'selected' : '' }} disabled>
+                                            Select Test For
+                                        </option>
+                                        <option value="all" {{ old('test_for', $test->test_for ?? '') == 'all' ? 'selected' : '' }}>All</option>
+                                        <option value="male" {{ old('test_for', $test->test_for ?? '') == 'male' ? 'selected' : '' }}>Male</option>
+                                        <option value="female" {{ old('test_for', $test->test_for ?? '') == 'female' ? 'selected' : '' }}>Female</option>
+                                    </select>
+                                    <label for="test_for" style="color: #6267ae;">Test For <span class="text-danger">*</span></label>
+                                    @error('test_for')<span class="text-danger">{{ $message }}</span>@enderror
+                                </div>
+                            </div>
+
                             <div class="col-md-3">
                                 <div class="form-floating">
                                     <input type="number" class="form-control rounded-3" id="base_price" name="base_price" 
@@ -97,6 +115,7 @@
                                 </div>
                             </div>
                         </div>
+
 
                         {{-- Precautions --}}
                         <div class="form-floating mb-4">

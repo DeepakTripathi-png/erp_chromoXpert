@@ -20,6 +20,7 @@ use App\Models\Petparent;
 use App\Models\AppointmentTest;
 use App\Mail\AppointmentConfirmation;
 use Illuminate\Support\Facades\Mail;
+use App\Models\TestResults;
 
 
 
@@ -27,9 +28,9 @@ class AppointmentsController extends Controller
 {
     
     public function index(){
-        $appointments = Appointment::with(['branch', 'refereeDoctor', 'pet', 'pet.petParent', 'tests'])
-                    ->where('status', '!=', 'deleted')
-                    ->get();
+        // $appointments = Appointment::with(['branch', 'refereeDoctor', 'pet', 'pet.petParent', 'tests'])
+        //             ->where('status', '!=', 'deleted')
+        //             ->get();
         // dd($appointments);
         return view('Admin.Appointments.index'); 
     }
@@ -83,7 +84,6 @@ class AppointmentsController extends Controller
 
     public function store(Request $request)
     {
-
             $role_id = Auth::guard('master_admins')->user()->role_id;
             $rolesPrivileges = Role_privilege::where('id', $role_id)
                 ->where('status', 'active')
@@ -125,6 +125,8 @@ class AppointmentsController extends Controller
                 'tests.*' => 'exists:tests,id',
                 'subtotal' => 'required|numeric|min:0',
                 'total' => 'required|numeric|min:0',
+                'discount' => 'nullable|numeric|min:0',
+                'paid_amount' => 'required|numeric|min:0',
                 'total_amount' => 'required|numeric|min:0',
                 'payment_mode' => 'required|in:Cash,Card,UPI,Bank Transfer',
                 'transaction_id' => 'nullable|string|max:255',
@@ -144,6 +146,8 @@ class AppointmentsController extends Controller
                     'subtotal'             => $request->subtotal,
                     'discount'             => $request->discount,
                     'total'                => $request->total,
+                    'paid_amount'          => $request->paid_amount,
+                    'due_amount'           => $request->total - $request->paid_amount,
                     'payment_mode'         => $request->payment_mode,
                     'transaction_id'       => $request->transaction_id,
                     'payment_status'       => $request->payment_status,
@@ -160,6 +164,10 @@ class AppointmentsController extends Controller
                 $appointment->appointment_code = 'APT' . str_pad($appointment->id, 3, '0', STR_PAD_LEFT);
                 $appointment->save();
 
+              
+
+            
+
                 // Link tests to the appointment
                 $testIdArray = $request->tests;
 
@@ -169,6 +177,15 @@ class AppointmentsController extends Controller
                             'appointment_id' => $appointment->id,
                             'test_id'       => $testId,
                         ]);
+
+                    TestResults::create([
+                        'test_result_code' => 'TR' . str_pad($appointment->id, 4, '0', STR_PAD_LEFT),
+                        'appointment_id' => $appointment->id,
+                        'test_id' => $testId, 
+                      ]);
+
+
+
                     }
                 }
 
@@ -184,23 +201,23 @@ class AppointmentsController extends Controller
                 }    
 
 
-               if ($appointmentDetails->pet->petParent->mobile) {
-                $token = env('WHATSAPP_API_TOKEN'); // Fetch token from .env
-                $phone = $appointmentDetails->pet->petParent->mobile; // Ensure phone number is stored with country code, e.g., 919xxxxxxxxx
-                $message = urlencode("Dear {$appointmentDetails->pet->petParent->name}, your appointment (Code: {$appointmentDetails->appointment_code}) is confirmed for {$appointmentDetails->appointment_date} at {$appointmentDetails->appointment_time}. Thank you!");
+                //    if ($appointmentDetails->pet->petParent->mobile) {
+                //     $token = env('WHATSAPP_API_TOKEN'); // Fetch token from .env
+                //     $phone = $appointmentDetails->pet->petParent->mobile; // Ensure phone number is stored with country code, e.g., 919xxxxxxxxx
+                //     $message = urlencode("Dear {$appointmentDetails->pet->petParent->name}, your appointment (Code: {$appointmentDetails->appointment_code}) is confirmed for {$appointmentDetails->appointment_date} at {$appointmentDetails->appointment_time}. Thank you!");
 
-                $url = "https://wts.vision360solutions.co.in/api/sendText?token={$token}&phone={$phone}&message={$message}";
+                //     $url = "https://wts.vision360solutions.co.in/api/sendText?token={$token}&phone={$phone}&message={$message}";
 
-                $client = new \GuzzleHttp\Client();
-                $response = $client->get($url);
+                //     $client = new \GuzzleHttp\Client();
+                //     $response = $client->get($url);
 
-                $result = json_decode($response->getBody(), true);
-                if ($result['status'] === 'success') {
-                    // Optionally log success
-                } else {
-                    // Optionally log error (e.g., insufficient credits)
-                }
-             }
+                //     $result = json_decode($response->getBody(), true);
+                //     if ($result['status'] === 'success') {
+                //         // Optionally log success
+                //     } else {
+                //         // Optionally log error (e.g., insufficient credits)
+                //     }
+                //  }
 
              
 
