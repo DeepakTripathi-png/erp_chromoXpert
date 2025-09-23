@@ -65,10 +65,10 @@
                                     <th>Code</th>
                                     <th>Patient Code</th>
                                     <th>Patient Name</th>
-                                    <th>Owner Name</th>
-                                    <th>Owner Contact</th>
+                                    <th>Pet parent/owner Name</th>
+                                    <th>Pet parent/owner Mobile</th>
                                     <th>Tests</th>
-                                    <th>Date</th>
+                                    <th>Appointment Date</th>
                                     <th>Done</th>
                                     <th>Signed</th>
                                     <th class="text-center">Action</th> 

@@ -42,124 +42,122 @@
             </div>
         </div>
 
+
+                
             {{-- Tab Navigation --}}
             <ul class="nav nav-tabs mb-3" style="border: none;">
-                <li class="nav-item">
-                    <a class="nav-link text-uppercase fw-bold active" href="#tests" data-bs-toggle="tab">
-                        Test
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-uppercase fw-bold" href="#testCompo" data-bs-toggle="tab">
-                        Test Compo
-                    </a>
-                </li>
+                @if(!empty($tests))
+                    @foreach($tests as $index => $test)
+                        <li class="nav-item">
+                            <a class="nav-link text-uppercase fw-bold {{ $index === 0 ? 'active' : '' }}" 
+                            href="#test{{ $test->id }}" 
+                            data-bs-toggle="tab">
+                                {{ $test->name ?? '' }}
+                            </a>
+                        </li>
+                    @endforeach
+                @endif    
             </ul>
-
-
-         
 
             {{-- Glassmorphic Card --}}
             <div class="card border-0 shadow-lg rounded-4"
-                 style="background: rgba(255,255,255,0.85); backdrop-filter: blur(14px);">
+                style="background: rgba(255,255,255,0.85); backdrop-filter: blur(14px);">
                 <div class="card-body p-3">
                     <div class="tab-content">
 
                         {{-- Tests Tab --}}
-                        <div class="tab-pane fade show active" id="tests">
-                            <div class="table-responsive">
-                                <table class="table table-hover table-bordered align-middle mb-0">
-                                    <thead style="background: linear-gradient(135deg, #ac7fb6 0%, #f6b51d 100%); color: #fff;">
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Unit</th>
-                                            <th>Reference Range</th>
-                                            <th>Result</th>
-                                            <th>Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                         <tr>
-                                            <td colspan="5" class="text-start fw-bold">Component Title</td>
-                                        </tr>
-                                        <tr>
-                                            <td>test compo</td>
-                                            <td>EA</td>
-                                            <td>100-200</td>
-                                            <td>
-                                                <input type="text" class="form-control form-control-sm" />
-                                            </td>
-                                            <td>
-                                                <select class="form-select form-select-sm">
-                                                    <option value="" selected>Select status</option>
-                                                    <option value="normal">Normal</option>
-                                                    <option value="abnormal">Abnormal</option>
-                                                </select>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="mt-3">
-                                <textarea class="form-control form-control-sm" rows="3" placeholder="Comment"></textarea>
-                            </div>
-                            <div class="mt-3">
-                                <button type="button" class="btn btn-lg rounded-pill shadow-sm"
-                                        style="background: #6267ae; color: #fff; border: none;">
-                                    <i class="bi bi-check-lg me-2"></i> Save
-                                </button>
-                            </div>
-                        </div>
+                        @if(!empty($tests))
+                            @foreach($tests as $index => $test)
+                            
+            
+                                <div class="tab-pane fade {{ $index === 0 ? 'show active' : '' }}" 
+                                    id="test{{ $test->id }}">
+                                    <form method="POST" action="{{ url('admin/reports/store') }}">
+                                    @csrf
+                                    <input type="hidden" name="test_id" value="{{ $test->id }}">
+                                    <input type="hidden" name="appointment_id" value="{{ $appointment->id ?? '' }}">
+                                    <input type="hidden" name="test_result_code" value="{{ $report->first()->test_result_code ?? '' }}">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover table-bordered align-middle mb-0">
+                                            <thead style="background: linear-gradient(135deg, #ac7fb6 0%, #f6b51d 100%); color: #fff;">
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Unit</th>
+                                                    <th>Reference Range</th>
+                                                    <th>Result</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @forelse($test->parameters as $param)
+                                                    @if($param->row_type === 'title')
+                                                        <tr>
+                                                            <td colspan="5" class="text-start fw-bold">
+                                                                {{ $param->title }}
+                                                            </td>
+                                                        </tr>
+                                                    @elseif($param->row_type === 'component')
+                                                        <tr>
+                                                            <td>{{ $param->name }}</td>
+                                                            <td>{{ $param->unit }}</td>
+                                                            <td>{{ $param->reference_range }}</td>
+                                                            <td>
+                                                                <input type="text" 
+                                                                    name="results[{{ $test->id }}][{{ $param->id }}]" 
+                                                                    class="form-control form-control-sm" />
+                                                            </td>
+                                                            <td>
+                                                                <select name="status[{{ $test->id }}][{{ $param->id }}]" 
+                                                                        class="form-select form-select-sm">
+                                                                    <option value="" selected>Select status</option>
+                                                                    <option value="normal">Normal</option>
+                                                                    <option value="abnormal">Abnormal</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                    @endif
+                                                @empty
+                                                    <tr>
+                                                        <td colspan="5" class="text-center text-muted">
+                                                            No parameters found
+                                                        </td>
+                                                    </tr>
+                                                @endforelse
+                                            </tbody>
+                                        </table>
+                                    </div>
 
-                        {{-- Test Compo Tab --}}
-                        <div class="tab-pane fade" id="testCompo">
-                            <div class="table-responsive">
-                                <table class="table table-hover table-bordered align-middle mb-0">
-                                    <thead style="background: linear-gradient(135deg, #ac7fb6 0%, #f6b51d 100%); color: #fff;">
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Unit</th>
-                                            <th>Reference Range</th>
-                                            <th>Result</th>
-                                            <th>Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td colspan="5" class="text-start fw-bold">Component Title</td>
-                                        </tr>
-                                        <tr>
-                                            <td>test compo</td>
-                                            <td>EA</td>
-                                            <td>100-200</td>
-                                            <td>
-                                                <input type="text" class="form-control form-control-sm" />
-                                            </td>
-                                            <td>
-                                                <select class="form-select form-select-sm">
-                                                    <option value="" selected>Select status</option>
-                                                    <option value="normal">Normal</option>
-                                                    <option value="abnormal">Abnormal</option>
-                                                </select>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="mt-3">
-                                <textarea class="form-control form-control-sm" rows="3" placeholder="Comment"></textarea>
-                            </div>
-                            <div class="mt-3">
-                                <button type="button" class="btn btn-lg rounded-pill shadow-sm"
-                                        style="background: #6267ae; color: #fff; border: none;">
-                                    <i class="bi bi-check-lg me-2"></i> Save
-                                </button>
-                            </div>
-                        </div>
+                                    {{-- Comment --}}
+                                    <div class="mt-3">
+                                        <textarea name="comments[{{ $test->id }}]" 
+                                                class="form-control form-control-sm" 
+                                                rows="3" 
+                                                placeholder="Comment"></textarea>
+                                    </div>
+
+                                    {{-- Save Button --}}
+                                    <div class="mt-3">
+                                        <button type="submit" 
+                                                class="btn btn-lg rounded-pill shadow-sm"
+                                                style="background: #6267ae; color: #fff; border: none;">
+                                            <i class="bi bi-check-lg me-2"></i> Save
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>    
+                            @endforeach
+                        @endif  
 
                     </div>
                 </div>
             </div>
+
+
+
+      
+
+
+
 
         </div>
     </div>
@@ -175,14 +173,14 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body p-4">
-                <p class="mb-2"><strong>Name:</strong> dog</p>
-                <p class="mb-2"><strong>Gender:</strong> Male</p>
-                <p class="mb-2"><strong>Date of birth:</strong> 03-09-2021</p>
-                <p class="mb-2"><strong>Age:</strong> 3 Years</p>
-                <p class="mb-2"><strong>Owner name:</strong> 650492804</p>
-                <p class="mb-2"><strong>Phone:</strong> 650492804</p>
-                <p class="mb-2"><strong>Email:</strong> owner@test.com</p>
-                <p class="mb-2"><strong>Address:</strong> text</p>
+                <p class="mb-2"><strong>Name:</strong>{{$appointment->pet->name??''}}</p>
+                <p class="mb-2"><strong>Gender:</strong>{{$appointment->pet->gender??''}}</p>
+                <p class="mb-2"><strong>Date of birth:</strong> {{$appointment->pet->dob??''}}</p>
+                <p class="mb-2"><strong>Age:</strong> {{$appointment->pet->age??''}}</p>
+                <p class="mb-2"><strong>Owner name:</strong>{{$appointment->pet->petparent->name??''}}</p>
+                <p class="mb-2"><strong>Phone:</strong> {{$appointment->pet->petparent->mobile??''}}</p>
+                <p class="mb-2"><strong>Email:</strong> {{$appointment->pet->petparent->email??''}}</p>
+                <p class="mb-2"><strong>Address:</strong> {{$appointment->pet->petparent->address??''}}</p>
             </div>
             <div class="modal-footer" style="background: linear-gradient(135deg, #ac7fb6 0%, #f6b51d 100%);">
                 <button type="button" class="btn btn-light rounded-pill shadow-sm" style="background: #fff; color: #6267ae; border: none;" data-bs-dismiss="modal">Close</button>

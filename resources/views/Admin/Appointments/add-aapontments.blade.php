@@ -120,18 +120,6 @@ date_default_timezone_set('Asia/Kolkata');
 
                             <div class="col-md-6">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control rounded-3" id="pet_owner_name" 
-                                        name="pet_owner_name" value="{{ old('pet_owner_name') }}" placeholder=" " 
-                                        style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
-                                    <label for="pet_owner_name" style="color: #6267ae;">Pet Owner Name</label>
-                                    @error('pet_owner_name')
-                                        <span class="text-danger" style="color: #cc235e;">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-floating">
                                     <input type="tel" class="form-control rounded-3" id="phone" 
                                         name="phone" value="{{ old('phone') }}" placeholder=" " 
                                         pattern="\+91[0-9]{10}" title="Phone number must start with +91 followed by 10 digits"
@@ -142,6 +130,20 @@ date_default_timezone_set('Asia/Kolkata');
                                     @enderror
                                 </div>
                             </div>
+
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control rounded-3" id="pet_owner_name" 
+                                        name="pet_owner_name" value="{{ old('pet_owner_name') }}" placeholder=" " 
+                                        style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
+                                    <label for="pet_owner_name" style="color: #6267ae;">Pet Owner Name</label>
+                                    @error('pet_owner_name')
+                                        <span class="text-danger" style="color: #cc235e;">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                  
 
                             <div class="col-12 mt-4">
                                 <h5 class="fw-bold mb-3" style="color: #6267ae;">Pet Details</h5>

@@ -195,9 +195,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['prevent-back-history', 'is_
 
     Route::controller(ReportController::class)->group(function (){
         Route::get('report', 'index');
-        Route::get('generate-reports', 'getGenerateReport');
-        Route::get('reports/view', 'viewReport');
+        Route::get('generate-reports/{id}', 'getGenerateReport');
+        Route::get('reports/view/{id}', 'viewReport');
         Route::get('report/data-table','data_table');
+        Route::post('reports/store', 'store')->name('reports.store');
     });
 
 

@@ -1,5 +1,13 @@
 $(function () {
-    var table = $('#cims_data_table').DataTable({
+
+    var table = $('#cims_data_table');
+    
+    // Check if DataTable is already initialized
+    if ($.fn.DataTable.isDataTable('#cims_data_table')) {
+        table.DataTable().destroy(); // Destroy the existing instance
+    }
+    
+     table = $('#cims_data_table').DataTable({
         processing: true,
         serverSide: true,
         searching: false,
@@ -14,39 +22,47 @@ $(function () {
                 name: 'test_result_code'
             },
 
-            // {
-            //     data: 'branch_logo',
-            //     name: 'branch_logo',
-            //     orderable: false,
-            //     searchable: false
-            // },
-            // {
-            //     data: 'branch_name',
-            //     name: 'branch_name'
-            // },
-            // {
-            //     data: 'address',
-            //     name: 'address'
-            // },
-            // {
-            //     data: 'lab_incharge',
-            //     name: 'lab_incharge'
-            // },
-            // {
-            //     data: 'mobile',
-            //     name: 'mobile'
-            // },
-            // {
-            //     data: 'email',
-            //     name: 'email'
-            // },
+            {
+                data: 'pet_code',
+                name: 'pet_code'
+            },
 
-            // {
-            //     data: 'status',
-            //     name: 'status',
-            //     orderable: false,
-            //     searchable: false
-            // },
+            {
+                data: 'pet_name',
+                name: 'pet_name'
+            },
+
+            {
+                data: 'pet_parent',
+                name: 'pet_parent'
+            },
+
+            {
+                data: 'pet_parent_mobile',
+                name: 'pet_parent_mobile'
+            },
+
+            {
+                data: 'tests',
+                name: 'tests'
+            },
+
+            {
+                data: 'appointment_datetime',
+                name: 'appointment_datetime'
+            },
+
+            {
+                data: 'done',
+                name: 'done'
+            },
+
+            {
+                data: 'signed',
+                name: 'signed'
+            },
+
+
             {
                 data: 'action',
                 name: 'action',

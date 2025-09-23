@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 19, 2025 at 06:02 AM
+-- Generation Time: Sep 23, 2025 at 03:04 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -40,10 +40,12 @@ CREATE TABLE `appointments` (
   `subtotal` decimal(10,2) DEFAULT NULL,
   `discount` decimal(10,2) DEFAULT NULL,
   `total` decimal(10,2) DEFAULT NULL,
+  `paid_amount` decimal(10,2) DEFAULT NULL,
+  `due_amount` decimal(10,2) DEFAULT NULL,
   `payment_mode` varchar(255) DEFAULT NULL,
   `transaction_id` varchar(255) DEFAULT NULL,
   `payment_status` enum('Pending','Completed','Failed') DEFAULT NULL,
-  `payment_date` date DEFAULT NULL,
+  `payment_date` datetime DEFAULT NULL,
   `created_ip_address` varchar(255) DEFAULT NULL,
   `modified_ip_address` varchar(255) DEFAULT NULL,
   `created_by` bigint(20) DEFAULT NULL,
@@ -57,9 +59,18 @@ CREATE TABLE `appointments` (
 -- Dumping data for table `appointments`
 --
 
-INSERT INTO `appointments` (`id`, `appointment_code`, `lab_id`, `referee_doctor_id`, `appointment_date`, `appointment_time`, `pet_id`, `petowner_id`, `notes`, `subtotal`, `discount`, `total`, `payment_mode`, `transaction_id`, `payment_status`, `payment_date`, `created_ip_address`, `modified_ip_address`, `created_by`, `modified_by`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'APT001', 1, 1, '2025-09-18', '13:33:00', 3, 1, 'NA', 1000.00, 100.00, 900.00, 'Cash', NULL, 'Pending', '2025-09-18', '127.0.0.1', '127.0.0.1', 1, 1, 'active', '2025-09-18 02:30:49', '2025-09-18 02:30:49'),
-(2, 'APT002', 1, 1, '2025-09-18', '18:00:00', 3, 1, 'NA', 200.00, NULL, 200.00, 'Cash', '1233', 'Pending', '2025-09-18', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-18 07:30:48', '2025-09-18 07:30:48');
+INSERT INTO `appointments` (`id`, `appointment_code`, `lab_id`, `referee_doctor_id`, `appointment_date`, `appointment_time`, `pet_id`, `petowner_id`, `notes`, `subtotal`, `discount`, `total`, `paid_amount`, `due_amount`, `payment_mode`, `transaction_id`, `payment_status`, `payment_date`, `created_ip_address`, `modified_ip_address`, `created_by`, `modified_by`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'APT001', 1, 1, '2025-09-18', '13:33:00', 3, 1, 'NA', 1000.00, 100.00, 900.00, NULL, NULL, 'Cash', NULL, 'Pending', '2025-09-18 00:00:00', '127.0.0.1', '127.0.0.1', 1, 1, 'active', '2025-09-18 02:30:49', '2025-09-18 02:30:49'),
+(2, 'APT002', 1, 1, '2025-09-18', '18:00:00', 3, 1, 'NA', 200.00, NULL, 200.00, NULL, NULL, 'Cash', '1233', 'Pending', '2025-09-18 00:00:00', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-18 07:30:48', '2025-09-18 07:30:48'),
+(3, 'APT003', 1, 1, '2025-09-22', '10:20:00', 3, 1, NULL, 900.00, NULL, 900.00, NULL, NULL, 'Cash', NULL, 'Completed', '2025-09-22 00:00:00', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-21 23:17:53', '2025-09-21 23:17:53'),
+(4, 'APT004', 1, 1, '2025-09-22', '12:10:00', 3, 1, NULL, 900.00, 50.00, 850.00, NULL, NULL, 'Cash', NULL, 'Completed', '2025-09-22 00:00:00', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-21 23:34:26', '2025-09-21 23:34:26'),
+(5, 'APT005', 1, 1, '2025-09-22', '13:49:00', 3, 1, NULL, 1700.00, 100.00, 1600.00, NULL, NULL, 'Cash', NULL, 'Completed', '2025-09-22 13:49:00', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-22 02:49:42', '2025-09-22 02:49:42'),
+(6, 'APT006', 1, 1, '2025-09-22', '15:06:00', 3, 1, NULL, 900.00, 50.00, 850.00, 700.00, 150.00, 'Cash', NULL, 'Pending', '2025-09-22 15:06:00', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-22 04:08:02', '2025-09-22 04:08:02'),
+(7, 'APT007', 1, 1, '2025-09-22', '15:06:00', 3, 1, NULL, 900.00, 50.00, 850.00, 700.00, 150.00, 'Cash', NULL, 'Pending', '2025-09-22 15:06:00', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-22 04:09:46', '2025-09-22 04:09:46'),
+(8, 'APT008', 1, 1, '2025-09-22', '16:30:00', 3, 1, NULL, 900.00, 50.00, 850.00, 700.00, 150.00, 'UPI', '1233', 'Completed', '2025-09-22 16:30:00', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-22 05:31:58', '2025-09-22 05:31:58'),
+(9, 'APT009', 1, 1, '2025-09-22', '17:37:00', 3, 1, NULL, 900.00, 50.00, 850.00, 600.00, 250.00, 'Card', NULL, 'Pending', '2025-09-22 17:37:00', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-22 06:39:24', '2025-09-22 06:39:24'),
+(10, 'APT010', 1, 1, '2025-09-23', '10:57:00', 3, 1, NULL, 2500.00, 100.00, 2400.00, 2400.00, 0.00, 'Cash', NULL, 'Completed', '2025-09-23 10:57:00', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-22 23:58:30', '2025-09-22 23:58:30'),
+(11, 'APT011', 1, 1, '2025-09-23', '16:00:00', 3, 1, NULL, 4300.00, 300.00, 4000.00, 4000.00, 0.00, 'Cash', NULL, 'Completed', '2025-09-23 16:58:00', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-23 05:59:57', '2025-09-23 05:59:58');
 
 -- --------------------------------------------------------
 
@@ -83,7 +94,24 @@ CREATE TABLE `appointment_tests` (
 INSERT INTO `appointment_tests` (`id`, `appointment_id`, `test_id`, `price`, `created_at`, `updated_at`) VALUES
 (1, 1, 4, NULL, '2025-09-18 02:30:50', '2025-09-18 02:30:50'),
 (2, 1, 3, NULL, '2025-09-18 02:30:50', '2025-09-18 02:30:50'),
-(3, 2, 4, NULL, '2025-09-18 07:30:49', '2025-09-18 07:30:49');
+(3, 2, 4, NULL, '2025-09-18 07:30:49', '2025-09-18 07:30:49'),
+(4, 3, 2, NULL, '2025-09-21 23:17:53', '2025-09-21 23:17:53'),
+(5, 4, 2, NULL, '2025-09-21 23:34:26', '2025-09-21 23:34:26'),
+(6, 5, 2, NULL, '2025-09-22 02:49:42', '2025-09-22 02:49:42'),
+(7, 5, 3, NULL, '2025-09-22 02:49:42', '2025-09-22 02:49:42'),
+(8, 6, 2, NULL, '2025-09-22 04:08:02', '2025-09-22 04:08:02'),
+(9, 7, 2, NULL, '2025-09-22 04:09:46', '2025-09-22 04:09:46'),
+(10, 8, 2, NULL, '2025-09-22 05:31:58', '2025-09-22 05:31:58'),
+(11, 9, 2, NULL, '2025-09-22 06:39:24', '2025-09-22 06:39:24'),
+(12, 10, 2, NULL, '2025-09-22 23:58:30', '2025-09-22 23:58:30'),
+(13, 10, 3, NULL, '2025-09-22 23:58:30', '2025-09-22 23:58:30'),
+(14, 10, 5, NULL, '2025-09-22 23:58:30', '2025-09-22 23:58:30'),
+(15, 11, 2, NULL, '2025-09-23 05:59:58', '2025-09-23 05:59:58'),
+(16, 11, 3, NULL, '2025-09-23 05:59:58', '2025-09-23 05:59:58'),
+(17, 11, 4, NULL, '2025-09-23 05:59:58', '2025-09-23 05:59:58'),
+(18, 11, 5, NULL, '2025-09-23 05:59:58', '2025-09-23 05:59:58'),
+(19, 11, 6, NULL, '2025-09-23 05:59:58', '2025-09-23 05:59:58'),
+(20, 11, 10, NULL, '2025-09-23 05:59:58', '2025-09-23 05:59:58');
 
 -- --------------------------------------------------------
 
@@ -821,7 +849,7 @@ CREATE TABLE `master_admins` (
 --
 
 INSERT INTO `master_admins` (`id`, `user_type`, `user_id`, `user_name`, `email`, `password`, `mobile_no`, `role_id`, `address`, `user_profile_image_path`, `user_profile_image_name`, `fcm_token`, `access_token`, `last_login`, `remember_token`, `otp`, `status`, `created_ip_address`, `modified_ip_address`, `created_by`, `modified_by`, `created_at`, `updated_at`) VALUES
-(1, 'system', NULL, 'ChromoXpert', 'admin@gmail.com', '$2y$10$InJ0GHoOaHXJHMuEYqTMye.t5E4QfWDrzNLW/pltguVNM/OZCpFUm', NULL, '1', NULL, NULL, NULL, NULL, NULL, '2025-09-18 10:14:31', NULL, NULL, 'active', NULL, NULL, NULL, NULL, NULL, '2025-09-18 04:44:31'),
+(1, 'system', NULL, 'ChromoXpert', 'admin@gmail.com', '$2y$10$InJ0GHoOaHXJHMuEYqTMye.t5E4QfWDrzNLW/pltguVNM/OZCpFUm', NULL, '1', NULL, NULL, NULL, NULL, NULL, '2025-09-23 04:43:10', NULL, NULL, 'active', NULL, NULL, NULL, NULL, NULL, '2025-09-22 23:13:10'),
 (2, 'system', NULL, 'Deepak Tripathi', 'deepakmegreat@gmail.com', '$2y$10$xNQAIXTjEX.0BWxRGhCRQOij7hFkletib0oR9o33ExwSrzTp3EzSi', '07318560108', '2', 'Bair Amad Karari', NULL, NULL, NULL, NULL, '2025-09-02 09:26:03', NULL, NULL, 'active', '127.0.0.1', NULL, 1, NULL, '2025-07-24 03:52:01', '2025-09-02 03:56:03'),
 (3, 'system', NULL, 'Deepak Tripathi', 'rec@gmail.com', '$2y$10$NJsMZ1s/k0ahYflkrDmJcu9BjBRS9URYgC0V8vb3jX.bltSLnMPZ2', '7318560108', '3', 'Bair Amad Karari', NULL, NULL, NULL, NULL, '2025-08-14 08:22:15', NULL, NULL, 'delete', '127.0.0.1', '127.0.0.1', 1, 1, '2025-08-14 02:51:24', '2025-08-14 02:52:15'),
 (4, 'customer', NULL, 'Deepak Tripathi', 'deep@gmail.com', '$2y$10$QpGDu/lTa1t9C5zFgWtOu.eLUj1Qdem5XgTYLBz7oGrC.BRWITHQe', '7318560108', NULL, 'Hello this is Deepak Address', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', '127.0.0.1', '127.0.0.1', 1, 1, '2025-09-01 01:16:48', '2025-09-01 03:44:11'),
@@ -875,7 +903,11 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (28, '2025_09_10_122330_create_appointments_table', 12),
 (29, '2025_09_11_115035_create_appointment_tests_table', 13),
 (30, '2025_09_12_113402_add_transaction_details_to_appointments_table', 14),
-(32, '2025_09_05_080504_create_tests_table', 15);
+(32, '2025_09_05_080504_create_tests_table', 15),
+(33, '2025_09_17_124719_create_test_results_table', 16),
+(34, '2025_09_22_090944_add_test_for_to_tests_table', 16),
+(35, '2025_09_22_091720_add_paid_amount_to_appointments_table', 17),
+(36, '2025_09_23_070550_add_signed_columns_to_test_results_table', 18);
 
 -- --------------------------------------------------------
 
@@ -903,7 +935,17 @@ CREATE TABLE `parameter_options` (
 
 INSERT INTO `parameter_options` (`id`, `parameter_id`, `option_value`, `sort_order`, `created_ip_address`, `modified_ip_address`, `created_by`, `modified_by`, `status`, `created_at`, `updated_at`) VALUES
 (1, 12, 'Option 1', 0, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-18 00:22:42', '2025-09-18 00:22:42'),
-(2, 12, 'option 2', 1, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-18 00:22:42', '2025-09-18 00:22:42');
+(2, 12, 'option 2', 1, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-18 00:22:42', '2025-09-18 00:22:42'),
+(3, 16, 'Normal', 0, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:17:06', '2025-09-22 04:17:06'),
+(4, 16, 'abnormal', 1, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:17:06', '2025-09-22 04:17:06'),
+(5, 20, 'Normal', 0, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:19:01', '2025-09-22 04:19:01'),
+(6, 20, 'abnormal', 1, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:19:01', '2025-09-22 04:19:01'),
+(7, 24, 'option 1', 0, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:23:30', '2025-09-22 04:23:30'),
+(8, 24, 'option 1', 1, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:23:30', '2025-09-22 04:23:30'),
+(9, 32, 'option 1', 0, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:29:26', '2025-09-22 04:29:26'),
+(10, 32, 'option 1', 1, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:29:26', '2025-09-22 04:29:26'),
+(11, 36, 'option 1', 0, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:38:28', '2025-09-22 04:38:28'),
+(12, 36, 'option 2', 1, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:38:28', '2025-09-22 04:38:28');
 
 -- --------------------------------------------------------
 
@@ -1135,6 +1177,7 @@ CREATE TABLE `tests` (
   `short_name` varchar(255) DEFAULT NULL,
   `department_id` bigint(20) DEFAULT NULL,
   `sample_type` varchar(255) DEFAULT NULL,
+  `test_for` enum('all','male','female') DEFAULT NULL,
   `base_price` decimal(10,2) NOT NULL,
   `precautions` text DEFAULT NULL,
   `created_ip_address` varchar(255) DEFAULT NULL,
@@ -1150,11 +1193,18 @@ CREATE TABLE `tests` (
 -- Dumping data for table `tests`
 --
 
-INSERT INTO `tests` (`id`, `test_code`, `name`, `short_name`, `department_id`, `sample_type`, `base_price`, `precautions`, `created_ip_address`, `modified_ip_address`, `created_by`, `modified_by`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'TC001', 'Deepak Tripathi', 'CBC', 1, 'Blood', 600.00, 'Na', '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-16 00:21:22', '2025-09-16 00:21:22'),
-(2, 'TC002', 'Test1', 'CBC', 2, 'Blood', 900.00, 'NA', '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-16 02:05:35', '2025-09-16 02:05:35'),
-(3, 'TC003', 'Test2', 'CBC', 2, 'Blood', 800.00, 'NA', '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-16 02:06:23', '2025-09-16 02:06:23'),
-(4, 'TC004', 'Test23', '23', 5, 'Blood', 200.00, 'NA', '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-18 00:22:42', '2025-09-18 00:22:42');
+INSERT INTO `tests` (`id`, `test_code`, `name`, `short_name`, `department_id`, `sample_type`, `test_for`, `base_price`, `precautions`, `created_ip_address`, `modified_ip_address`, `created_by`, `modified_by`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'TC001', 'Deepak Tripathi', 'CBC', 1, 'Blood', 'all', 600.00, 'Na', '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-16 00:21:22', '2025-09-16 00:21:22'),
+(2, 'TC002', 'Test1', 'CBC', 2, 'Blood', 'all', 900.00, 'NA', '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-16 02:05:35', '2025-09-16 02:05:35'),
+(3, 'TC003', 'Test2', 'CBC', 2, 'Blood', 'all', 800.00, 'NA', '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-16 02:06:23', '2025-09-16 02:06:23'),
+(4, 'TC004', 'Test23', '23', 5, 'Blood', 'all', 200.00, 'NA', '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-18 00:22:42', '2025-09-18 00:22:42'),
+(5, 'TC005', 'Test', 'Tst', 1, 'Blood', 'all', 800.00, 'NA', '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:17:06', '2025-09-22 04:17:06'),
+(6, 'TC006', 'Test For Female', 'Female', 1, 'Blood', 'all', 800.00, 'NA', '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:19:01', '2025-09-22 04:19:01'),
+(7, 'TC007', 'Test For Female 1', 'Femaile 1', 1, 'Blood', 'all', 700.00, 'NA', '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:23:30', '2025-09-22 04:23:30'),
+(8, 'TC008', 'Test Female 3', 'Female 3', 1, 'Blood', 'all', 800.00, 'NA', '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:27:15', '2025-09-22 04:27:15'),
+(9, 'TC009', 'test For  male', 'TFM', 1, 'Blood', 'all', 900.00, 'NA', '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:29:26', '2025-09-22 04:29:26'),
+(10, 'TC010', 'Test1 for male', 't1M', 1, 'Blood', NULL, 800.00, 'NA', '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:38:28', '2025-09-22 04:38:28'),
+(11, 'TC011', 'Deepak Tetting Test', 'CBC', 1, 'Blood', 'male', 900.00, 'NA', '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:42:37', '2025-09-22 04:42:37');
 
 -- --------------------------------------------------------
 
@@ -1197,7 +1247,78 @@ INSERT INTO `test_parameters` (`id`, `test_id`, `row_type`, `name`, `title`, `un
 (9, 3, 'title', NULL, 'aewasdasd', NULL, 'text', NULL, 2, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-16 02:06:23', '2025-09-16 02:06:23'),
 (10, 3, 'component', 'zxczx', NULL, 'mill/cumm', 'text', '4.5-5.5', 3, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-16 02:06:23', '2025-09-16 02:06:23'),
 (11, 4, 'title', NULL, 'Hemoglobin', NULL, 'text', NULL, 0, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-18 00:22:42', '2025-09-18 00:22:42'),
-(12, 4, 'component', 'wwwere', NULL, 'g/dl', 'select', '13.0-17.0', 1, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-18 00:22:42', '2025-09-18 00:22:42');
+(12, 4, 'component', 'wwwere', NULL, 'g/dl', 'select', '13.0-17.0', 1, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-18 00:22:42', '2025-09-18 00:22:42'),
+(13, 5, 'title', NULL, 'Hemoglobin', NULL, 'text', NULL, 0, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:17:06', '2025-09-22 04:17:06'),
+(14, 5, 'component', 'wwwere', NULL, 'g/dl', 'text', '13.0-17.0', 1, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:17:06', '2025-09-22 04:17:06'),
+(15, 5, 'title', NULL, 'aewasdasd', NULL, 'text', NULL, 2, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:17:06', '2025-09-22 04:17:06'),
+(16, 5, 'component', 'ASDasd', NULL, 'mill/cumm', 'select', '4.5-5.5', 3, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:17:06', '2025-09-22 04:17:06'),
+(17, 6, 'title', NULL, 'Hemoglobin', NULL, 'text', NULL, 0, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:19:01', '2025-09-22 04:19:01'),
+(18, 6, 'component', 'wwwere', NULL, 'g/dl', 'text', '13.0-17.0', 1, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:19:01', '2025-09-22 04:19:01'),
+(19, 6, 'title', NULL, 'aewasdasd', NULL, 'text', NULL, 2, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:19:01', '2025-09-22 04:19:01'),
+(20, 6, 'component', 'zxczx', NULL, 'mill/cumm', 'select', '4.5-5.5', 3, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:19:01', '2025-09-22 04:19:01'),
+(21, 7, 'title', NULL, 'Hemoglobin', NULL, 'text', NULL, 0, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:23:30', '2025-09-22 04:23:30'),
+(22, 7, 'component', 'dsfds', NULL, 'g/dl', 'text', '13.0-17.0', 1, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:23:30', '2025-09-22 04:23:30'),
+(23, 7, 'title', NULL, 'aewasdasd', NULL, 'text', NULL, 2, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:23:30', '2025-09-22 04:23:30'),
+(24, 7, 'component', 'ASDasd', NULL, 'mill/cumm', 'select', '4.5-5.5', 3, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:23:30', '2025-09-22 04:23:30'),
+(25, 8, 'title', NULL, 'Hemoglobin', NULL, 'text', NULL, 0, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:27:15', '2025-09-22 04:27:15'),
+(26, 8, 'component', 'Volume', NULL, 'g/dl', 'text', '13.0-17.0', 1, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:27:15', '2025-09-22 04:27:15'),
+(27, 8, 'title', NULL, 'aewasdasd', NULL, 'text', NULL, 2, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:27:15', '2025-09-22 04:27:15'),
+(28, 8, 'component', 'ASDasd', NULL, 'mill/cumm', 'text', '4.5-5.5', 3, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:27:15', '2025-09-22 04:27:15'),
+(29, 9, 'title', NULL, 'Hemoglobin', NULL, 'text', NULL, 0, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:29:26', '2025-09-22 04:29:26'),
+(30, 9, 'component', 'Volume', NULL, 'g/dl', 'text', '13.0-17.0', 1, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:29:26', '2025-09-22 04:29:26'),
+(31, 9, 'title', NULL, 'aewasdasd', NULL, 'text', NULL, 2, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:29:26', '2025-09-22 04:29:26'),
+(32, 9, 'component', 'ASDasd', NULL, 'mill/cumm', 'select', '4.5-5.5', 3, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:29:26', '2025-09-22 04:29:26'),
+(33, 10, 'title', NULL, 'Hemoglobin', NULL, 'text', NULL, 0, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:38:28', '2025-09-22 04:38:28'),
+(34, 10, 'component', 'Volume', NULL, 'g/dl', 'text', '13.0-17.0', 1, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:38:28', '2025-09-22 04:38:28'),
+(35, 10, 'title', NULL, 'RBC Count', NULL, 'text', NULL, 2, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:38:28', '2025-09-22 04:38:28'),
+(36, 10, 'component', 'ASDasd', NULL, 'mill/cumm', 'select', '4.5-5.5', 3, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:38:28', '2025-09-22 04:38:28'),
+(37, 11, 'title', NULL, 'Hemoglobin', NULL, 'text', NULL, 0, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:42:38', '2025-09-22 04:42:38'),
+(38, 11, 'component', 'dsfds', NULL, 'g/dl', 'text', '13.0-17.0', 1, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:42:38', '2025-09-22 04:42:38'),
+(39, 11, 'title', NULL, 'RBC Count', NULL, 'text', NULL, 2, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:42:38', '2025-09-22 04:42:38'),
+(40, 11, 'component', 'ASDasd', NULL, 'mill/cumm', 'text', '4.5-5.5', 3, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:42:38', '2025-09-22 04:42:38');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `test_results`
+--
+
+CREATE TABLE `test_results` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `test_result_code` varchar(255) DEFAULT NULL,
+  `appointment_id` bigint(20) DEFAULT NULL,
+  `test_id` bigint(20) DEFAULT NULL,
+  `result` text DEFAULT NULL,
+  `priority` enum('Low','Medium','High') NOT NULL DEFAULT 'Medium',
+  `status` enum('pending','completed','failed') NOT NULL DEFAULT 'pending',
+  `comment` text DEFAULT NULL,
+  `signed_by_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `signed_date` datetime DEFAULT NULL,
+  `done` enum('yes','no') NOT NULL DEFAULT 'no',
+  `created_ip_address` varchar(255) DEFAULT NULL,
+  `modified_ip_address` varchar(255) DEFAULT NULL,
+  `created_by` bigint(20) UNSIGNED DEFAULT NULL,
+  `modified_by` bigint(20) UNSIGNED DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `test_results`
+--
+
+INSERT INTO `test_results` (`id`, `test_result_code`, `appointment_id`, `test_id`, `result`, `priority`, `status`, `comment`, `signed_by_id`, `signed_date`, `done`, `created_ip_address`, `modified_ip_address`, `created_by`, `modified_by`, `created_at`, `updated_at`) VALUES
+(1, 'TR0008', 8, 2, NULL, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-22 05:31:58', '2025-09-22 05:31:58'),
+(2, 'TR0009', 9, 2, NULL, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-22 06:39:24', '2025-09-22 06:39:24'),
+(3, 'TR0010', 10, 2, NULL, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-22 23:58:30', '2025-09-22 23:58:30'),
+(4, 'TR0010', 10, 3, NULL, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-22 23:58:30', '2025-09-22 23:58:30'),
+(5, 'TR0010', 10, 5, NULL, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-22 23:58:30', '2025-09-22 23:58:30'),
+(6, 'TR0011', 11, 2, '', 'Medium', 'completed', NULL, NULL, NULL, 'yes', NULL, '127.0.0.1', NULL, NULL, '2025-09-23 05:59:58', '2025-09-23 06:32:18'),
+(7, 'TR0011', 11, 3, NULL, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-23 05:59:58', '2025-09-23 05:59:58'),
+(8, 'TR0011', 11, 4, NULL, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-23 05:59:58', '2025-09-23 05:59:58'),
+(9, 'TR0011', 11, 5, NULL, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-23 05:59:58', '2025-09-23 05:59:58'),
+(10, 'TR0011', 11, 6, NULL, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-23 05:59:58', '2025-09-23 05:59:58'),
+(11, 'TR0011', 11, 10, NULL, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-23 05:59:58', '2025-09-23 05:59:58');
 
 -- --------------------------------------------------------
 
@@ -1379,6 +1500,12 @@ ALTER TABLE `test_parameters`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `test_results`
+--
+ALTER TABLE `test_results`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -1399,13 +1526,13 @@ ALTER TABLE `visual_settings`
 -- AUTO_INCREMENT for table `appointments`
 --
 ALTER TABLE `appointments`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `appointment_tests`
 --
 ALTER TABLE `appointment_tests`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `branches`
@@ -1459,13 +1586,13 @@ ALTER TABLE `master_admins`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `parameter_options`
 --
 ALTER TABLE `parameter_options`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -1507,13 +1634,19 @@ ALTER TABLE `states`
 -- AUTO_INCREMENT for table `tests`
 --
 ALTER TABLE `tests`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `test_parameters`
 --
 ALTER TABLE `test_parameters`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+
+--
+-- AUTO_INCREMENT for table `test_results`
+--
+ALTER TABLE `test_results`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `users`
