@@ -16,6 +16,7 @@ use App\Models\Master\Role_privilege;
 use App\Models\Department;
 use App\Models\TestResults;
 use App\Models\Appointment;
+use App\Models\TestResultComponent;
 
 class ReportController extends Controller
 {
@@ -45,25 +46,34 @@ class ReportController extends Controller
         return view('Admin.Reports.index'); 
     }
 
-    public function getGenerateReport($id){
 
+
+
+    public function getGenerateReport($id)
+    {
+       
         $testIdArray = TestResults::where('test_result_code', $id)->pluck('test_id')->toArray();
+        $appointmentId = TestResults::where('test_result_code', $id)->value('appointment_id');
+        $tests = Test::whereIn('id', $testIdArray)->with('parameters')->get();
+        $appointment = Appointment::with('pet.petparent')->where('id', $appointmentId)->first();
+        $report = TestResults::with(['test.parameters', 'components'])->where('test_result_code', $id)->get();
 
+        return view('Admin.Reports.report-generate', compact('report', 'tests', 'appointment', 'id'));
+    }
+
+
+
+    public function viewReport($id){
+        
+        $testIdArray = TestResults::where('test_result_code', $id)->pluck('test_id')->toArray();
         $appointmentId = TestResults::where('test_result_code', $id)->value('appointment_id');
 
         $tests = Test::whereIn('id', $testIdArray)->with('parameters')->get();
 
         $appointment = Appointment::with('pet.petparent')->where('id', $appointmentId)->first();
+        $report = TestResults::with(['test.parameters', 'components'])->where('test_result_code', $id)->get();
 
-        $report = TestResults::with('test')->where('test_result_code', $id)->get();  
-
-
-        // dd($report);
-        return view('Admin.Reports.report-generate', compact('report', 'tests', 'appointment'));
-    }
-
-    public function viewReport($id){
-        return view('Admin.Reports.report-view');
+        return view('Admin.Reports.report-view',compact('report', 'tests', 'appointment','id'));
     }
 
      
@@ -199,51 +209,125 @@ class ReportController extends Controller
     }
 
 
-     public function store(Request $request)
-    {
+    //  public function store(Request $request)
+    //  {
+
+
+    //     dd($request->all());
+
+    //     $request->validate([
+    //         'test_id' => 'required|exists:tests,id',
+    //         'appointment_id' => 'required|exists:appointments,id',
+    //         'test_result_code' => 'required|string',
+    //         'results' => 'required|array',
+    //         'results.*' => 'array',
+    //         'status' => 'required|array',
+    //         'status.*' => 'array',
+    //         'comments' => 'required|array',
+    //         'comments.*' => 'nullable|string',
+    //     ]);
+
         
-        $request->validate([
+    //     $testResult = TestResults::where('test_id', $request->test_id)
+    //         ->where('appointment_id', $request->appointment_id)
+    //         ->where('test_result_code', $request->test_result_code)
+    //         ->first();
+
+    //     if (!$testResult) {
+    //         return redirect()->back()->with('error', 'Test result record not found.');
+    //     }
+
+       
+    //     $resultData = [];
+    //     foreach ($request->results[$request->test_id] as $paramId => $resultValue) {
+    //         $status = $request->status[$request->test_id][$paramId] ?? null;
+    //         if ($resultValue || $status) {
+    //             $resultData[$paramId] = [
+    //                 'result' => $resultValue,
+    //                 'status' => $status,
+    //             ];
+    //         }
+    //     }
+
+       
+    //     $testResult->update([
+    //         'result' => json_encode($resultData), 
+    //         'comment' => $request->comments[$request->test_id] ?? null,
+    //         'status' => 'completed',
+    //         'done' => 'yes', 
+    //         'modified_by' => Auth::id(), 
+    //         'modified_ip_address' => $request->ip(), 
+    //         'updated_at' => now(),
+    //     ]);
+
+    //     return redirect()->back()->with('success', 'Test results updated successfully.');
+    //  }
+
+
+
+    public function store(Request $request)
+    {
+        // Validate the incoming request
+        $validated = $request->validate([
             'test_id' => 'required|exists:tests,id',
             'appointment_id' => 'required|exists:appointments,id',
             'test_result_code' => 'required|string',
             'results' => 'required|array',
             'results.*' => 'array',
+            'results.*.*' => 'nullable|string', // Allow nullable string for result values
             'status' => 'required|array',
             'status.*' => 'array',
+            'status.*.*' => 'nullable|in:normal,abnormal', // Restrict status to valid values
             'comments' => 'required|array',
-            'comments.*' => 'nullable|string',
+            'comments.*' => 'nullable|string', // Allow nullable comments
         ]);
 
-        
-        $testResult = TestResults::where('test_id', $request->test_id)
-            ->where('appointment_id', $request->appointment_id)
-            ->where('test_result_code', $request->test_result_code)
-            ->first();
+        // Find or create the TestResults record
+        $testResult = TestResults::firstOrCreate(
+            [
+                'test_id' => $validated['test_id'],
+                'appointment_id' => $validated['appointment_id'],
+                'test_result_code' => $validated['test_result_code'],
+            ],
+            [
+                'status' => 'pending',
+                'done' => 'no',
+                'created_by' => Auth::id(),
+                'created_ip_address' => $request->ip(),
+            ]
+        );
 
-        if (!$testResult) {
-            return redirect()->back()->with('error', 'Test result record not found.');
-        }
-
-       
+        // Prepare result data for TestResults
         $resultData = [];
-        foreach ($request->results[$request->test_id] as $paramId => $resultValue) {
-            $status = $request->status[$request->test_id][$paramId] ?? null;
+        foreach ($validated['results'][$validated['test_id']] as $paramId => $resultValue) {
+            $status = $validated['status'][$validated['test_id']][$paramId] ?? null;
             if ($resultValue || $status) {
                 $resultData[$paramId] = [
                     'result' => $resultValue,
                     'status' => $status,
                 ];
+
+                // Store or update individual test result component
+                TestResultComponent::updateOrCreate(
+                    [
+                        'test_result_id' => $testResult->id,
+                        'component_id' => $paramId,
+                    ],
+                    [
+                        'result' => $resultValue,
+                        'result_status' => $status,
+                    ]
+                );
             }
         }
 
-       
+        // Update TestResults with aggregated data
         $testResult->update([
-            'result' => json_encode($resultData), 
-            'comment' => $request->comments[$request->test_id] ?? null,
+            'comment' => $validated['comments'][$validated['test_id']] ?? null,
             'status' => 'completed',
-            'done' => 'yes', 
-            'modified_by' => Auth::id(), 
-            'modified_ip_address' => $request->ip(), 
+            'done' => 'yes',
+            'modified_by' => Auth::id(),
+            'modified_ip_address' => $request->ip(),
             'updated_at' => now(),
         ]);
 

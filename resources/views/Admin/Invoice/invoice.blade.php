@@ -1,74 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>ChromoXpert Diagnostics - Invoice</title>
     <style>
+        @page {
+            size: A5;
+            margin: 0.5cm;
+        }
+        
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
+            margin: 0;
+            padding: 0;
             background-color: #fff;
             color: #000;
+            font-size: 11px;
+            line-height: 1.2;
         }
+        
         .container {
-            max-width: 800px;
-            margin: auto;
-            padding: 20px;
-            border: 1px solid #000;
+            width: 100%;
+            max-width: 14.8cm;
+            margin: 0 auto;
+            padding: 8px;
+            box-sizing: border-box;
         }
+        
         .header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 8px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #000;
         }
+        
         .header h2 {
-            font-size: 28px;
-            margin-bottom: 5px;
+            font-size: 16px;
+            margin: 0 0 3px 0;
         }
+        
         .header p {
-            font-size: 14px;
-            margin: 2px 0;
+            font-size: 9px;
+            margin: 1px 0;
         }
-        .details {
-            margin-bottom: 30px;
-        }
-        .details p {
-            margin: 5px 0;
-            font-size: 14px;
-        }
-        table {
+        
+        .invoice-info table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 14px;
-            margin-bottom: 20px;
+            border: none;
+            margin-bottom: 8px;
         }
-        th, td {
+        
+        .invoice-info td {
+            border: none;
+            padding: 0;
+            vertical-align: top;
+        }
+        
+        .info-group {
+            width: 100%; /* Full width within td */
+        }
+        
+        .info-item {
+            margin: 3px 0;
+            font-size: 10px;
+            line-height: 1.3;
+            padding: 1px 0;
+        }
+        
+        table.tests {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 10px;
+            margin-bottom: 8px;
+        }
+        
+        .tests th, .tests td {
             border: 1px solid #000;
-            padding: 8px;
+            padding: 5px;
             text-align: left;
         }
-        th {
+        
+        .tests th {
             font-weight: bold;
             background-color: #f0f0f0;
         }
-        .summary {
-            margin-top: 20px;
-            font-size: 14px;
+        
+        .tests td.price {
+            text-align: right;
         }
-        .summary p {
-            margin: 5px 0;
+        
+        .amount-summary {
+            margin-top: 10px;
+            font-size: 10px;
+            border-top: 1px solid #000;
+            padding-top: 5px;
         }
-        .footer {
-            margin-top: 40px;
-            font-size: 12px;
+        
+        .amount-item {
+            margin: 3px 0;
             display: flex;
             justify-content: space-between;
+            width: 200px;
+            margin-left: auto;
         }
+        
+        .footer {
+            margin-top: 15px;
+            font-size: 9px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-top: 1px solid #000;
+            padding-top: 8px;
+        }
+        
+        .footer .signature {
+            text-align: right;
+        }
+        
         @media print {
             body {
                 margin: 0;
+                padding: 0;
             }
+            
             .container {
                 border: none;
                 padding: 0;
@@ -86,20 +143,34 @@
             <p>Email: info@chromoxpert.com | Web: http://chromoxpert.com/</p>
         </div>
 
-        <div class="details">
-            <p><strong>Invoice No:</strong> {{ $appointmentDetails->appointment_code ?? "" }}</p>
-            <p><strong>Date:</strong> {{ \Carbon\Carbon::parse($appointmentDetails->appointment_date . ' ' . $appointmentDetails->appointment_time)->format('d M Y, g:i A') }}</p>
-            <p><strong>Pet ID:</strong> {{ $appointmentDetails->pet->pet_code ?? "" }}</p>
-            <p><strong>Lab ID:</strong> {{ $appointmentDetails->branch->branch_code ?? "" }}</p>
-            <p><strong>Pet Name:</strong> {{ $appointmentDetails->pet->name ?? "" }}</p>
-            <p><strong>Owner Name:</strong> {{ $appointmentDetails->pet->petparent->name ?? "" }}</p>
-            <p><strong>Contact:</strong> {{ $appointmentDetails->pet->petparent->mobile ?? "" }}</p>
-            <p><strong>Species:</strong> {{ $appointmentDetails->pet->species ?? "" }}</p>
-            <p><strong>Age:</strong> {{ $appointmentDetails->pet->age ?? "" }}</p>
-            <p><strong>Referred By:</strong> {{ $appointmentDetails->refereeDoctor->doctor_name ?? "Self" }}</p>
+        <div class="invoice-info">
+            <table>
+                <tr>
+                    <td style="width: 50%;">
+                        <!-- Left column -->
+                        <div class="info-group">
+                            <div class="info-item"><strong>Invoice No:</strong> {{ $appointmentDetails->invoice_no ?? 'APT' . str_pad($appointmentDetails->id, 3, '0', STR_PAD_LEFT) }}</div>
+                            <div class="info-item"><strong>Date:</strong> {{ $appointmentDetails->appointment_date ?? now()->format('d M Y, h:i A') }}</div>
+                            <div class="info-item"><strong>Pet ID:</strong> {{ $appointmentDetails->pet->pet_id ?? 'N/A' }}</div>
+                            <div class="info-item"><strong>Lab ID:</strong> {{ $appointmentDetails->branch->lab_id ?? 'N/A' }}</div>
+                        </div>
+                    </td>
+                    <td style="width: 50%;">
+                        <!-- Right column -->
+                        <div class="info-group">
+                            <div class="info-item"><strong>Pet Name:</strong> {{ $appointmentDetails->pet->name ?? 'N/A' }}</div>
+                            <div class="info-item"><strong>Owner Name:</strong> {{ $appointmentDetails->pet->petParent->name ?? 'N/A' }}</div>
+                            <div class="info-item"><strong>Contact:</strong> {{ $appointmentDetails->pet->petParent->contact ?? 'N/A' }}</div>
+                            <div class="info-item"><strong>Species:</strong> {{ $appointmentDetails->pet->species ?? 'N/A' }}</div>
+                            <div class="info-item"><strong>Age:</strong> {{ $appointmentDetails->pet->age ?? 'N/A' }} {{ $appointmentDetails->pet->age_unit ?? 'days' }}</div>
+                            <div class="info-item"><strong>Referred By:</strong> {{ $appointmentDetails->refereeDoctor->name ?? 'N/A' }}</div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
         </div>
 
-        <table>
+        <table class="tests">
             <thead>
                 <tr>
                     <th>Sr.No</th>
@@ -109,51 +180,48 @@
                 </tr>
             </thead>
             <tbody>
-                @php $totalAmount = 0; @endphp
-                @if(!empty($appointmentDetails->tests) && $appointmentDetails->tests->count())
-                    @foreach ($appointmentDetails->tests as $index => $test)
-                        @php $totalAmount += $test->base_price; @endphp
-                        <tr>
-                            <td>{{ $index + 1 }}</td>
-                            <td>{{ $test->department->department_name ?? 'N/A' }}</td>
-                            <td>{{ $test->name }}</td>
-                            <td>{{ number_format($test->base_price, 2) }}</td>
-                        </tr>
-                    @endforeach
-                @else
+                @php $total = 0; $srNo = 1; @endphp
+                @foreach($appointmentDetails->tests ?? [] as $test)
                     <tr>
-                        <td colspan="4" style="text-align: center;">No tests available.</td>
+                        <td>{{ $srNo++ }}</td>
+                        <td>{{ $test->department->department_name ?? 'N/A' }}</td>
+                        <td>{{ $test->name ?? 'N/A' }}</td>
+                        <td class="price">{{ number_format($test->base_price ?? 0, 2) }}</td>
+                    </tr>
+                    @php $total += $test->base_price ?? 0; @endphp
+                @endforeach
+                @if(empty($appointmentDetails->tests))
+                    <tr>
+                        <td colspan="4">No tests found</td>
                     </tr>
                 @endif
             </tbody>
         </table>
 
-        @php
-            $discount = $appointmentDetails->discount ?? 0;
-            $subtotal = $appointmentDetails->subtotal ?? 0;
-            $payableAmount =$appointmentDetails->total ?? 0;
-            $paidAmount = $appointmentDetails->paid_amount ?? 0;
-            $dueAmount = $appointmentDetails->due_amount ?? 0;
-            
-        @endphp
-
-        <div class="summary">
-        
-            <p><strong>Payable Amount (Rs):</strong> {{ number_format($payableAmount, 2) }}</p>
-            <p><strong>Amount Paid (Rs):</strong> {{ number_format($paidAmount, 2) }}</p>
-            <p><strong>Due Amount (Rs):</strong> {{ number_format($dueAmount, 2) }}</p>
+        <div class="amount-summary">
+            <div class="amount-item">
+                <strong>Payable Amount (Rs):</strong> 
+                <span>{{ number_format($total, 2) }}</span>
+            </div>
+            <div class="amount-item">
+                <strong>Amount Paid (Rs):</strong> 
+                <span>{{ number_format($appointmentDetails->paid_amount ?? $total, 2) }}</span>
+            </div>
+            <div class="amount-item">
+                <strong>Due Amount (Rs):</strong> 
+                <span>{{ number_format($total - ($appointmentDetails->paid_amount?? $total), 2) }}</span>
+            </div>
         </div>
 
         <div class="footer">
             <div>
-                <p>Print Date: {{ \Carbon\Carbon::now()->format('d-M-Y h:i A') }}</p>
+                <p>Print Date: {{ now()->format('d-M-Y h:i A') }}</p>
             </div>
-            <div style="text-align: right;">
+            <div class="signature">
                 <p>__________________________</p>
                 <p>Authorized Signatory</p>
             </div>
         </div>
     </div>
 </body>
-
 </html>

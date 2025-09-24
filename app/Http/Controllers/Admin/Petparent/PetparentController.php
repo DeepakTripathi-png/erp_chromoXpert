@@ -150,7 +150,7 @@ class PetparentController extends Controller
         // Custom validation logic
         $request->validate([
             'name' => 'required|string|max:255',
-            'gender' => 'required|in:Male,Female,Other',
+            // 'gender' => 'required|in:Male,Female,Other',
             'email' => 'required|email|max:255|unique:petparents,email,' . ($request->id ?? 'NULL') . ',id|unique:master_admins,email,' . ($masterAdminId ?? 'NULL') . ',id',
             'mobile' => [
                 'required',

@@ -48,34 +48,101 @@
                  style="background: linear-gradient(135deg, #6267ae 0%, #cc235e 100%); color: #fff; font-weight: 600;">
                 Tests
             </div>
-            <div id="testContainer"></div>
+
+                   <div id="testContainer">
+
+                    <!-- Test 1 -->
+                   @if(!empty($tests))
+                    @foreach($tests as $index => $test)
+                        <div class="test-item" id="test{{ $test->id }}">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <label>
+                                    <input type="checkbox" class="test-checkbox">
+                                    {{ $test->name ?? 'Test Name' }}
+                                </label>
+                                <div class="controls">
+                                    <button class="toggle-btn" onclick="toggleDrawer(this)">+</button>
+                                    <button class="close-btn" onclick="removeTest('test{{ $test->id }}')">×</button>
+                                </div>
+                            </div>
+
+                            <div class="test-content">
+                                <div class="test-title">{{ $test->name ?? 'Complete Blood Count' }}</div>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Test</th>
+                                            <th>Result</th>
+                                            <th>Unit</th>
+                                            <th>Normal Range</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @forelse($test->parameters as $parameter)
+                                            @if($parameter->row_type === 'title')
+                                                <tr>
+                                                    <td colspan="5" style="text-align: left; font-weight: bold;">
+                                                        {{ $parameter->title ?? $parameter->name ?? 'Parameter Title' }}
+                                                    </td>
+                                                </tr>
+                                            @elseif($parameter->row_type === 'component')
+                                                @php
+                                                    $testResult = $report->where('test_id', $test->id)->first();
+                                                    $component = $testResult ? $testResult->components->where('component_id', $parameter->id)->first() : null;
+                                                @endphp
+                                                <tr>
+                                                    <td>{{ $parameter->name ?? 'Parameter Name' }}</td>
+                                                    <td>{{ $component ? $component->result : 'N/A' }}</td>
+                                                    <td>{{ $parameter->unit ?? 'Unit' }}</td>
+                                                    <td>{{ $parameter->reference_range ?? $parameter->normal_range ?? 'Normal Range' }}</td>
+                                                    <td>{{ $component ? $component->result_status : 'N/A' }}</td>
+                                                </tr>
+                                            @endif
+                                        @empty
+                                            <tr>
+                                                <td colspan="5" class="text-center text-muted">
+                                                    No parameters found
+                                                </td>
+                                            </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                                @php
+                                    $testResult = $report->where('test_id', $test->id)->first();
+                                @endphp
+                                <div class="comment">Comment: {{ $testResult ? $testResult->comment : 'No comment available' }}</div>
+                            </div>
+                        </div>
+                    @endforeach
+                @endif
+            </div>
+
 
         </div>
     </div>
 </div>
 
-{{-- Animal Info Modal --}}
+<!-- Animal Info Modal -->
 <div class="modal fade" id="animalInfoModal" tabindex="-1" aria-labelledby="animalInfoModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 shadow-lg rounded-4"
-             style="background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(14px);">
+        <div class="modal-content border-0 shadow-lg rounded-4" style="background: rgba(255,255,255,0.85); backdrop-filter: blur(14px);">
             <div class="modal-header" style="background: linear-gradient(135deg, #6267ae 0%, #cc235e 100%); color: #fff;">
                 <h5 class="modal-title" id="animalInfoModalLabel">Animal Info</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body p-4">
-                <p class="mb-2"><strong>Name:</strong> Dog</p>
-                <p class="mb-2"><strong>Gender:</strong> Male</p>
-                <p class="mb-2"><strong>Date of Birth:</strong> 03-09-2021</p>
-                <p class="mb-2"><strong>Age:</strong> 3 Years</p>
-                <p class="mb-2"><strong>Owner Name:</strong> John Doe</p>
-                <p class="mb-2"><strong>Phone:</strong> +91 9876543210</p>
-                <p class="mb-2"><strong>Email:</strong> owner@test.com</p>
-                <p class="mb-2"><strong>Address:</strong> Pet Street, City</p>
+                <p class="mb-2"><strong>Name:</strong> {{ $appointment->pet->name ?? '' }}</p>
+                <p class="mb-2"><strong>Gender:</strong> {{ $appointment->pet->gender ?? '' }}</p>
+                <p class="mb-2"><strong>Date of birth:</strong> {{ $appointment->pet->dob ?? '' }}</p>
+                <p class="mb-2"><strong>Age:</strong> {{ $appointment->pet->age ?? '' }}</p>
+                <p class="mb-2"><strong>Owner name:</strong> {{ $appointment->pet->petparent->name ?? '' }}</p>
+                <p class="mb-2"><strong>Phone:</strong> {{ $appointment->pet->petparent->mobile ?? '' }}</p>
+                <p class="mb-2"><strong>Email:</strong> {{ $appointment->pet->petparent->email ?? '' }}</p>
+                <p class="mb-2"><strong>Address:</strong> {{ $appointment->pet->petparent->address ?? '' }}</p>
             </div>
             <div class="modal-footer" style="background: linear-gradient(135deg, #ac7fb6 0%, #f6b51d 100%);">
-                <button type="button" class="btn btn-light rounded-pill shadow-sm"
-                        style="background: #fff; color: #6267ae; border: none;" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-light rounded-pill shadow-sm" style="background: #fff; color: #6267ae; border: none;" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -93,16 +160,35 @@
         background: rgba(255, 255, 255, 0.85);
         backdrop-filter: blur(14px);
         box-shadow: 0 4px 6px rgb(0 0 0 / 0.1);
+        transition: all 0.3s ease;
     }
+    
+    .test-item:hover {
+        box-shadow: 0 6px 12px rgb(0 0 0 / 0.15);
+    }
+    
     .test-item .d-flex {
         align-items: center;
         justify-content: space-between;
     }
+    
     .test-item label {
         font-weight: 600;
         font-size: 1.1rem;
         user-select: none;
+        cursor: pointer;
+        margin-bottom: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
     }
+    
+    .test-item input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+    }
+    
     .controls button {
         background: none;
         border: none;
@@ -112,10 +198,19 @@
         padding: 0 5px;
         color: #cc235e;
         transition: color 0.2s ease-in-out;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
     }
+    
     .controls button:hover {
         color: #f6b51d;
+        background-color: rgba(204, 35, 94, 0.1);
     }
+    
     .test-title {
         background: linear-gradient(135deg, #ac7fb6 0%, #f6b51d 100%);
         color: #fff;
@@ -126,102 +221,127 @@
         border-radius: 1rem 1rem 0 0;
         font-weight: 600;
         user-select: none;
+        transition: all 0.3s ease;
     }
+    
     .test-content {
         display: none;
+        animation: fadeIn 0.3s ease;
     }
+    
     .test-item.open .test-content {
         display: block;
     }
+    
     .comment {
         margin-top: 10px;
         font-style: italic;
         color: #6267ae;
         font-size: 0.9rem;
+        padding: 8px 12px;
+        background-color: rgba(172, 127, 182, 0.1);
+        border-radius: 0.5rem;
     }
+    
     /* Table */
     table.table {
         margin-bottom: 0;
+        border-collapse: separate;
+        border-spacing: 0;
+        border-radius: 0.5rem;
+        overflow: hidden;
     }
+    
+    table.table thead th {
+        /* background: linear-gradient(135deg, #6267ae 0%, #cc235e 100%); */
+        /* color: white; */
+        /* border: none; */
+        font-weight: 600;
+    }
+    
     table.table td, table.table th {
         padding: 8px 10px !important;
         vertical-align: middle !important;
         font-size: 0.9rem;
+        border: 1px solid #dee2e6;
+    }
+    
+    table.table tbody tr:nth-child(even) {
+        background-color: rgba(172, 127, 182, 0.05);
+    }
+    
+    table.table tbody tr:hover {
+        background-color: rgba(172, 127, 182, 0.1);
+    }
+    
+    /* Animation */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Print Styles */
+    @media print {
+        .btn, .controls, .modal {
+            display: none !important;
+        }
+        
+        .test-item {
+            border: 1px solid #000;
+            break-inside: avoid;
+        }
+        
+        .test-content {
+            display: block !important;
+        }
     }
 </style>
 @endsection
 
 @section('scripts')
 <script>
-    const tests = [
-        { id: "test1", title: "Complete Blood Count", components: [
-            { test: "Hemoglobin", result: "13.5", unit: "g/dL", range: "12.0-16.0", status: "Normal", comment: "Within normal limits" },
-            { test: "WBC Count", result: "7.2", unit: "x10³/µL", range: "4.0-11.0", status: "Normal", comment: "" }
-        ]},
-        { id: "test2", title: "Platelet Profile", components: [
-            { test: "Platelet Count", result: "300", unit: "x10³/µL", range: "150-400", status: "Normal", comment: "Stable" }
-        ]}
-    ];
-
-    function addTest(test) {
-        const container = document.getElementById('testContainer');
-        const div = document.createElement('div');
-        div.className = 'test-item';
-        div.innerHTML = `
-            <div class="d-flex justify-content-between align-items-center">
-                <label><input type="checkbox" > ${test.title}</label>
-                <div class="controls">
-                    <button class="toggle-btn" onclick="toggleDrawer(this)">+</button>
-                    <button class="close-btn" onclick="this.closest('.test-item').remove()">×</button>
-                </div>
-            </div>
-            
-            <div class="test-content">
-                <div class="test-title">${test.title}</div>
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Test</th>
-                            <th>Result</th>
-                            <th>Unit</th>
-                            <th>Normal Range</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${test.components.map(comp => `
-                            <tr>
-                                <td>${comp.test}</td>
-                                <td>${comp.result}</td>
-                                <td>${comp.unit}</td>
-                                <td>${comp.range}</td>
-                                <td>${comp.status}</td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
-                <div class="comment">Comment: ${test.components[0].comment}</div>
-            </div>
-        `;
-        container.appendChild(div);
-    }
-
     function toggleDrawer(button) {
         const testItem = button.closest('.test-item');
         testItem.classList.toggle('open');
         button.textContent = testItem.classList.contains('open') ? '−' : '+';
     }
 
-    function selectAllTests(check) {
-        const checkboxes = document.querySelectorAll('#testContainer input[type="checkbox"]');
-        checkboxes.forEach(checkbox => checkbox.checked = check);
+    function removeTest(testId) {
+        const testElement = document.getElementById(testId);
+        if (testElement) {
+            testElement.remove();
+        }
     }
 
-    tests.forEach(addTest);
+    function selectAllTests(check) {
+        const checkboxes = document.querySelectorAll('#testContainer .test-checkbox');
+        checkboxes.forEach(checkbox => checkbox.checked = check);
+    }
 
     // Print functionality
     document.querySelector('.print-report').addEventListener('click', function() {
         window.print();
+    });
+
+    // Add keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+        // Ctrl+A to select all tests
+        if (e.ctrlKey && e.key === 'a') {
+            e.preventDefault();
+            selectAllTests(true);
+        }
+        
+        // Ctrl+D to deselect all tests
+        if (e.ctrlKey && e.key === 'd') {
+            e.preventDefault();
+            selectAllTests(false);
+        }
+        
+        // Ctrl+P to print
+        if (e.ctrlKey && e.key === 'p') {
+            e.preventDefault();
+            window.print();
+        }
     });
 </script>
 @endsection

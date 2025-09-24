@@ -15,7 +15,6 @@ class TestResults extends Model
             'test_result_code',
             'appointment_id',
             'test_id',
-            'result',
             'priority', 
             'status',   
             'comment',
@@ -36,6 +35,11 @@ class TestResults extends Model
     public function test()
     {
         return $this->belongsTo(Test::class, 'test_id');
+    }
+
+    public function components()
+    {
+        return $this->hasMany(TestResultComponent::class, 'test_result_id');
     }
 
     

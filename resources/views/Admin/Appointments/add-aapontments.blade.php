@@ -1,4 +1,3 @@
-
 <?php
 date_default_timezone_set('Asia/Kolkata');
 ?>
@@ -143,8 +142,6 @@ date_default_timezone_set('Asia/Kolkata');
                                 </div>
                             </div>
 
-                  
-
                             <div class="col-12 mt-4">
                                 <h5 class="fw-bold mb-3" style="color: #6267ae;">Pet Details</h5>
                             </div>
@@ -214,10 +211,27 @@ date_default_timezone_set('Asia/Kolkata');
                                 <div class="form-floating">
                                     <input type="date" class="form-control rounded-3" id="pet_dob" 
                                         name="pet_dob" value="{{ old('pet_dob') }}" placeholder=" " 
-                                        style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
+                                        max="{{ date('Y-m-d') }}"
+                                        style="background: rgba(255,255,255,0.95); border: 1px solid #f6b51d;">
                                     <label for="pet_dob" style="color: #6267ae;">Pet Date of Birth</label>
                                     @error('pet_dob')
-                                        <span class="text-danger" style="color: #cc235e;">{{ $message }}</span>
+                                        <span class="text-danger small mt-1" style="color: #cc235e;">
+                                            <i class="mdi mdi-alert-circle me-1"></i> {{ $message }}
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control rounded-3" id="pet_age" 
+                                        name="pet_age" value="{{ old('pet_age') }}" placeholder=" " 
+                                        style="background: rgba(255,255,255,0.95); border: 1px solid #f6b51d;">
+                                    <label for="pet_age" style="color: #6267ae;">Pet Age</label>
+                                    @error('pet_age')
+                                        <span class="text-danger small mt-1" style="color: #cc235e;">
+                                            <i class="mdi mdi-alert-circle me-1"></i> {{ $message }}
+                                        </span>
                                     @enderror
                                 </div>
                             </div>
@@ -293,17 +307,14 @@ date_default_timezone_set('Asia/Kolkata');
                                                 </div>
                                             </div>
 
-                                             <div class="col-md-4">
+                                            <div class="col-md-4">
                                                 <div class="form-floating">
                                                     <input type="number" step="0.01" class="form-control rounded-3" id="paid_amount" 
                                                         name="paid_amount" placeholder="0.00" 
                                                         style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
-                                                    <label for="total" style="color: #6267ae;">Paid Amount (₹)</label>
+                                                    <label for="paid_amount" style="color: #6267ae;">Paid Amount (₹)</label>
                                                 </div>
                                             </div>
-
-
-                                            
 
                                             <div class="col-md-4">
                                                 <div class="form-floating">
@@ -347,22 +358,18 @@ date_default_timezone_set('Asia/Kolkata');
                                                     @enderror
                                                 </div>
                                             </div>
-
-                                            
-                                           
-                                        <div class="col-md-4">
-                                            <div class="form-floating">
-                                                <input type="datetime-local" class="form-control rounded-3" id="payment_date" 
-                                                    name="payment_date" 
-                                                    value="{{ old('payment_date', date('Y-m-d\TH:i')) }}" 
-                                                    style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
-                                                <label for="payment_date" style="color: #6267ae;">Payment Date & Time</label>
-                                                @error('payment_date')
-                                                    <span class="text-danger" style="color: #cc235e;">{{ $message }}</span>
-                                                @enderror
+                                            <div class="col-md-4">
+                                                <div class="form-floating">
+                                                    <input type="datetime-local" class="form-control rounded-3" id="payment_date" 
+                                                        name="payment_date" 
+                                                        value="{{ old('payment_date', date('Y-m-d\TH:i')) }}" 
+                                                        style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
+                                                    <label for="payment_date" style="color: #6267ae;">Payment Date & Time</label>
+                                                    @error('payment_date')
+                                                        <span class="text-danger" style="color: #cc235e;">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
                                             </div>
-                                        </div>
-
 
                                             <input type="hidden" id="total_amount" name="total_amount" value="">
                                         </div>
@@ -417,33 +424,12 @@ date_default_timezone_set('Asia/Kolkata');
                                 @enderror
                             </div>
                         </div>
-                        <!-- Pet Parent Gender -->
-                        <div class="col-md-6">
-                            <div class="form-floating">
-                                <select class="form-select rounded-3" id="owner_gender" name="owner_gender" required
-                                        style="background: rgba(255,255,255,0.95); border: 1px solid #f6b51d;">
-                                    <option value="" selected disabled>Select Gender</option>
-                                    <option value="Male">Male</option>
-                                    <option value="Female">Female</option>
-                                    <option value="Other">Other</option>
-                                </select>
-                                <label for="owner_gender" style="color: #6267ae;">Owner Gender*</label>
-                                @error('owner_gender')
-                                    <span class="text-danger small mt-1" style="color: #cc235e;">
-                                        <i class="mdi mdi-alert-circle me-1"></i> {{ $message }}
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
                         <!-- Pet Parent Email -->
                         <div class="col-md-6">
                             <div class="form-floating">
                                 <input type="email" class="form-control rounded-3" id="owner_email" name="owner_email" 
                                        required style="background: rgba(255,255,255,0.95); border: 1px solid #f6b51d;">
                                 <label for="owner_email" style="color: #6267ae;">Owner Email*</label>
-                                <div class="text-danger small mt-1 d-none" id="email_existence_message">
-                                    <i class="mdi mdi-alert-circle me-1"></i> This Email has already been taken
-                                </div>
                                 @error('owner_email')
                                     <span class="text-danger small mt-1" style="color: #cc235e;">
                                         <i class="mdi mdi-alert-circle me-1"></i> {{ $message }}
@@ -454,10 +440,11 @@ date_default_timezone_set('Asia/Kolkata');
                         <!-- Pet Parent Mobile -->
                         <div class="col-md-6">
                             <div class="form-floating">
-                                <input type="tel" class="form-control rounded-3" id="owner_mobile" name="owner_mobile" 
-                                       pattern="\+91[0-9]{10}" title="Phone number must start with +91 followed by 10 digits"
-                                       required style="background: rgba(255,255,255,0.95); border: 1px solid #f6b51d;">
-                                <label for="owner_mobile" style="color: #6267ae;">Owner Mobile (+91)*</label>
+                                <input type="tel" 
+                                    class="form-control rounded-3" id="owner_mobile" name="owner_mobile" pattern="(\+91)?[0-9]{10}" 
+                                    title="Phone number must be 10 digits, with or without +91" required 
+                                    style="background: rgba(255,255,255,0.95); border: 1px solid #f6b51d;">
+                                <label for="owner_mobile" style="color: #6267ae;">Owner Mobile*</label>
                                 @error('owner_mobile')
                                     <span class="text-danger small mt-1" style="color: #cc235e;">
                                         <i class="mdi mdi-alert-circle me-1"></i> {{ $message }}
@@ -493,14 +480,6 @@ date_default_timezone_set('Asia/Kolkata');
                                         <i class="mdi mdi-alert-circle me-1"></i> {{ $message }}
                                     </span>
                                 @enderror
-                            </div>
-                        </div>
-                        <!-- Pet Code (Readonly) -->
-                        <div class="col-md-6">
-                            <div class="form-floating">
-                                <input type="text" class="form-control rounded-3" id="pet_code" name="pet_code" 
-                                       readonly style="background: #f8f9fa; border: 1px solid #f6b51d;">
-                                <label for="pet_code" style="color: #6267ae;">Pet Code</label>
                             </div>
                         </div>
                         <!-- Pet Species -->
@@ -610,18 +589,6 @@ date_default_timezone_set('Asia/Kolkata');
                                     </span>
                                 @enderror
                             </div>
-                        </div>
-                        <!-- Pet Image -->
-                        <div class="col-12">
-                            <label class="form-label fw-semibold" style="color: #6267ae;">Pet Image</label>
-                            <input type="file" data-plugins="dropify" name="pet_image" id="pet_image" 
-                                   accept="image/*" style="border: 1px solid #f6b51d;" />
-                            <p class="text-center mt-2 mb-0 text-muted">Pet Profile Image</p>
-                            @error('pet_image')
-                                <span class="text-danger small mt-1" style="color: #cc235e;">
-                                    <i class="mdi mdi-alert-circle me-1"></i> {{ $message }}
-                                </span>
-                            @enderror
                         </div>
                     </div>
                 </form>
@@ -952,6 +919,8 @@ $(document).ready(function () {
         $('#subtotal').val(subtotal.toFixed(2));
         $('#total_amount').val(total.toFixed(2));
         $('#total').val(total.toFixed(2));
+        // Pre-fill paid_amount with total value
+        $('#paid_amount').val(total.toFixed(2));
 
         const selectedCount = $('input[name="tests[]"]').length;
         $('#selectedTestsCount').text(`${selectedCount} test${selectedCount !== 1 ? 's' : ''} selected`);
@@ -960,6 +929,16 @@ $(document).ready(function () {
     // Event listener for discount input
     $('#discount').on('input', function () {
         updateTotal();
+    });
+
+    // Event listener for paid_amount to prevent exceeding total
+    $('#paid_amount').on('input', function () {
+        const paidAmount = parseFloat($(this).val()) || 0;
+        const total = parseFloat($('#total').val()) || 0;
+        if (paidAmount > total) {
+            $(this).val(total.toFixed(2));
+            toastr.warning('Paid amount cannot exceed total amount.');
+        }
     });
 
     // Form validation
@@ -998,77 +977,119 @@ $(document).ready(function () {
         }
     });
 
-    // Email existence check with debounce
-    let emailCheckTimeout;
-    $('#owner_email').on('input', function() {
-        clearTimeout(emailCheckTimeout);
-        emailCheckTimeout = setTimeout(() => {
-            $.ajax({
-                type: 'GET',
-                url: '{{ url("/admin/system-user/check-user-exist") }}',
-                data: { email: $(this).val() },
-                success: function(response) {
-                    if (response.trim() === 'true') {
-                        $('#savePet').attr('disabled', true);
-                        $('#email_existence_message').removeClass('d-none');
-                    } else {
-                        $('#savePet').removeAttr('disabled');
-                        $('#email_existence_message').addClass('d-none');
-                    }
-                },
-                error: function() {
-                    $('#email_existence_message').addClass('d-none');
-                    $('#savePet').removeAttr('disabled');
+    // Initialize DOB and Age handling for a given DOB and Age input pair
+    function initializeAgeHandling(dobSelector, ageSelector) {
+        const $dobInput = $(dobSelector);
+        const $ageInput = $(ageSelector);
+
+        // Handle DOB change
+        $dobInput.on('change', function() {
+            const dobVal = $(this).val();
+            if (dobVal) {
+                const dob = new Date(dobVal);
+                if (!isNaN(dob.getTime())) {
+                    const age = calculateAgeFromDOB(dob);
+                    const ageStr = formatAgeString(age.years, age.months, age.days);
+                    $ageInput.val(ageStr).prop('readonly', true).css('background', '#f8f9fa');
+                } else {
+                    $ageInput.val('').prop('readonly', false).css('background', 'rgba(255,255,255,0.95)');
                 }
-            });
-        }, 300);
-    });
-
-    // DOB and Age handling
-    $('#pet_dob').on('change', function() {
-        const dobVal = $(this).val();
-        if (dobVal) {
-            const dob = new Date(dobVal);
-            if (!isNaN(dob.getTime())) {
-                const age = calculateAgeFromDOB(dob);
-                const ageStr = formatAgeString(age.years, age.months, age.days);
-                $('#pet_age').val(ageStr).prop('readonly', true).css('background', '#f8f9fa');
             } else {
-                $('#pet_age').val('').prop('readonly', false).css('background', 'rgba(255,255,255,0.95)');
+                $ageInput.val('').prop('readonly', false).css('background', 'rgba(255,255,255,0.95)');
             }
-        } else {
-            $('#pet_age').val('').prop('readonly', false).css('background', 'rgba(255,255,255,0.95)');
-        }
-    });
+        });
 
-    $('#pet_age').on('blur', function() {
-        if (!$(this).prop('readonly')) {
-            const ageStr = $(this).val();
-            if (ageStr.trim() === '') {
-                $('#pet_dob').val('');
-                return;
+        // Handle Age input
+        $ageInput.on('blur', function() {
+            if (!$(this).prop('readonly')) {
+                const ageStr = $(this).val();
+                if (ageStr.trim() === '') {
+                    $dobInput.val('');
+                    return;
+                }
+                const age = parseAgeInput(ageStr);
+                if (age.years === 0 && age.months === 0 && age.days === 0) {
+                    toastr.error('Please enter age in format like "1 year 2 months 10 days" or "10 days" etc.');
+                    return;
+                }
+                const dob = calculateDOBFromAge(age.years, age.months, age.days);
+                const yyyy = dob.getFullYear();
+                const mm = ('0' + (dob.getMonth() + 1)).slice(-2);
+                const dd = ('0' + dob.getDate()).slice(-2);
+                $dobInput.val(`${yyyy}-${mm}-${dd}`);
+                const formattedAge = formatAgeString(age.years, age.months, age.days);
+                $ageInput.val(formattedAge).prop('readonly', true).css('background', '#f8f9fa');
             }
-            const age = parseAgeInput(ageStr);
-            if (age.years === 0 && age.months === 0 && age.days === 0) {
-                toastr.error('Please enter age in format like "1 year 2 months 10 days" or "10 days" etc.');
-                return;
-            }
-            const dob = calculateDOBFromAge(age.years, age.months, age.days);
-            const yyyy = dob.getFullYear();
-            const mm = ('0' + (dob.getMonth() + 1)).slice(-2);
-            const dd = ('0' + dob.getDate()).slice(-2);
-            $('#pet_dob').val(`${yyyy}-${mm}-${dd}`);
-            const formattedAge = formatAgeString(age.years, age.months, age.days);
-            $('#pet_age').val(formattedAge).prop('readonly', true).css('background', '#f8f9fa');
-        }
-    });
+        });
 
-    $('#pet_age').on('click', function() {
-        if ($(this).prop('readonly')) {
-            $(this).prop('readonly', false).css('background', 'rgba(255,255,255,0.95)').val('');
-            $('#pet_dob').val('');
+        // Allow editing age by clicking if readonly
+        $ageInput.on('click', function() {
+            if ($(this).prop('readonly')) {
+                $(this).prop('readonly', false).css('background', 'rgba(255,255,255,0.95)').val('');
+                $dobInput.val('');
+            }
+        });
+    }
+
+    // Initialize for modal
+    initializeAgeHandling('#addPetModal #pet_dob', '#addPetModal #pet_age');
+
+    // Initialize for main form
+    initializeAgeHandling('#pet_dob', '#pet_age');
+
+    // Parse age input (e.g., "1 year 2 months 10 days")
+    function parseAgeInput(ageStr) {
+        ageStr = ageStr.toLowerCase().trim();
+        const regex = /(\d+)\s*(year|yr|y|month|mon|m|day|d)/g;
+        let years = 0, months = 0, days = 0;
+        let match;
+        while ((match = regex.exec(ageStr)) !== null) {
+            const val = parseInt(match[1], 10);
+            const unit = match[2];
+            if (['year', 'yr', 'y'].includes(unit)) years = val;
+            else if (['month', 'mon', 'm'].includes(unit)) months = val;
+            else if (['day', 'd'].includes(unit)) days = val;
         }
-    });
+        return { years, months, days };
+    }
+
+    // Format age string
+    function formatAgeString(years, months, days) {
+        let parts = [];
+        if (years > 0) parts.push(years + ' year' + (years > 1 ? 's' : ''));
+        if (months > 0) parts.push(months + ' month' + (months > 1 ? 's' : ''));
+        if (days > 0) parts.push(days + ' day' + (days > 1 ? 's' : ''));
+        if (parts.length === 0) parts.push('0 days');
+        return parts.join(' ');
+    }
+
+    // Calculate age from DOB
+    function calculateAgeFromDOB(dob) {
+        const today = new Date();
+        let ageYears = today.getFullYear() - dob.getFullYear();
+        let ageMonths = today.getMonth() - dob.getMonth();
+        let ageDays = today.getDate() - dob.getDate();
+        if (ageDays < 0) {
+            ageMonths--;
+            const lastMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+            ageDays += lastMonth.getDate();
+        }
+        if (ageMonths < 0) {
+            ageYears--;
+            ageMonths += 12;
+        }
+        return { years: ageYears, months: ageMonths, days: ageDays };
+    }
+
+    // Calculate DOB from age
+    function calculateDOBFromAge(years, months, days) {
+        const today = new Date();
+        let dob = new Date(today.getFullYear() - years, today.getMonth() - months, today.getDate() - days);
+        if (dob.getMonth() > today.getMonth()) {
+            dob.setFullYear(dob.getFullYear() - 1);
+        }
+        return dob;
+    }
 
     // Weight validation
     $('#pet_weight').on('input', function() {
@@ -1208,12 +1229,14 @@ $(document).ready(function () {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function (data) {
+                    console.log(data);
                     $('#pet_code').val(data.pet_code);
                     $('#pet_type').val(data.type || data.pet_type);
                     $('#pet_gender').val(data.gender || data.pet_gender);
                     $('#pet_dob').val(data.dob || data.pet_dob);
                     $('#pet_owner_name').val(data.owner_name);
                     $('#phone').val(data.owner_phone || data.phone);
+                    $('#pet_age').val(data.age || data.pet_age);
                 },
                 error: function () {
                     toastr.error('Error fetching pet details.');
@@ -1223,6 +1246,7 @@ $(document).ready(function () {
                     $('#pet_dob').val('');
                     $('#pet_owner_name').val('');
                     $('#phone').val('');
+                    $('#pet_age').val();
                 }
             });
         } else {
@@ -1232,6 +1256,7 @@ $(document).ready(function () {
             $('#pet_dob').val('');
             $('#pet_owner_name').val('');
             $('#phone').val('');
+            $('#pet_age').val();
         }
     });
 
@@ -1303,60 +1328,6 @@ $(document).ready(function () {
 
     // Initialize total calculation
     updateTotal();
-
-    // Parse age input (e.g., "1 year 2 months 10 days")
-    function parseAgeInput(ageStr) {
-        ageStr = ageStr.toLowerCase().trim();
-        const regex = /(\d+)\s*(year|yr|y|month|mon|m|day|d)/g;
-        let years = 0, months = 0, days = 0;
-        let match;
-        while ((match = regex.exec(ageStr)) !== null) {
-            const val = parseInt(match[1], 10);
-            const unit = match[2];
-            if (['year', 'yr', 'y'].includes(unit)) years = val;
-            else if (['month', 'mon', 'm'].includes(unit)) months = val;
-            else if (['day', 'd'].includes(unit)) days = val;
-        }
-        return { years, months, days };
-    }
-
-    // Format age string
-    function formatAgeString(years, months, days) {
-        let parts = [];
-        if (years > 0) parts.push(years + ' year' + (years > 1 ? 's' : ''));
-        if (months > 0) parts.push(months + ' month' + (months > 1 ? 's' : ''));
-        if (days > 0) parts.push(days + ' day' + (days > 1 ? 's' : ''));
-        if (parts.length === 0) parts.push('0 days');
-        return parts.join(' ');
-    }
-
-    // Calculate age from DOB
-    function calculateAgeFromDOB(dob) {
-        const today = new Date();
-        let ageYears = today.getFullYear() - dob.getFullYear();
-        let ageMonths = today.getMonth() - dob.getMonth();
-        let ageDays = today.getDate() - dob.getDate();
-        if (ageDays < 0) {
-            ageMonths--;
-            const lastMonth = new Date(today.getFullYear(), today.getMonth(), 0);
-            ageDays += lastMonth.getDate();
-        }
-        if (ageMonths < 0) {
-            ageYears--;
-            ageMonths += 12;
-        }
-        return { years: ageYears, months: ageMonths, days: ageDays };
-    }
-
-    // Calculate DOB from age
-    function calculateDOBFromAge(years, months, days) {
-        const today = new Date();
-        let dob = new Date(today.getFullYear() - years, today.getMonth() - months, today.getDate() - days);
-        if (dob.getMonth() > today.getMonth()) {
-            dob.setFullYear(dob.getFullYear() - 1);
-        }
-        return dob;
-    }
 });
 </script>
 
@@ -1490,6 +1461,8 @@ document.addEventListener("DOMContentLoaded", function () {
         $('#subtotal').val(subtotal.toFixed(2));
         $('#total_amount').val(total.toFixed(2));
         $('#total').val(total.toFixed(2));
+        // Pre-fill paid_amount with total value
+        $('#paid_amount').val(total.toFixed(2));
 
         const selectedCount = $('input[name="tests[]"]').length;
         $('#selectedTestsCount').text(`${selectedCount} test${selectedCount !== 1 ? 's' : ''} selected`);
