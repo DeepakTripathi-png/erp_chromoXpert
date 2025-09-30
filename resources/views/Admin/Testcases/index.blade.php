@@ -15,6 +15,14 @@
                    style="background: #f6b51d; color: #1f2937; border: none;">
                     <i class="mdi mdi-plus me-2"></i> Add Test
                 </a>
+
+                  
+                <a href="{{ url('admin/test-profile') }}" 
+                   class="btn btn-light btn-lg mt-3 fw-semibold rounded-pill shadow-sm"
+                   style="background: #f6b51d; color: #1f2937; border: none;">
+                      Create Profile <i class="mdi mdi-arrow-right me-2"></i>
+                </a>
+
                 <div class="position-absolute top-0 end-0 opacity-25" style="font-size: 120px; color: #ac7fb6;">
                     <i class="mdi mdi-test-tube"></i>
                 </div>

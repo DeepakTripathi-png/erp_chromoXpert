@@ -75,7 +75,7 @@
         font-size: 14px;
     }
     .menu-arrow::before {
-        content: '\f078'; /* Material Design Icons chevron-down */
+        content: '\f078';
         font-family: 'Material Design Icons';
     }
     /* Navbar Styling */
@@ -141,33 +141,49 @@
 {{-- Topbar --}}
 <div class="navbar-custom">
     <div class="d-flex align-items-center">
-        <a href="{{ url('/admin/dashboard') }}" class="ms-3">
+        <a href="{{ Auth::guard('master_admins')->check() ? url('/admin/dashboard') : (Auth::guard('doctor')->check() ? url('/doctor/dashboard') : url('/branch/dashboard')) }}" class="ms-3">
             <img src="{{ !empty(App\Helpers\Helpers\Helper::getVisualImages()->logo_image_path) && Storage::exists(App\Helpers\Helpers\Helper::getVisualImages()->logo_image_path) ? url('/').Storage::url(App\Helpers\Helpers\Helper::getVisualImages()->logo_image_path) : URL::asset('package_assets/images/logo.png') }}" height="40" alt="ChromoXpert Logo">
         </a>
     </div>
     <ul class="list-unstyled topnav-menu float-end mb-0">
         {{-- Notifications --}}
-        <li class="dropdown notification-list topbar-dropdown">
-            <a class="nav-link waves-effect waves-light" href="{{ url('admin/notification') }}" aria-label="Notifications">
-                <i class="fe-bell noti-icon text-[#6267ae] text-lg"></i>
-                <span class="badge bg-danger rounded-circle noti-icon-badge">9</span>
-            </a>
-        </li>
+        @if(Auth::guard('master_admins')->check() || (Auth::guard('doctor')->check() && str_contains(Auth::guard('doctor')->user()->role->privileges ?? '', 'notifications_view')) || (Auth::guard('branch')->check() && str_contains(Auth::guard('branch')->user()->role->privileges ?? '', 'notifications_view')))
+            <li class="dropdown notification-list topbar-dropdown">
+                <a class="nav-link waves-effect waves-light" href="{{ Auth::guard('master_admins')->check() ? url('admin/notification') : (Auth::guard('doctor')->check() ? url('doctor/notifications') : url('branch/notifications')) }}" aria-label="Notifications">
+                    <i class="fe-bell noti-icon text-[#6267ae] text-lg"></i>
+                    <span class="badge bg-danger rounded-circle noti-icon-badge">9</span>
+                </a>
+            </li>
+        @endif
 
         {{-- Profile --}}
         <li class="dropdown notification-list topbar-dropdown">
             <a class="nav-link dropdown-toggle nav-user me-0" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" aria-label="User profile">
-                <img src="{{ !empty(Auth::guard('master_admins')->user()->user_profile_image_path) && Storage::exists(Auth::guard('master_admins')->user()->user_profile_image_path) ? url('/').Storage::url(Auth::guard('master_admins')->user()->user_profile_image_path) : URL::asset('package_assets/images/default-images/profile-image.png')}}" class="rounded-circle">
-                <span class="pro-user-name ms-1 text-[#6267ae]">{{ Auth::guard('master_admins')->user()->user_name ?? '' }} <i class="mdi mdi-chevron-down text-[#f6b51d]"></i></span>
+                <img src="{{ 
+                    Auth::guard('master_admins')->check() && !empty(Auth::guard('master_admins')->user()->user_profile_image_path) && Storage::exists(Auth::guard('master_admins')->user()->user_profile_image_path) ? url('/').Storage::url(Auth::guard('master_admins')->user()->user_profile_image_path) :
+                    (Auth::guard('doctor')->check() && !empty(Auth::guard('doctor')->user()->doctor_image_path) && Storage::exists(Auth::guard('doctor')->user()->doctor_image_path) ? url('/').Storage::url(Auth::guard('doctor')->user()->doctor_image_path) :
+                    (Auth::guard('branch')->check() && !empty(Auth::guard('branch')->user()->branch_logo_path) && Storage::exists(Auth::guard('branch')->user()->branch_logo_path) ? url('/').Storage::url(Auth::guard('branch')->user()->branch_logo_path) :
+                    URL::asset('package_assets/images/default-images/profile-image.png')))
+                }}" class="rounded-circle">
+                <span class="pro-user-name ms-1 text-[#6267ae]">
+                    {{ Auth::guard('master_admins')->check() ? Auth::guard('master_admins')->user()->user_name ?? '' : 
+                       (Auth::guard('doctor')->check() ? Auth::guard('doctor')->user()->doctor_name ?? '' : 
+                       (Auth::guard('branch')->check() ? Auth::guard('branch')->user()->branch_name ?? '' : '')) }}
+                    <i class="mdi mdi-chevron-down text-[#f6b51d]"></i>
+                </span>
             </a>
             <div class="dropdown-menu dropdown-menu-end profile-dropdown">
                 <div class="dropdown-header text-center">
-                    <h6>Welcome, {{ Auth::guard('master_admins')->user()->user_name ?? '' }}</h6>
+                    <h6>
+                        Welcome, {{ Auth::guard('master_admins')->check() ? Auth::guard('master_admins')->user()->user_name ?? '' : 
+                                   (Auth::guard('doctor')->check() ? Auth::guard('doctor')->user()->doctor_name ?? '' : 
+                                   (Auth::guard('branch')->check() ? Auth::guard('branch')->user()->branch_name ?? '' : '')) }}
+                    </h6>
                     <small>{{ App\Helpers\Helpers\Helper::getRoleName() }}</small>
                 </div>
                 <a href="javascript:;" class="dropdown-item"><i class="fe-user text-[#6267ae] me-2"></i> My Account</a>
                 <div class="dropdown-divider"></div>
-                <a href="{{ url('admin/logout') }}" class="dropdown-item"><i class="fe-log-out text-[#6267ae] me-2"></i> Logout</a>
+                <a href="{{ Auth::guard('master_admins')->check() ? url('admin/logout') : (Auth::guard('doctor')->check() ? url('doctor/logout') : url('branch/logout')) }}" class="dropdown-item"><i class="fe-log-out text-[#6267ae] me-2"></i> Logout</a>
             </div>
         </li>
     </ul>
@@ -175,214 +191,328 @@
 
 {{-- Sidebar --}}
 @php
-$role_id = Auth::guard('master_admins')->user()->role_id;
-$RolesPrivileges = App\Models\Master\Role_privilege::where('status', 'active')->where('id', $role_id)->select('privileges')->first();
+$role_id = null;
+$RolesPrivileges = null;
+if (Auth::guard('master_admins')->check()) {
+    $role_id = Auth::guard('master_admins')->user()->role_id;
+    $RolesPrivileges = App\Models\Master\Role_privilege::where('status', 'active')->where('id', $role_id)->select('privileges')->first();
+} elseif (Auth::guard('doctor')->check()) {
+    $role_id = Auth::guard('doctor')->user()->role_id;
+    $RolesPrivileges = App\Models\Master\Role_privilege::where('status', 'active')->where('id', $role_id)->select('privileges')->first();
+} elseif (Auth::guard('branch')->check()) {
+    $role_id = Auth::guard('branch')->user()->role_id;
+    $RolesPrivileges = App\Models\Master\Role_privilege::where('status', 'active')->where('id', $role_id)->select('privileges')->first();
+}
 @endphp
 
 <div class="left-side-menu">
     <div class="h-100" data-simplebar>
         <div id="sidebar-menu">
             <ul id="side-menu">
-                {{-- Dashboard --}}
-                @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'dashboard_view'))
-                <li class="{{ Request::is('admin/dashboard*') ? 'active' : '' }}">
-                    <a href="{{ url('/admin/dashboard') }}">
-                        <i class="mdi mdi-monitor-dashboard"></i>
-                        <span> Dashboard </span>
-                    </a>
-                </li>
-                @endif
+                @if(Auth::guard('master_admins')->check())
+                    {{-- Admin Dashboard --}}
+                    @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges->privileges, 'dashboard_view'))
+                    <li class="{{ Request::is('admin/dashboard*') ? 'active' : '' }}">
+                        <a href="{{ url('/admin/dashboard') }}">
+                            <i class="mdi mdi-monitor-dashboard"></i>
+                            <span> Dashboard </span>
+                        </a>
+                    </li>
+                    @endif
 
-                {{-- Appointments --}}
-                @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'appointments_view'))
-                <li class="{{ Request::is('admin/appointments*') ? 'active' : '' }}">
-                    <a href="{{ url('/admin/appointments') }}">
-                        <i class="mdi mdi-calendar-clock"></i>
-                        <span> New Registration </span>
-                    </a>
-                </li>
-                @endif
-
+                    {{-- Appointments --}}
+                    @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges->privileges, 'appointments_view'))
+                    <li class="{{ Request::is('admin/appointments*') ? 'active' : '' }}">
+                        <a href="{{ url('/admin/appointments') }}">
+                            <i class="mdi mdi-calendar-clock"></i>
+                            <span> New Registration </span>
+                        </a>
+                    </li>
+                    @endif
 
                     {{-- Test Reports --}}
-                @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'reports_view'))
-                <li class="{{ Request::is('admin/report*') ? 'active' : '' }}">
-                    <a href="{{ url('/admin/report') }}">
-                        <i class="mdi mdi-file-chart-outline"></i>
-                        <span>Reports </span>
-                    </a>
-                </li>
+                    @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges->privileges, 'reports_view'))
+                    <li class="{{ Request::is('admin/report*') ? 'active' : '' }}">
+                        <a href="{{ url('/admin/report') }}">
+                            <i class="mdi mdi-file-chart-outline"></i>
+                            <span> Reports </span>
+                        </a>
+                    </li>
+                    @endif
+
+                    {{-- Branches --}}
+                    @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges->privileges, 'branch_view'))
+                    <li class="{{ Request::is('admin/branches*') ? 'active' : '' }}">
+                        <a href="{{ url('/admin/branches') }}">
+                            <i class="mdi mdi-map-marker-radius"></i>
+                            <span> Branches </span>
+                        </a>
+                    </li>
+                    @endif
+
+                    {{-- Departments --}}
+                    @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges->privileges, 'departments_view'))
+                    <li class="{{ Request::is('admin/departments*') ? 'active' : '' }}">
+                        <a href="{{ url('/admin/departments') }}">
+                            <i class="mdi mdi-domain"></i>
+                            <span> Departments </span>
+                        </a>
+                    </li>
+                    @endif
+
+                    {{-- Doctors --}}
+                    @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges->privileges, 'doctors_view'))
+                    <li class="{{ Request::is('admin/doctors*', 'admin/internal-doctors*', 'admin/referee-doctors*') ? 'active' : '' }}">
+                        <a href="#doctors" data-bs-toggle="collapse" aria-expanded="{{ Request::is('admin/doctors*', 'admin/internal-doctors*', 'admin/referee-doctors*') ? 'true' : 'false' }}">
+                            <i class="mdi mdi-stethoscope"></i>
+                            <span> Doctors </span>
+                            <span class="menu-arrow"></span>
+                        </a>
+                        <div class="collapse {{ Request::is('admin/doctors*', 'admin/internal-doctors*', 'admin/referee-doctors*') ? 'show' : '' }}" id="doctors">
+                            <ul class="nav-second-level">
+                                <li class="{{ Request::is('admin/internal-doctors*') ? 'active' : '' }}">
+                                    <a href="{{ url('admin/internal-doctors') }}">
+                                        <span> Internal Doctors </span>
+                                    </a>
+                                </li>
+                                <li class="{{ Request::is('admin/referee-doctors*') ? 'active' : '' }}">
+                                    <a href="{{ url('/admin/referee-doctors') }}">
+                                        <span> Referee Doctors </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    @endif
+
+                    {{-- Pet Parents --}}
+                    @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges->privileges, 'pet_owners_view'))
+                    <li class="{{ Request::is('admin/parent*') ? 'active' : '' }}">
+                        <a href="{{ url('/admin/parent') }}">
+                            <i class="mdi mdi-account-heart"></i>
+                            <span> Pet Parent / Care Of </span>
+                        </a>
+                    </li>
+                    @endif
+
+                    {{-- Pets --}}
+                    @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges->privileges, 'pet_view'))
+                    <li class="{{ Request::is('admin/pet*') ? 'active' : '' }}">
+                        <a href="{{ url('/admin/pet') }}">
+                            <i class="mdi mdi-paw"></i>
+                            <span> Pets </span>
+                        </a>
+                    </li>
+                    @endif
+
+                    {{-- Test Management --}}
+                    @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges->privileges, 'test_view'))
+                    <li class="{{ Request::is('admin/test-case*') ? 'active' : '' }}">
+                        <a href="{{ url('/admin/test-case') }}">
+                            <i class="mdi mdi-flask-outline"></i>
+                            <span> Tests </span>
+                        </a>
+                    </li>
+                    @endif
+
+                    {{-- Revenue --}}
+                    @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges->privileges, 'revenue_view'))
+                    <li class="{{ Request::is('admin/revenu*') ? 'active' : '' }}">
+                        <a href="{{ url('/admin/revenu') }}">
+                            <i class="mdi mdi-cash-multiple"></i>
+                            <span> Revenue </span>
+                        </a>
+                    </li>
+                    @endif
+
+                    {{-- System Users --}}
+                    @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges->privileges, 'system_users_view'))
+                    <li class="{{ Request::is('admin/system-user*', 'admin/roles-privileges*') ? 'active' : '' }}">
+                        <a href="#system-user" data-bs-toggle="collapse" aria-expanded="{{ Request::is('admin/system-user*', 'admin/roles-privileges*') ? 'true' : 'false' }}">
+                            <i class="mdi mdi-account-group-outline"></i>
+                            <span> System Users </span>
+                            <span class="menu-arrow"></span>
+                        </a>
+                        <div class="collapse {{ Request::is('admin/system-user*', 'admin/roles-privileges*') ? 'show' : '' }}" id="system-user">
+                            <ul class="nav-second-level">
+                                @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges->privileges, 'user_view'))
+                                <li class="{{ Request::is('admin/system-user*') ? 'active' : '' }}">
+                                    <a href="{{ url('admin/system-user') }}">
+                                        <span> Users </span>
+                                    </a>
+                                </li>
+                                @endif
+                                @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges->privileges, 'role_privileges_view'))
+                                <li class="{{ Request::is('admin/roles-privileges*') ? 'active' : '' }}">
+                                    <a href="{{ url('/admin/roles-privileges') }}">
+                                        <span> Role Privileges </span>
+                                    </a>
+                                </li>
+                                @endif
+                            </ul>
+                        </div>
+                    </li>
+                    @endif
+
+                    {{-- Settings --}}
+                    @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges->privileges, 'settings_view'))
+                    <li class="{{ Request::is('admin/general-setting*', 'admin/visual-setting*', 'admin/change-password*') ? 'active' : '' }}">
+                        <a href="#setting" data-bs-toggle="collapse" aria-expanded="{{ Request::is('admin/general-setting*', 'admin/visual-setting*', 'admin/change-password*') ? 'true' : 'false' }}">
+                            <i class="mdi mdi-cog-outline"></i>
+                            <span> Settings </span>
+                            <span class="menu-arrow"></span>
+                        </a>
+                        <div class="collapse {{ Request::is('admin/general-setting*', 'admin/visual-setting*', 'admin/change-password*') ? 'show' : '' }}" id="setting">
+                            <ul class="nav-second-level">
+                                @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges->privileges, 'general_setting_view'))
+                                <li class="{{ Request::is('admin/general-setting*') ? 'active' : '' }}">
+                                    <a href="{{ url('/admin/general-setting') }}">
+                                        <span> General Settings </span>
+                                    </a>
+                                </li>
+                                @endif
+                                @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges->privileges, 'visual_setting_view'))
+                                <li class="{{ Request::is('admin/visual-setting*') ? 'active' : '' }}">
+                                    <a href="{{ url('/admin/visual-setting') }}">
+                                        <span> Visual Settings </span>
+                                    </a>
+                                </li>
+                                @endif
+                                <li class="{{ Request::is('admin/change-password*') ? 'active' : '' }}">
+                                    <a href="{{ url('/admin/change-password') }}">
+                                        <span> Change Password </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    @endif
+
+                    {{-- Notifications --}}
+                    <li>
+                        <a href="{{ url('admin/notification') }}">
+                            <i class="mdi mdi-bell-outline"></i>
+                            <span> Notifications </span>
+                        </a>
+                    </li>
+
+                    {{-- Logout --}}
+                    <li>
+                        <a href="{{ url('admin/logout') }}">
+                            <i class="mdi mdi-logout"></i>
+                            <span> Logout </span>
+                        </a>
+                    </li>
+
+                @elseif(Auth::guard('doctor')->check())
+                    {{-- Doctor Dashboard --}}
+                    @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges->privileges, 'dashboard_view'))
+                    <li class="{{ Request::is('doctor/dashboard*') ? 'active' : '' }}">
+                        <a href="{{ url('/doctor/dashboard') }}">
+                            <i class="mdi mdi-monitor-dashboard"></i>
+                            <span> Dashboard </span>
+                        </a>
+                    </li>
+                    @endif
+
+                    {{-- Reports --}}
+                    @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges->privileges, 'reports_view'))
+                    <li class="{{ Request::is('doctor/reports*') ? 'active' : '' }}">
+                        <a href="{{ url('/doctor/reports') }}">
+                            <i class="mdi mdi-file-chart-outline"></i>
+                            <span> Reports </span>
+                        </a>
+                    </li>
+                    @endif
+
+                    {{-- Notifications --}}
+                    @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges->privileges, 'notifications_view'))
+                    <li class="{{ Request::is('doctor/notifications*') ? 'active' : '' }}">
+                        <a href="{{ url('/doctor/notifications') }}">
+                            <i class="mdi mdi-bell-outline"></i>
+                            <span> Notifications </span>
+                        </a>
+                    </li>
+                    @endif
+
+                    {{-- Logout --}}
+                    <li>
+                        <a href="{{ url('/doctor/logout') }}">
+                            <i class="mdi mdi-logout"></i>
+                            <span> Logout </span>
+                        </a>
+                    </li>
+
+                @elseif(Auth::guard('branch')->check())
+                    {{-- Branch Dashboard --}}
+                    {{-- @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges->privileges, 'dashboard_view')) --}}
+                    <li class="{{ Request::is('branch/dashboard*') ? 'active' : '' }}">
+                        <a href="{{ url('/branch/dashboard') }}">
+                            <i class="mdi mdi-monitor-dashboard"></i>
+                            <span> Dashboard </span>
+                        </a>
+                    </li>
+                    {{-- @endif --}}
+
+                    {{-- Branch Details --}}
+                    @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges->privileges, 'branch_view'))
+                    <li class="{{ Request::is('branch/branches*') ? 'active' : '' }}">
+                        <a href="{{ url('/branch/branches') }}">
+                            <i class="mdi mdi-map-marker-radius"></i>
+                            <span> Branch Details </span>
+                        </a>
+                    </li>
+                    @endif
+
+                    {{-- Appointments --}}
+                    @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges->privileges, 'appointments_view'))
+                    <li class="{{ Request::is('branch/appointments*') ? 'active' : '' }}">
+                        <a href="{{ url('/branch/appointments') }}">
+                            <i class="mdi mdi-calendar-clock"></i>
+                            <span> Appointments </span>
+                        </a>
+                    </li>
+                    @endif
+
+                    {{-- Notifications --}}
+                    @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges->privileges, 'notifications_view'))
+                    <li class="{{ Request::is('branch/notifications*') ? 'active' : '' }}">
+                        <a href="{{ url('/branch/notifications') }}">
+                            <i class="mdi mdi-bell-outline"></i>
+                            <span> Notifications </span>
+                        </a>
+                    </li>
+                    @endif
+
+                    {{-- Logout --}}
+                    <li>
+                        <a href="{{ url('/branch/logout') }}">
+                            <i class="mdi mdi-logout"></i>
+                            <span> Logout </span>
+                        </a>
+                    </li>
+                @else
+                    {{-- Guest Links --}}
+                    <li>
+                        <a href="{{ url('/admin') }}">
+                            <i class="mdi mdi-login"></i>
+                            <span> Admin Login </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url('/doctor') }}">
+                            <i class="mdi mdi-login"></i>
+                            <span> Doctor Login </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url('/branch') }}">
+                            <i class="mdi mdi-login"></i>
+                            <span> Branch Login </span>
+                        </a>
+                    </li>
                 @endif
-
-
-                {{-- Branches --}}
-                @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'branch_view'))
-                <li class="{{ Request::is('admin/branches*') ? 'active' : '' }}">
-                    <a href="{{ url('/admin/branches') }}">
-                        <i class="mdi mdi-map-marker-radius"></i>
-                        <span> Branches </span>
-                    </a>
-                </li>
-                @endif
-
-                {{-- Departments --}}
-                @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'departments_view'))
-                <li class="{{ Request::is('admin/departments*') ? 'active' : '' }}">
-                    <a href="{{ url('/admin/departments') }}">
-                        <i class="mdi mdi-domain"></i>
-                        <span> Departments </span>
-                    </a>
-                </li>
-                @endif
-
-                {{-- Doctors --}}
-                @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'doctors_view'))
-                <li class="doctors {{ Request::is('admin/doctors*', 'admin/internal-doctors*', 'admin/referee-doctors*') ? 'active' : '' }}">
-                    <a href="#doctors" data-bs-toggle="collapse" aria-expanded="{{ Request::is('admin/doctors*', 'admin/internal-doctors*', 'admin/referee-doctors*') ? 'true' : 'false' }}">
-                        <i class="mdi mdi-stethoscope"></i>
-                        <span> Doctors </span>
-                        <span class="menu-arrow"></span>
-                    </a>
-                    <div class="collapse {{ Request::is('admin/doctors*', 'admin/internal-doctors*', 'admin/referee-doctors*') ? 'show' : '' }}" id="doctors">
-                        <ul class="nav-second-level">
-                            <li class="internal-doctors {{ Request::is('admin/internal-doctors*') ? 'active' : '' }}">
-                                <a href="{{ url('admin/internal-doctors') }}">
-                                    <span> Internal Doctors </span>
-                                </a>
-                            </li>
-                            <li class="referee-doctors {{ Request::is('admin/referee-doctors*') ? 'active' : '' }}">
-                                <a href="{{ url('/admin/referee-doctors') }}">
-                                    <span> Referee Doctors </span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-                @endif
-
-
-                {{-- Pet Parents --}}
-                @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'pet_owners_view'))
-                <li class="{{ Request::is('admin/parent*') ? 'active' : '' }}">
-                    <a href="{{ url('/admin/parent') }}">
-                        <i class="mdi mdi-account-heart"></i>
-                        <span> Pet Parent / Care Of </span>
-                    </a>
-                </li>
-                @endif
-
-                {{-- Pets --}}
-                @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'pet_view'))
-                <li class="{{ Request::is('admin/pet*') ? 'active' : '' }}">
-                    <a href="{{ url('/admin/pet') }}">
-                        <i class="mdi mdi-paw"></i>
-                        <span> Pets </span>
-                    </a>
-                </li>
-                @endif
-
-                {{-- Test Management --}}
-                @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'test_view'))
-                <li class="{{ Request::is('admin/test-case*') ? 'active' : '' }}">
-                    <a href="{{ url('/admin/test-case') }}">
-                        <i class="mdi mdi-flask-outline"></i>
-                        <span> Tests</span>
-                    </a>
-                </li>
-                @endif
-
-            
-
-                {{-- Revenue --}}
-                @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'revenue_view'))
-                <li class="{{ Request::is('admin/revenu*') ? 'active' : '' }}">
-                    <a href="{{ url('/admin/revenu') }}">
-                        <i class="mdi mdi-cash-multiple"></i>
-                        <span> Revenue </span>
-                    </a>
-                </li>
-                @endif
-
-                {{-- System Users --}}
-                @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'system_users_view'))
-                <li class="system-user {{ Request::is('admin/system-user*', 'admin/roles-privileges*') ? 'active' : '' }}">
-                    <a href="#system-user" data-bs-toggle="collapse" aria-expanded="{{ Request::is('admin/system-user*', 'admin/roles-privileges*') ? 'true' : 'false' }}">
-                        <i class="mdi mdi-account-group-outline"></i>
-                        <span> System Users </span>
-                        <span class="menu-arrow"></span>
-                    </a>
-                    <div class="collapse {{ Request::is('admin/system-user*', 'admin/roles-privileges*') ? 'show' : '' }}" id="system-user">
-                        <ul class="nav-second-level">
-                            @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'user_view'))
-                            <li class="system-user-list {{ Request::is('admin/system-user*') ? 'active' : '' }}">
-                                <a href="{{ url('admin/system-user') }}">
-                                    <span> Users </span>
-                                </a>
-                            </li>
-                            @endif
-                            @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'role_privileges_view'))
-                            <li class="role-privileges {{ Request::is('admin/roles-privileges*') ? 'active' : '' }}">
-                                <a href="{{ url('/admin/roles-privileges') }}">
-                                    <span> Role Privileges </span>
-                                </a>
-                            </li>
-                            @endif
-                        </ul>
-                    </div>
-                </li>
-                @endif
-
-                {{-- Settings --}}
-                @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'settings_view'))
-                <li class="setting {{ Request::is('admin/general-setting*', 'admin/visual-setting*', 'admin/change-password*') ? 'active' : '' }}">
-                    <a href="#setting" data-bs-toggle="collapse" aria-expanded="{{ Request::is('admin/general-setting*', 'admin/visual-setting*', 'admin/change-password*') ? 'true' : 'false' }}">
-                        <i class="mdi mdi-cog-outline"></i>
-                        <span> Settings </span>
-                        <span class="menu-arrow"></span>
-                    </a>
-                    <div class="collapse {{ Request::is('admin/general-setting*', 'admin/visual-setting*', 'admin/change-password*') ? 'show' : '' }}" id="setting">
-                        <ul class="nav-second-level">
-                            @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'general_setting_view'))
-                            <li class="general-setting {{ Request::is('admin/general-setting*') ? 'active' : '' }}">
-                                <a href="{{ url('/admin/general-setting') }}">
-                                    <span> General Settings </span>
-                                </a>
-                            </li>
-                            @endif
-                            @if(!empty($RolesPrivileges) && str_contains($RolesPrivileges, 'visual_setting_view'))
-                            <li class="visual-setting {{ Request::is('admin/visual-setting*') ? 'active' : '' }}">
-                                <a href="{{ url('/admin/visual-setting') }}">
-                                    <span> Visual Settings </span>
-                                </a>
-                            </li>
-                            @endif
-                            <li class="change-password {{ Request::is('admin/change-password*') ? 'active' : '' }}">
-                                <a href="{{ url('/admin/change-password') }}">
-                                    <span> Change Password </span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-                @endif
-               
-                {{-- Notifications --}}
-                <li>
-                    <a href="{{ url('admin/notification') }}">
-                        <i class="mdi mdi-bell-outline"></i>
-                        <span> Notifications </span>
-                    </a>
-                </li> 
-
-                {{-- Logout --}}
-                <li class="logout">
-                    <a href="{{ url('admin/logout') }}">
-                        <i class="mdi mdi-logout"></i>
-                        <span> Logout </span>
-                    </a>
-                </li>
-
-            </ul> 
+            </ul>
         </div>
     </div>
 </div>
@@ -394,7 +524,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var dropdownList = dropdownElementList.map(function (dropdownToggleEl) {
         return new bootstrap.Dropdown(dropdownToggleEl)
     });
-    
+
     // Initialize collapse components for sidebar menus
     var collapseElementList = [].slice.call(document.querySelectorAll('[data-bs-toggle="collapse"]'))
     var collapseList = collapseElementList.map(function (collapseToggleEl) {

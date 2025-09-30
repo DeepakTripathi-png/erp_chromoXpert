@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 23, 2025 at 03:04 PM
+-- Generation Time: Sep 30, 2025 at 07:10 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -70,7 +70,28 @@ INSERT INTO `appointments` (`id`, `appointment_code`, `lab_id`, `referee_doctor_
 (8, 'APT008', 1, 1, '2025-09-22', '16:30:00', 3, 1, NULL, 900.00, 50.00, 850.00, 700.00, 150.00, 'UPI', '1233', 'Completed', '2025-09-22 16:30:00', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-22 05:31:58', '2025-09-22 05:31:58'),
 (9, 'APT009', 1, 1, '2025-09-22', '17:37:00', 3, 1, NULL, 900.00, 50.00, 850.00, 600.00, 250.00, 'Card', NULL, 'Pending', '2025-09-22 17:37:00', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-22 06:39:24', '2025-09-22 06:39:24'),
 (10, 'APT010', 1, 1, '2025-09-23', '10:57:00', 3, 1, NULL, 2500.00, 100.00, 2400.00, 2400.00, 0.00, 'Cash', NULL, 'Completed', '2025-09-23 10:57:00', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-22 23:58:30', '2025-09-22 23:58:30'),
-(11, 'APT011', 1, 1, '2025-09-23', '16:00:00', 3, 1, NULL, 4300.00, 300.00, 4000.00, 4000.00, 0.00, 'Cash', NULL, 'Completed', '2025-09-23 16:58:00', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-23 05:59:57', '2025-09-23 05:59:58');
+(11, 'APT011', 1, 1, '2025-09-23', '16:00:00', 3, 1, NULL, 4300.00, 300.00, 4000.00, 4000.00, 0.00, 'Cash', NULL, 'Completed', '2025-09-23 16:58:00', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-23 05:59:57', '2025-09-23 05:59:58'),
+(12, 'APT012', 1, 1, '2025-09-24', '12:55:00', 14, 11, NULL, 1700.00, 100.00, 1600.00, 1600.00, 0.00, 'Cash', NULL, 'Completed', '2025-09-24 12:55:00', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-24 01:56:30', '2025-09-24 01:56:30'),
+(13, 'APT013', 1, 1, '2025-09-24', '12:55:00', 14, 11, NULL, 1700.00, 100.00, 1600.00, 1600.00, 0.00, 'Cash', NULL, 'Completed', '2025-09-24 12:55:00', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-24 02:04:26', '2025-09-24 02:04:26'),
+(14, 'APT014', 1, 1, '2025-09-24', '12:55:00', 14, 11, NULL, 1700.00, 100.00, 1600.00, 1600.00, 0.00, 'Cash', NULL, 'Completed', '2025-09-24 12:55:00', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-24 02:11:04', '2025-09-24 02:11:04'),
+(15, 'APT015', 1, 1, '2025-09-24', '12:55:00', 14, 11, NULL, 1700.00, 100.00, 1600.00, 1600.00, 0.00, 'Cash', NULL, 'Completed', '2025-09-24 12:55:00', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-24 02:11:43', '2025-09-24 02:11:43'),
+(16, 'APT016', 1, 1, '2025-09-24', '12:55:00', 14, 11, NULL, 1700.00, 100.00, 1600.00, 1600.00, 0.00, 'Cash', NULL, 'Completed', '2025-09-24 12:55:00', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-24 02:12:18', '2025-09-24 02:12:18'),
+(17, 'APT017', 1, 1, '2025-09-24', '12:55:00', 14, 11, NULL, 1700.00, 100.00, 1600.00, 1600.00, 0.00, 'Cash', NULL, 'Completed', '2025-09-24 12:55:00', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-24 02:13:44', '2025-09-24 02:13:44'),
+(18, 'APT018', 1, 1, '2025-09-24', '12:55:00', 14, 11, NULL, 1700.00, 100.00, 1600.00, 1600.00, 0.00, 'Cash', NULL, 'Completed', '2025-09-24 12:55:00', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-24 02:22:45', '2025-09-24 02:22:45'),
+(19, 'APT019', 1, 1, '2025-09-24', '12:55:00', 14, 11, NULL, 1700.00, 100.00, 1600.00, 1600.00, 0.00, 'Cash', NULL, 'Completed', '2025-09-24 12:55:00', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-24 03:30:09', '2025-09-24 03:30:09'),
+(20, 'APT020', 1, 1, '2025-09-24', '12:55:00', 14, 11, NULL, 1700.00, 100.00, 1600.00, 1600.00, 0.00, 'Cash', NULL, 'Completed', '2025-09-24 12:55:00', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-24 03:34:22', '2025-09-24 03:34:22'),
+(21, 'APT021', 1, 1, '2025-09-24', '12:55:00', 14, 11, NULL, 1700.00, 100.00, 1600.00, 1600.00, 0.00, 'Cash', NULL, 'Completed', '2025-09-24 12:55:00', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-24 03:35:50', '2025-09-24 03:35:50'),
+(22, 'APT022', 1, 1, '2025-09-24', '12:55:00', 14, 11, NULL, 1700.00, 100.00, 1600.00, 1600.00, 0.00, 'Cash', NULL, 'Completed', '2025-09-24 12:55:00', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-24 03:36:53', '2025-09-24 03:36:53'),
+(23, 'APT023', 1, 1, '2025-09-24', '12:55:00', 14, 11, NULL, 1700.00, 100.00, 1600.00, 1600.00, 0.00, 'Cash', NULL, 'Completed', '2025-09-24 12:55:00', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-24 03:37:17', '2025-09-24 03:37:17'),
+(24, 'APT024', 1, 1, '2025-09-26', '10:50:00', 3, 1, NULL, 900.00, NULL, 900.00, 900.00, 0.00, 'Cash', NULL, 'Completed', '2025-09-26 10:50:00', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-25 23:51:12', '2025-09-25 23:51:12'),
+(25, 'APT025', 1, 1, '2025-09-26', '11:26:00', 3, 1, NULL, 900.00, NULL, 900.00, 900.00, 0.00, 'Cash', NULL, 'Completed', '2025-09-26 11:26:00', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-26 00:27:25', '2025-09-26 00:27:25'),
+(26, 'APT026', 1, 1, '2025-09-26', '11:38:00', 3, 1, NULL, 900.00, NULL, 900.00, 900.00, 0.00, 'Cash', NULL, 'Pending', '2025-09-26 11:38:00', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-26 00:39:49', '2025-09-26 00:39:49'),
+(27, 'APT027', 1, 1, '2025-09-26', '11:38:00', 3, 1, NULL, 900.00, NULL, 900.00, 900.00, 0.00, 'Cash', NULL, 'Pending', '2025-09-26 11:38:00', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-26 00:47:02', '2025-09-26 00:47:02'),
+(28, 'APT028', 1, 1, '2025-09-26', '11:47:00', 3, 1, NULL, 900.00, NULL, 900.00, 900.00, 0.00, 'Cash', NULL, 'Completed', '2025-09-26 11:47:00', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-26 00:47:53', '2025-09-26 00:47:54'),
+(29, 'APT029', 1, 1, '2025-09-26', '11:47:00', 3, 1, NULL, 900.00, NULL, 900.00, 900.00, 0.00, 'Cash', NULL, 'Completed', '2025-09-26 11:47:00', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-26 00:48:45', '2025-09-26 00:48:45'),
+(30, 'APT030', 1, 1, '2025-09-26', '11:50:00', 3, 1, NULL, 900.00, NULL, 900.00, 900.00, 0.00, 'Cash', NULL, 'Completed', '2025-09-26 11:50:00', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-26 00:51:02', '2025-09-26 00:51:02'),
+(31, 'APT031', 1, 1, '2025-09-26', '12:51:00', 3, 1, NULL, 900.00, NULL, 900.00, 900.00, 0.00, 'Cash', NULL, 'Completed', '2025-09-26 12:51:00', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-26 01:51:57', '2025-09-26 01:51:57'),
+(32, 'APT032', 1, 1, '2025-09-26', '12:52:00', 3, 1, NULL, 900.00, NULL, 900.00, 900.00, 0.00, 'Cash', NULL, 'Completed', '2025-09-26 12:52:00', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-26 01:53:24', '2025-09-26 01:53:24');
 
 -- --------------------------------------------------------
 
@@ -111,7 +132,40 @@ INSERT INTO `appointment_tests` (`id`, `appointment_id`, `test_id`, `price`, `cr
 (17, 11, 4, NULL, '2025-09-23 05:59:58', '2025-09-23 05:59:58'),
 (18, 11, 5, NULL, '2025-09-23 05:59:58', '2025-09-23 05:59:58'),
 (19, 11, 6, NULL, '2025-09-23 05:59:58', '2025-09-23 05:59:58'),
-(20, 11, 10, NULL, '2025-09-23 05:59:58', '2025-09-23 05:59:58');
+(20, 11, 10, NULL, '2025-09-23 05:59:58', '2025-09-23 05:59:58'),
+(21, 12, 2, NULL, '2025-09-24 01:56:30', '2025-09-24 01:56:30'),
+(22, 12, 3, NULL, '2025-09-24 01:56:30', '2025-09-24 01:56:30'),
+(23, 13, 2, NULL, '2025-09-24 02:04:26', '2025-09-24 02:04:26'),
+(24, 13, 3, NULL, '2025-09-24 02:04:26', '2025-09-24 02:04:26'),
+(25, 14, 2, NULL, '2025-09-24 02:11:04', '2025-09-24 02:11:04'),
+(26, 14, 3, NULL, '2025-09-24 02:11:04', '2025-09-24 02:11:04'),
+(27, 15, 2, NULL, '2025-09-24 02:11:43', '2025-09-24 02:11:43'),
+(28, 15, 3, NULL, '2025-09-24 02:11:43', '2025-09-24 02:11:43'),
+(29, 16, 2, NULL, '2025-09-24 02:12:18', '2025-09-24 02:12:18'),
+(30, 16, 3, NULL, '2025-09-24 02:12:18', '2025-09-24 02:12:18'),
+(31, 17, 2, NULL, '2025-09-24 02:13:44', '2025-09-24 02:13:44'),
+(32, 17, 3, NULL, '2025-09-24 02:13:44', '2025-09-24 02:13:44'),
+(33, 18, 2, NULL, '2025-09-24 02:22:45', '2025-09-24 02:22:45'),
+(34, 18, 3, NULL, '2025-09-24 02:22:45', '2025-09-24 02:22:45'),
+(35, 19, 2, NULL, '2025-09-24 03:30:09', '2025-09-24 03:30:09'),
+(36, 19, 3, NULL, '2025-09-24 03:30:09', '2025-09-24 03:30:09'),
+(37, 20, 2, NULL, '2025-09-24 03:34:22', '2025-09-24 03:34:22'),
+(38, 20, 3, NULL, '2025-09-24 03:34:22', '2025-09-24 03:34:22'),
+(39, 21, 2, NULL, '2025-09-24 03:35:50', '2025-09-24 03:35:50'),
+(40, 21, 3, NULL, '2025-09-24 03:35:50', '2025-09-24 03:35:50'),
+(41, 22, 2, NULL, '2025-09-24 03:36:53', '2025-09-24 03:36:53'),
+(42, 22, 3, NULL, '2025-09-24 03:36:53', '2025-09-24 03:36:53'),
+(43, 23, 2, NULL, '2025-09-24 03:37:17', '2025-09-24 03:37:17'),
+(44, 23, 3, NULL, '2025-09-24 03:37:17', '2025-09-24 03:37:17'),
+(45, 24, 2, NULL, '2025-09-25 23:51:12', '2025-09-25 23:51:12'),
+(46, 25, 12, NULL, '2025-09-26 00:27:25', '2025-09-26 00:27:25'),
+(47, 26, 2, NULL, '2025-09-26 00:39:49', '2025-09-26 00:39:49'),
+(48, 27, 2, NULL, '2025-09-26 00:47:02', '2025-09-26 00:47:02'),
+(49, 28, 2, NULL, '2025-09-26 00:47:54', '2025-09-26 00:47:54'),
+(50, 29, 2, NULL, '2025-09-26 00:48:45', '2025-09-26 00:48:45'),
+(51, 30, 2, NULL, '2025-09-26 00:51:02', '2025-09-26 00:51:02'),
+(52, 31, 2, NULL, '2025-09-26 01:51:57', '2025-09-26 01:51:57'),
+(53, 32, 2, NULL, '2025-09-26 01:53:24', '2025-09-26 01:53:24');
 
 -- --------------------------------------------------------
 
@@ -849,7 +903,7 @@ CREATE TABLE `master_admins` (
 --
 
 INSERT INTO `master_admins` (`id`, `user_type`, `user_id`, `user_name`, `email`, `password`, `mobile_no`, `role_id`, `address`, `user_profile_image_path`, `user_profile_image_name`, `fcm_token`, `access_token`, `last_login`, `remember_token`, `otp`, `status`, `created_ip_address`, `modified_ip_address`, `created_by`, `modified_by`, `created_at`, `updated_at`) VALUES
-(1, 'system', NULL, 'ChromoXpert', 'admin@gmail.com', '$2y$10$InJ0GHoOaHXJHMuEYqTMye.t5E4QfWDrzNLW/pltguVNM/OZCpFUm', NULL, '1', NULL, NULL, NULL, NULL, NULL, '2025-09-23 04:43:10', NULL, NULL, 'active', NULL, NULL, NULL, NULL, NULL, '2025-09-22 23:13:10'),
+(1, 'system', NULL, 'ChromoXpert', 'admin@gmail.com', '$2y$10$InJ0GHoOaHXJHMuEYqTMye.t5E4QfWDrzNLW/pltguVNM/OZCpFUm', NULL, '1', NULL, NULL, NULL, NULL, NULL, '2025-09-30 04:44:17', NULL, NULL, 'active', NULL, NULL, NULL, NULL, NULL, '2025-09-29 23:14:17'),
 (2, 'system', NULL, 'Deepak Tripathi', 'deepakmegreat@gmail.com', '$2y$10$xNQAIXTjEX.0BWxRGhCRQOij7hFkletib0oR9o33ExwSrzTp3EzSi', '07318560108', '2', 'Bair Amad Karari', NULL, NULL, NULL, NULL, '2025-09-02 09:26:03', NULL, NULL, 'active', '127.0.0.1', NULL, 1, NULL, '2025-07-24 03:52:01', '2025-09-02 03:56:03'),
 (3, 'system', NULL, 'Deepak Tripathi', 'rec@gmail.com', '$2y$10$NJsMZ1s/k0ahYflkrDmJcu9BjBRS9URYgC0V8vb3jX.bltSLnMPZ2', '7318560108', '3', 'Bair Amad Karari', NULL, NULL, NULL, NULL, '2025-08-14 08:22:15', NULL, NULL, 'delete', '127.0.0.1', '127.0.0.1', 1, 1, '2025-08-14 02:51:24', '2025-08-14 02:52:15'),
 (4, 'customer', NULL, 'Deepak Tripathi', 'deep@gmail.com', '$2y$10$QpGDu/lTa1t9C5zFgWtOu.eLUj1Qdem5XgTYLBz7oGrC.BRWITHQe', '7318560108', NULL, 'Hello this is Deepak Address', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', '127.0.0.1', '127.0.0.1', 1, 1, '2025-09-01 01:16:48', '2025-09-01 03:44:11'),
@@ -865,7 +919,15 @@ INSERT INTO `master_admins` (`id`, `user_type`, `user_id`, `user_name`, `email`,
 (14, 'system', NULL, 'Deepak Department Head', 'ddh@gmail.com', '$2y$10$sNTRXU1UFsEke6sKjyMvn.ohff45.GvbSejfDmPw6VEv.qi/aeUC2', '7318560108', '3', 'Bair Amad Karari', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', '127.0.0.1', NULL, 1, NULL, '2025-09-03 03:16:33', '2025-09-03 03:16:33'),
 (15, 'internal_doctor', NULL, 'Internal Doctor', 'internaldoctor@gmail.com', '$2y$10$S7pa8ksDr1twKO3YXa7Md.m4aTd6Pp1lyrQTdZ33AcrRSsxYyoc0a', '+917318560108', '4', 'Bair Amad Karari', 'images/internal_doctors/dfIzVFLaV0QnzrxWS9zDmXuSeZKoGeNoPvwOPBfd.jpg', NULL, NULL, NULL, NULL, NULL, NULL, 'active', '127.0.0.1', NULL, 1, NULL, '2025-09-04 06:09:33', '2025-09-04 06:09:33'),
 (16, 'customer', NULL, 'Michael Maged', 'mm@gmail.com', '$2y$10$/FKxCr3jvqYO8mnt4gFdM.dh7FWUpVGGMkHETIwuQ7Ho9uNySVASW', '+917318560108', NULL, 'Bair Amad Karari', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', '127.0.0.1', NULL, 1, NULL, '2025-09-11 05:22:19', '2025-09-11 05:22:19'),
-(17, 'customer', NULL, 'Deepak Tripathi', 'deepak1@gmail.com', '$2y$10$ojQbygGrV8GZMbwDd7O/tu.nc3sZuOjcV4cvwl4vpj7ikI89kWNNa', '7318560109', NULL, 'Bair Amad Karari', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', '127.0.0.1', NULL, 1, NULL, '2025-09-15 00:48:12', '2025-09-15 00:48:12');
+(17, 'customer', NULL, 'Deepak Tripathi', 'deepak1@gmail.com', '$2y$10$ojQbygGrV8GZMbwDd7O/tu.nc3sZuOjcV4cvwl4vpj7ikI89kWNNa', '7318560109', NULL, 'Bair Amad Karari', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', '127.0.0.1', NULL, 1, NULL, '2025-09-15 00:48:12', '2025-09-15 00:48:12'),
+(18, 'customer', NULL, 'Deep', 'deepakmegreat1@gmail.com', '$2y$10$N8mZl/SFVMNM7eBna2qjXeWNWkr0uavi0pBO8f5Rz.eJqjWhFEVxi', '7318560108', NULL, 'Bair Amad Karari', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', '127.0.0.1', NULL, 1, NULL, '2025-09-24 00:23:25', '2025-09-24 00:23:25'),
+(19, 'customer', NULL, 'Deep', 'deep1@gmail.com', '$2y$10$6LsqsiHFmUBVirezQBhxu.6q.L9fQWQ69x6RhmVUjtPCcI1HjpxQe', '7318560110', NULL, 'Bair Amad Karari', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', '127.0.0.1', NULL, 1, NULL, '2025-09-24 00:32:20', '2025-09-24 00:32:20'),
+(20, 'customer', NULL, 'Mohit Gupta', 'mohit@gmail.com', '$2y$10$JEh5eH3e7KjvuEHs3f64kOwwUmCnYhdIsWJ0o38fQrn734C4WoKq6', '7318560108', NULL, 'Bair Amad Karari', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', '127.0.0.1', NULL, 1, NULL, '2025-09-24 00:40:23', '2025-09-24 00:40:23'),
+(21, 'customer', NULL, 'Vikas Dueby', 'vikas@gmail.com', '$2y$10$Eke7.aKvFMqqFAZsUIZ2OesJsd9AGBa4j7oGZTD0YiNx9PMtdMPLe', '7318560108', NULL, 'Bair Amad Karari', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', '127.0.0.1', NULL, 1, NULL, '2025-09-24 00:50:18', '2025-09-24 00:50:18'),
+(22, 'customer', NULL, 'Ankit', 'ankit@gmail.com', '$2y$10$bGDLb3WY4I9GR3.MS6q4ZOwrUQkq/PEtUaVQYtg9VSb/RGplwpaXS', '7318569800', NULL, 'Bair Amad Karari', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', '127.0.0.1', NULL, 1, NULL, '2025-09-24 00:57:59', '2025-09-24 00:57:59'),
+(23, 'customer', NULL, 'Shivam Ojha', 'shivam@gmail.com', '$2y$10$q70WB4qFhaKgAKIMvFUHreG59HPLBX2mbFETZGsEvhBYE07CNnJiG', '7318560108', NULL, 'Bair Amad Karari', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', '127.0.0.1', NULL, 1, NULL, '2025-09-24 01:11:13', '2025-09-24 01:11:13'),
+(24, 'customer', NULL, 'Shiv', 'shiv@gnmail.com', '$2y$10$q3XVnbwjN006Px4OHz8g.eqhcx1jugIoSD3/suxPwgMmrLPWikVCq', '7218560108', NULL, 'Bair Amad Karari', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', '127.0.0.1', NULL, 1, NULL, '2025-09-24 01:18:57', '2025-09-24 01:18:57'),
+(25, 'customer', NULL, 'Satyam Ojha', 'snojha@gmail.com', '$2y$10$glo53fQMFVmqhG5AOjVHheJtvFZX6AGyQ.Sw6z3uFw9Ccay3XAlSC', '1234567890', NULL, 'Bair Amad Karari', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', '127.0.0.1', NULL, 1, NULL, '2025-09-24 01:32:04', '2025-09-24 01:32:04');
 
 -- --------------------------------------------------------
 
@@ -907,7 +969,12 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (33, '2025_09_17_124719_create_test_results_table', 16),
 (34, '2025_09_22_090944_add_test_for_to_tests_table', 16),
 (35, '2025_09_22_091720_add_paid_amount_to_appointments_table', 17),
-(36, '2025_09_23_070550_add_signed_columns_to_test_results_table', 18);
+(36, '2025_09_23_070550_add_signed_columns_to_test_results_table', 18),
+(37, '2025_09_23_124538_create_test_result_components_table', 19),
+(38, '2025_09_26_112205_create_test_profiles_table', 20),
+(39, '2025_09_26_112226_create_test_profile_tests_table', 20),
+(40, '2025_09_29_070120_add_profile_code_and_description_to_test_profiles_table', 21),
+(41, '2025_09_29_122714_add_price_2_to_tests_table', 22);
 
 -- --------------------------------------------------------
 
@@ -945,7 +1012,9 @@ INSERT INTO `parameter_options` (`id`, `parameter_id`, `option_value`, `sort_ord
 (9, 32, 'option 1', 0, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:29:26', '2025-09-22 04:29:26'),
 (10, 32, 'option 1', 1, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:29:26', '2025-09-22 04:29:26'),
 (11, 36, 'option 1', 0, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:38:28', '2025-09-22 04:38:28'),
-(12, 36, 'option 2', 1, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:38:28', '2025-09-22 04:38:28');
+(12, 36, 'option 2', 1, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:38:28', '2025-09-22 04:38:28'),
+(13, 42, 'Option 1', 0, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-26 00:26:40', '2025-09-26 00:26:40'),
+(14, 42, 'Option 2', 1, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-26 00:26:40', '2025-09-26 00:26:40');
 
 -- --------------------------------------------------------
 
@@ -1007,7 +1076,15 @@ CREATE TABLE `petparents` (
 
 INSERT INTO `petparents` (`id`, `code`, `name`, `gender`, `email`, `mobile`, `address`, `created_ip_address`, `modified_ip_address`, `created_by`, `modified_by`, `status`, `created_at`, `updated_at`) VALUES
 (1, 'PP0001', 'Deepak Pet Parent', 'Male', 'deepalpetparent@gmail.com', '+917318560108', 'Bair Amad Karari', '127.0.0.1', '127.0.0.1', 1, 1, 'active', '2025-09-01 04:33:00', '2025-09-01 04:33:00'),
-(3, 'PP0003', 'Deepak Tripathi', 'Male', 'deepak1@gmail.com', '+917318560109', 'Bair Amad Karari', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-15 00:48:12', '2025-09-15 00:48:12');
+(3, 'PP0003', 'Deepak Tripathi', 'Male', 'deepak1@gmail.com', '+917318560109', 'Bair Amad Karari', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-15 00:48:12', '2025-09-15 00:48:12'),
+(4, 'PP0004', 'Deep', NULL, 'deepakmegreat1@gmail.com', '7318560108', 'Bair Amad Karari', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-24 00:23:25', '2025-09-24 00:23:25'),
+(5, 'PP0005', 'Deep', NULL, 'deep1@gmail.com', '7318560110', 'Bair Amad Karari', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-24 00:32:20', '2025-09-24 00:32:20'),
+(6, 'PP0006', 'Mohit Gupta', NULL, 'mohit@gmail.com', '7318560108', 'Bair Amad Karari', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-24 00:40:23', '2025-09-24 00:40:23'),
+(7, 'PP0007', 'Vikas Dueby', NULL, 'vikas@gmail.com', '7318560108', 'Bair Amad Karari', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-24 00:50:17', '2025-09-24 00:50:17'),
+(8, 'PP0008', 'Ankit', NULL, 'ankit@gmail.com', '7318569800', 'Bair Amad Karari', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-24 00:57:58', '2025-09-24 00:57:58'),
+(9, 'PP0009', 'Shivam Ojha', NULL, 'shivam@gmail.com', '7318560108', 'Bair Amad Karari', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-24 01:11:13', '2025-09-24 01:11:13'),
+(10, 'PP0010', 'Shiv', NULL, 'shiv@gnmail.com', '7218560108', 'Bair Amad Karari', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-24 01:18:57', '2025-09-24 01:18:57'),
+(11, 'PP0011', 'Satyam Ojha', NULL, 'snojha@gmail.com', '1234567890', 'Bair Amad Karari', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-24 01:32:04', '2025-09-24 01:32:04');
 
 -- --------------------------------------------------------
 
@@ -1048,7 +1125,15 @@ INSERT INTO `pets` (`id`, `pet_code`, `pet_parent_id`, `name`, `species`, `breed
 (3, 'PET003', 1, 'Tommy', 'Canine', 'Labrador Retriever', 'Dog', 'Male', '2025-07-20', '1 month 15 days', '10', 'download (2).jpeg', 'images/pets/64Vv5mxTAcZ8qcuNito2FTNObXtvORJxsjpSrSs4.jpg', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-04 04:54:23', '2025-09-04 04:54:23'),
 (4, 'PET004', 2, 'Deepak ka pet', 'Canine', 'Golden Retriever', 'Dog', 'Male', '2025-07-11', '2 months', '34', 'download (2).jpeg', 'images/pets/GwOQgad5Vp0uZzrcRyhMcJnULdMnA6yrvL9UhGyp.jpg', '127.0.0.1', '127.0.0.1', 1, 1, 'delete', '2025-09-11 05:22:21', '2025-09-11 05:22:21'),
 (5, 'PET005', 3, 'Pet1', 'Feline', 'Siamese', 'Dog', 'Male', '2025-05-01', '4 months 14 days', '80', 'download (2).jpeg', 'images/pets/zOEkSxNKElNiyWxtH2wwsoKAUPMBAENvXMbBIpXr.jpg', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-15 00:50:07', '2025-09-15 00:50:07'),
-(6, 'PET006', 3, 'Pet2', 'Avian', 'Birman', 'Cat', 'Male', '2025-07-15', '2 months', '30', 'download (2).jpeg', 'images/pets/3WyGk3KJHmHbxG07Y9EelYeGwWG2fjdBg8oXC0hJ.jpg', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-15 00:50:58', '2025-09-15 00:50:58');
+(6, 'PET006', 3, 'Pet2', 'Avian', 'Birman', 'Cat', 'Male', '2025-07-15', '2 months', '30', 'download (2).jpeg', 'images/pets/3WyGk3KJHmHbxG07Y9EelYeGwWG2fjdBg8oXC0hJ.jpg', '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-15 00:50:58', '2025-09-15 00:50:58'),
+(7, 'PET007', 4, 'John', 'Canine', 'Labrador Retriever', 'Dog', 'Male', '2025-08-04', '1 month 20 days', '10', NULL, NULL, '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-24 00:23:25', '2025-09-24 00:23:25'),
+(8, 'PET008', 5, 'John', 'Canine', 'Bulldog', 'Dog', 'Male', '2025-08-01', '1 month 23 days', '30', NULL, NULL, '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-24 00:32:20', '2025-09-24 00:32:20'),
+(9, 'PET009', 6, 'john', 'Canine', 'Poodle', 'Dog', 'Male', '2025-09-02', '22 days', '4', NULL, NULL, '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-24 00:40:23', '2025-09-24 00:40:23'),
+(10, 'PET010', 7, 'Vikky', 'Canine', 'Golden Retriever', 'Dog', 'Male', '2025-09-02', '22 days', '5', NULL, NULL, '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-24 00:50:18', '2025-09-24 00:50:18'),
+(11, 'PET011', 8, 'Jacky', 'Canine', 'Rottweiler', 'Dog', 'Male', '2025-09-01', '23 days', '40', NULL, NULL, '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-24 00:57:59', '2025-09-24 00:57:59'),
+(12, 'PET012', 9, 'Tom', 'Canine', 'Boxer', 'Dog', 'Male', '2025-08-10', '1 month 14 days', '5', NULL, NULL, '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-24 01:11:13', '2025-09-24 01:11:13'),
+(13, 'PET013', 10, 'Captain', 'Canine', 'Poodle', 'Dog', 'Male', '2025-09-08', '16 days', '3', NULL, NULL, '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-24 01:18:57', '2025-09-24 01:18:57'),
+(14, 'PET014', 11, 'Kalu', 'Canine', 'Yorkshire Terrier', 'Dog', 'Male', '2025-09-01', '23 days', '4', NULL, NULL, '127.0.0.1', NULL, 1, NULL, 'active', '2025-09-24 01:32:04', '2025-09-24 01:32:04');
 
 -- --------------------------------------------------------
 
@@ -1204,7 +1289,8 @@ INSERT INTO `tests` (`id`, `test_code`, `name`, `short_name`, `department_id`, `
 (8, 'TC008', 'Test Female 3', 'Female 3', 1, 'Blood', 'all', 800.00, 'NA', '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:27:15', '2025-09-22 04:27:15'),
 (9, 'TC009', 'test For  male', 'TFM', 1, 'Blood', 'all', 900.00, 'NA', '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:29:26', '2025-09-22 04:29:26'),
 (10, 'TC010', 'Test1 for male', 't1M', 1, 'Blood', NULL, 800.00, 'NA', '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:38:28', '2025-09-22 04:38:28'),
-(11, 'TC011', 'Deepak Tetting Test', 'CBC', 1, 'Blood', 'male', 900.00, 'NA', '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:42:37', '2025-09-22 04:42:37');
+(11, 'TC011', 'Deepak Tetting Test', 'CBC', 1, 'Blood', 'male', 900.00, 'NA', '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:42:37', '2025-09-22 04:42:37'),
+(12, 'TC012', 'Options Testing Test', 'OTT', 1, 'Blood', 'male', 900.00, 'NA', '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-26 00:26:40', '2025-09-26 00:26:40');
 
 -- --------------------------------------------------------
 
@@ -1275,7 +1361,63 @@ INSERT INTO `test_parameters` (`id`, `test_id`, `row_type`, `name`, `title`, `un
 (37, 11, 'title', NULL, 'Hemoglobin', NULL, 'text', NULL, 0, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:42:38', '2025-09-22 04:42:38'),
 (38, 11, 'component', 'dsfds', NULL, 'g/dl', 'text', '13.0-17.0', 1, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:42:38', '2025-09-22 04:42:38'),
 (39, 11, 'title', NULL, 'RBC Count', NULL, 'text', NULL, 2, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:42:38', '2025-09-22 04:42:38'),
-(40, 11, 'component', 'ASDasd', NULL, 'mill/cumm', 'text', '4.5-5.5', 3, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:42:38', '2025-09-22 04:42:38');
+(40, 11, 'component', 'ASDasd', NULL, 'mill/cumm', 'text', '4.5-5.5', 3, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-22 04:42:38', '2025-09-22 04:42:38'),
+(41, 12, 'title', NULL, 'Hemoglobin', NULL, 'text', NULL, 0, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-26 00:26:40', '2025-09-26 00:26:40'),
+(42, 12, 'component', 'Uric Acid', NULL, 'ml', 'select', '13.0-17.0', 1, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-26 00:26:40', '2025-09-26 00:26:40');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `test_profiles`
+--
+
+CREATE TABLE `test_profiles` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `profile_code` varchar(255) DEFAULT NULL,
+  `profile_price` decimal(10,2) NOT NULL,
+  `profile_description` text DEFAULT NULL,
+  `created_ip_address` varchar(255) DEFAULT NULL,
+  `modified_ip_address` varchar(255) DEFAULT NULL,
+  `created_by` bigint(20) DEFAULT NULL,
+  `modified_by` bigint(20) DEFAULT NULL,
+  `status` enum('active','delete','inactive') NOT NULL DEFAULT 'active',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `test_profiles`
+--
+
+INSERT INTO `test_profiles` (`id`, `name`, `profile_code`, `profile_price`, `profile_description`, `created_ip_address`, `modified_ip_address`, `created_by`, `modified_by`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'Testing Profile', NULL, 1100.00, NULL, '127.0.0.1', '127.0.0.1', NULL, 1, 'active', '2025-09-26 07:10:46', '2025-09-26 07:10:46'),
+(2, 'Deepak', NULL, 900.00, NULL, '127.0.0.1', '127.0.0.1', NULL, NULL, 'active', '2025-09-28 23:53:50', '2025-09-29 01:01:52'),
+(3, 'Profile Testing Name', 'Test', 900.00, 'This description', '127.0.0.1', NULL, NULL, NULL, 'active', '2025-09-29 02:06:48', '2025-09-29 02:06:48');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `test_profile_tests`
+--
+
+CREATE TABLE `test_profile_tests` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `test_profile_id` bigint(20) NOT NULL,
+  `test_id` bigint(20) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `test_profile_tests`
+--
+
+INSERT INTO `test_profile_tests` (`id`, `test_profile_id`, `test_id`, `created_at`, `updated_at`) VALUES
+(1, 1, 2, '2025-09-26 07:10:46', '2025-09-26 07:10:46'),
+(2, 1, 4, '2025-09-26 07:10:46', '2025-09-26 07:10:46'),
+(5, 2, 2, '2025-09-29 01:01:52', '2025-09-29 01:01:52'),
+(6, 3, 2, '2025-09-29 02:06:48', '2025-09-29 02:06:48');
 
 -- --------------------------------------------------------
 
@@ -1288,7 +1430,6 @@ CREATE TABLE `test_results` (
   `test_result_code` varchar(255) DEFAULT NULL,
   `appointment_id` bigint(20) DEFAULT NULL,
   `test_id` bigint(20) DEFAULT NULL,
-  `result` text DEFAULT NULL,
   `priority` enum('Low','Medium','High') NOT NULL DEFAULT 'Medium',
   `status` enum('pending','completed','failed') NOT NULL DEFAULT 'pending',
   `comment` text DEFAULT NULL,
@@ -1307,18 +1448,77 @@ CREATE TABLE `test_results` (
 -- Dumping data for table `test_results`
 --
 
-INSERT INTO `test_results` (`id`, `test_result_code`, `appointment_id`, `test_id`, `result`, `priority`, `status`, `comment`, `signed_by_id`, `signed_date`, `done`, `created_ip_address`, `modified_ip_address`, `created_by`, `modified_by`, `created_at`, `updated_at`) VALUES
-(1, 'TR0008', 8, 2, NULL, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-22 05:31:58', '2025-09-22 05:31:58'),
-(2, 'TR0009', 9, 2, NULL, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-22 06:39:24', '2025-09-22 06:39:24'),
-(3, 'TR0010', 10, 2, NULL, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-22 23:58:30', '2025-09-22 23:58:30'),
-(4, 'TR0010', 10, 3, NULL, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-22 23:58:30', '2025-09-22 23:58:30'),
-(5, 'TR0010', 10, 5, NULL, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-22 23:58:30', '2025-09-22 23:58:30'),
-(6, 'TR0011', 11, 2, '', 'Medium', 'completed', NULL, NULL, NULL, 'yes', NULL, '127.0.0.1', NULL, NULL, '2025-09-23 05:59:58', '2025-09-23 06:32:18'),
-(7, 'TR0011', 11, 3, NULL, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-23 05:59:58', '2025-09-23 05:59:58'),
-(8, 'TR0011', 11, 4, NULL, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-23 05:59:58', '2025-09-23 05:59:58'),
-(9, 'TR0011', 11, 5, NULL, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-23 05:59:58', '2025-09-23 05:59:58'),
-(10, 'TR0011', 11, 6, NULL, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-23 05:59:58', '2025-09-23 05:59:58'),
-(11, 'TR0011', 11, 10, NULL, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-23 05:59:58', '2025-09-23 05:59:58');
+INSERT INTO `test_results` (`id`, `test_result_code`, `appointment_id`, `test_id`, `priority`, `status`, `comment`, `signed_by_id`, `signed_date`, `done`, `created_ip_address`, `modified_ip_address`, `created_by`, `modified_by`, `created_at`, `updated_at`) VALUES
+(1, 'TR0008', 8, 2, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-22 05:31:58', '2025-09-22 05:31:58'),
+(2, 'TR0009', 9, 2, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-22 06:39:24', '2025-09-22 06:39:24'),
+(3, 'TR0010', 10, 2, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-22 23:58:30', '2025-09-22 23:58:30'),
+(4, 'TR0010', 10, 3, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-22 23:58:30', '2025-09-22 23:58:30'),
+(5, 'TR0010', 10, 5, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-22 23:58:30', '2025-09-22 23:58:30'),
+(6, 'TR0011', 11, 2, 'Medium', 'completed', NULL, NULL, NULL, 'yes', NULL, '127.0.0.1', NULL, NULL, '2025-09-23 05:59:58', '2025-09-23 06:32:18'),
+(7, 'TR0011', 11, 3, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-23 05:59:58', '2025-09-23 05:59:58'),
+(8, 'TR0011', 11, 4, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-23 05:59:58', '2025-09-23 05:59:58'),
+(9, 'TR0011', 11, 5, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-23 05:59:58', '2025-09-23 05:59:58'),
+(10, 'TR0011', 11, 6, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-23 05:59:58', '2025-09-23 05:59:58'),
+(11, 'TR0011', 11, 10, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-23 05:59:58', '2025-09-23 05:59:58'),
+(12, 'TR0012', 12, 2, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-24 01:56:30', '2025-09-24 01:56:30'),
+(13, 'TR0012', 12, 3, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-24 01:56:30', '2025-09-24 01:56:30'),
+(14, 'TR0013', 13, 2, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-24 02:04:26', '2025-09-24 02:04:26'),
+(15, 'TR0013', 13, 3, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-24 02:04:26', '2025-09-24 02:04:26'),
+(16, 'TR0014', 14, 2, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-24 02:11:04', '2025-09-24 02:11:04'),
+(17, 'TR0014', 14, 3, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-24 02:11:04', '2025-09-24 02:11:04'),
+(18, 'TR0015', 15, 2, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-24 02:11:43', '2025-09-24 02:11:43'),
+(19, 'TR0015', 15, 3, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-24 02:11:43', '2025-09-24 02:11:43'),
+(20, 'TR0016', 16, 2, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-24 02:12:18', '2025-09-24 02:12:18'),
+(21, 'TR0016', 16, 3, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-24 02:12:18', '2025-09-24 02:12:18'),
+(22, 'TR0017', 17, 2, 'Medium', 'completed', NULL, NULL, NULL, 'yes', NULL, '127.0.0.1', NULL, NULL, '2025-09-24 02:13:44', '2025-09-24 04:03:39'),
+(23, 'TR0017', 17, 3, 'Medium', 'completed', NULL, NULL, NULL, 'yes', NULL, '127.0.0.1', NULL, NULL, '2025-09-24 02:13:44', '2025-09-24 04:05:40'),
+(24, 'TR0018', 18, 2, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-24 02:22:45', '2025-09-24 02:22:45'),
+(25, 'TR0018', 18, 3, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-24 02:22:45', '2025-09-24 02:22:45'),
+(26, 'TR0019', 19, 2, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-24 03:30:09', '2025-09-24 03:30:09'),
+(27, 'TR0019', 19, 3, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-24 03:30:09', '2025-09-24 03:30:09'),
+(28, 'TR0020', 20, 2, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-24 03:34:22', '2025-09-24 03:34:22'),
+(29, 'TR0020', 20, 3, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-24 03:34:22', '2025-09-24 03:34:22'),
+(30, 'TR0021', 21, 2, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-24 03:35:50', '2025-09-24 03:35:50'),
+(31, 'TR0021', 21, 3, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-24 03:35:50', '2025-09-24 03:35:50'),
+(32, 'TR0022', 22, 2, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-24 03:36:53', '2025-09-24 03:36:53'),
+(33, 'TR0022', 22, 3, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-24 03:36:53', '2025-09-24 03:36:53'),
+(34, 'TR0023', 23, 2, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-24 03:37:17', '2025-09-24 03:37:17'),
+(35, 'TR0023', 23, 3, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-24 03:37:18', '2025-09-24 03:37:18'),
+(36, 'TR0024', 24, 2, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-25 23:51:12', '2025-09-25 23:51:12'),
+(37, 'TR0025', 25, 12, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-26 00:27:25', '2025-09-26 00:27:25'),
+(38, 'TR0026', 26, 2, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-26 00:39:49', '2025-09-26 00:39:49'),
+(39, 'TR0027', 27, 2, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-26 00:47:02', '2025-09-26 00:47:02'),
+(40, 'TR0028', 28, 2, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-26 00:47:54', '2025-09-26 00:47:54'),
+(41, 'TR0029', 29, 2, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-26 00:48:45', '2025-09-26 00:48:45'),
+(42, 'TR0030', 30, 2, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-26 00:51:02', '2025-09-26 00:51:02'),
+(43, 'TR0031', 31, 2, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-26 01:51:57', '2025-09-26 01:51:57'),
+(44, 'TR0032', 32, 2, 'Medium', 'pending', NULL, NULL, NULL, 'no', NULL, NULL, NULL, NULL, '2025-09-26 01:53:24', '2025-09-26 01:53:24');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `test_result_components`
+--
+
+CREATE TABLE `test_result_components` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `test_result_id` bigint(20) NOT NULL,
+  `component_id` bigint(20) NOT NULL,
+  `result` text DEFAULT NULL,
+  `result_status` enum('normal','abnormal','critical') DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `test_result_components`
+--
+
+INSERT INTO `test_result_components` (`id`, `test_result_id`, `component_id`, `result`, `result_status`, `created_at`, `updated_at`) VALUES
+(1, 22, 4, '15.0', 'normal', '2025-09-24 03:46:43', '2025-09-24 04:03:39'),
+(2, 22, 6, '6.0', 'abnormal', '2025-09-24 03:46:43', '2025-09-24 04:03:39'),
+(3, 23, 8, '18', 'abnormal', '2025-09-24 04:05:40', '2025-09-24 04:05:40'),
+(4, 23, 10, '4.7', 'normal', '2025-09-24 04:05:40', '2025-09-24 04:05:40');
 
 -- --------------------------------------------------------
 
@@ -1500,9 +1700,27 @@ ALTER TABLE `test_parameters`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `test_profiles`
+--
+ALTER TABLE `test_profiles`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `test_profile_tests`
+--
+ALTER TABLE `test_profile_tests`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `test_results`
 --
 ALTER TABLE `test_results`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `test_result_components`
+--
+ALTER TABLE `test_result_components`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1526,13 +1744,13 @@ ALTER TABLE `visual_settings`
 -- AUTO_INCREMENT for table `appointments`
 --
 ALTER TABLE `appointments`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `appointment_tests`
 --
 ALTER TABLE `appointment_tests`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 
 --
 -- AUTO_INCREMENT for table `branches`
@@ -1580,19 +1798,19 @@ ALTER TABLE `internal_doctors`
 -- AUTO_INCREMENT for table `master_admins`
 --
 ALTER TABLE `master_admins`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT for table `parameter_options`
 --
 ALTER TABLE `parameter_options`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -1604,13 +1822,13 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT for table `petparents`
 --
 ALTER TABLE `petparents`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `pets`
 --
 ALTER TABLE `pets`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `referee_doctors`
@@ -1634,19 +1852,37 @@ ALTER TABLE `states`
 -- AUTO_INCREMENT for table `tests`
 --
 ALTER TABLE `tests`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `test_parameters`
 --
 ALTER TABLE `test_parameters`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+
+--
+-- AUTO_INCREMENT for table `test_profiles`
+--
+ALTER TABLE `test_profiles`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `test_profile_tests`
+--
+ALTER TABLE `test_profile_tests`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `test_results`
 --
 ALTER TABLE `test_results`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+
+--
+-- AUTO_INCREMENT for table `test_result_components`
+--
+ALTER TABLE `test_result_components`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `users`

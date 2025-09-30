@@ -26,43 +26,76 @@ class LoginController extends Controller
     //     return !empty(Session::has('MasterAdmin*%')) ? view('Admin.Dashboard.index') : redirect('/login');        
     // }
 
-    public function admin_login(Request $request){
+    // public function admin_login(Request $request){
     
+    //     $request->validate([
+    //         'email' => 'required',
+    //         'password' => 'required'
+    //     ]);
+        
+    //     $user_data = array(
+    //         'email' => $request->get('email'),
+    //         'password' => $request->get('password')
+    //     );  
+
+      
+       
+    //     $user = Master_admin::where('email', $user_data['email'])->where('status', '!=', 'delete')->first();
+    //     if($user && Hash::check($user_data['password'], $user->password)){
+    //         Auth::guard('master_admins')->login($user);
+    //         if(Auth::guard('master_admins')->user()->status == 'inactive'){
+    //             Auth::logout();
+    //             Session::flush();
+    //             return redirect('/admin')->with('error', 'Contact To Admin For Login.');
+    //         }else{
+    //             $userType = Auth::guard('master_admins')->user()->user_type;
+    //             $user_id = Auth::guard('master_admins')->user()->id;  
+    //             $last_login = Master_admin::where('id', $user_id)->update([
+    //                 'last_login' => date('Y-m-d H:i:s'),
+    //             ]);
+    //             Session::put('MasterAdmin*%', $user_id);
+    //             if($userType == 'internal_doctor'){
+    //                 return redirect('admin/doctor/dashboard')->with('success','Login Successfully!');
+    //             }else{
+    //                 return redirect('admin/dashboard')->with('success','Login Successfully!');
+    //             }
+                
+    //         }
+    //     }else{          
+    //         return redirect('/admin')->with('error','Invalid Login Details!');;
+    //     }
+    // }
+
+
+    public function admin_login(Request $request)
+    {
         $request->validate([
             'email' => 'required',
             'password' => 'required'
         ]);
-        
+
         $user_data = array(
             'email' => $request->get('email'),
             'password' => $request->get('password')
-        );  
+        );
 
-      
-       
         $user = Master_admin::where('email', $user_data['email'])->where('status', '!=', 'delete')->first();
-        if($user && Hash::check($user_data['password'], $user->password)){
+        if ($user && Hash::check($user_data['password'], $user->password)) {
             Auth::guard('master_admins')->login($user);
-            if(Auth::guard('master_admins')->user()->status == 'inactive'){
+            if (Auth::guard('master_admins')->user()->status == 'inactive') {
                 Auth::logout();
                 Session::flush();
                 return redirect('/admin')->with('error', 'Contact To Admin For Login.');
-            }else{
-                $userType = Auth::guard('master_admins')->user()->user_type;
-                $user_id = Auth::guard('master_admins')->user()->id;  
-                $last_login = Master_admin::where('id', $user_id)->update([
+            } else {
+                $user_id = Auth::guard('master_admins')->user()->id;
+                Master_admin::where('id', $user_id)->update([
                     'last_login' => date('Y-m-d H:i:s'),
                 ]);
                 Session::put('MasterAdmin*%', $user_id);
-                if($userType == 'internal_doctor'){
-                    return redirect('admin/doctor/dashboard')->with('success','Login Successfully!');
-                }else{
-                    return redirect('admin/dashboard')->with('success','Login Successfully!');
-                }
-                
+                return redirect('admin/dashboard')->with('success', 'Login Successfully!');
             }
-        }else{          
-            return redirect('/admin')->with('error','Invalid Login Details!');;
+        } else {
+            return redirect('/admin')->with('error', 'Invalid Login Details!');
         }
     }
 

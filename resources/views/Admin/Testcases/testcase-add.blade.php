@@ -114,6 +114,17 @@
                                     @error('base_price')<span class="text-danger">{{ $message }}</span>@enderror
                                 </div>
                             </div>
+
+                            <div class="col-md-3">
+                                <div class="form-floating">
+                                    <input type="number" class="form-control rounded-3" id="minimum_price" name="minimum_price" 
+                                        value="{{ old('minimum_price', $test->base_price ?? '') }}" required placeholder=" " step="0.01">
+                                    <label for="minimum_price" style="color: #6267ae;">Price 2(if any) :<span class="text-danger">*</span></label>
+                                    @error('minimum_price')<span class="text-danger">{{ $message }}</span>@enderror
+                                </div>
+                            </div>
+
+
                         </div>
 
 
@@ -121,7 +132,7 @@
                         <div class="form-floating mb-4">
                             <textarea class="form-control rounded-3" id="precautions" name="precautions" 
                                     placeholder=" " style="height:80px;">{{ old('precautions', $test->precautions ?? '') }}</textarea>
-                            <label for="precautions" style="color:#6267ae;">Precautions</label>
+                            <label for="precautions" style="color:#6267ae;">Test Intructions</label>
                             @error('precautions')<span class="text-danger">{{ $message }}</span>@enderror
                         </div>
 

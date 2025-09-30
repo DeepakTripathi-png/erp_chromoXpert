@@ -18,6 +18,7 @@ class Test extends Model
         'department_id',
         'sample_type',
         'base_price',
+        'price_2',
         'test_for',
         'precautions',
         'created_ip_address',

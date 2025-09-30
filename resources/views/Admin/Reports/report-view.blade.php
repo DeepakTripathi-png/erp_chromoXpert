@@ -49,12 +49,14 @@
                 Tests
             </div>
 
-                   <div id="testContainer">
-
-                    <!-- Test 1 -->
-                   @if(!empty($tests))
+            <div id="testContainer">
+                <!-- Test 1 -->
+                @if(!empty($tests))
                     @foreach($tests as $index => $test)
-                        <div class="test-item" id="test{{ $test->id }}">
+                        @php
+                            $testResult = $report->where('test_id', $test->id)->first();
+                        @endphp
+                        <div class="test-item" id="test{{ $test->id }}" data-test-result-id="{{ $testResult ? $testResult->id : '' }}">
                             <div class="d-flex justify-content-between align-items-center">
                                 <label>
                                     <input type="checkbox" class="test-checkbox">
@@ -88,7 +90,6 @@
                                                 </tr>
                                             @elseif($parameter->row_type === 'component')
                                                 @php
-                                                    $testResult = $report->where('test_id', $test->id)->first();
                                                     $component = $testResult ? $testResult->components->where('component_id', $parameter->id)->first() : null;
                                                 @endphp
                                                 <tr>
@@ -108,17 +109,12 @@
                                         @endforelse
                                     </tbody>
                                 </table>
-                                @php
-                                    $testResult = $report->where('test_id', $test->id)->first();
-                                @endphp
                                 <div class="comment">Comment: {{ $testResult ? $testResult->comment : 'No comment available' }}</div>
                             </div>
                         </div>
                     @endforeach
                 @endif
             </div>
-
-
         </div>
     </div>
 </div>
@@ -253,9 +249,6 @@
     }
     
     table.table thead th {
-        /* background: linear-gradient(135deg, #6267ae 0%, #cc235e 100%); */
-        /* color: white; */
-        /* border: none; */
         font-weight: 600;
     }
     
@@ -297,15 +290,16 @@
     }
 </style>
 @endsection
-
 @section('scripts')
 <script>
+    // Function to toggle test item drawer
     function toggleDrawer(button) {
         const testItem = button.closest('.test-item');
         testItem.classList.toggle('open');
         button.textContent = testItem.classList.contains('open') ? '−' : '+';
     }
 
+    // Function to remove a test item
     function removeTest(testId) {
         const testElement = document.getElementById(testId);
         if (testElement) {
@@ -313,34 +307,165 @@
         }
     }
 
+    // Function to select or deselect all test checkboxes
     function selectAllTests(check) {
         const checkboxes = document.querySelectorAll('#testContainer .test-checkbox');
         checkboxes.forEach(checkbox => checkbox.checked = check);
     }
 
-    // Print functionality
-    document.querySelector('.print-report').addEventListener('click', function() {
-        window.print();
-    });
+    // Function to download reports
+    function downloadReports(reports) {
+        reports.forEach(report => {
+            try {
+                const link = document.createElement('a');
+                link.href = 'data:application/pdf;base64,' + report.content;
+                link.download = report.filename || 'report.pdf';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } catch (error) {
+                console.error('Error downloading report:', error);
+                showToast('error', 'Failed to download report.');
+            }
+        });
+    }
 
-    // Add keyboard shortcuts
-    document.addEventListener('keydown', function(e) {
-        // Ctrl+A to select all tests
+    // Function to print a PDF
+    function printReport(base64Content) {
+        try {
+            // Create a blob from the base64 content
+            const byteCharacters = atob(base64Content);
+            const byteNumbers = new Array(byteCharacters.length);
+            for (let i = 0; i < byteCharacters.length; i++) {
+                byteNumbers[i] = byteCharacters.charCodeAt(i);
+            }
+            const byteArray = new Uint8Array(byteNumbers);
+            const blob = new Blob([byteArray], { type: 'application/pdf' });
+            const url = URL.createObjectURL(blob);
+
+            // Create an iframe to load the PDF
+            const iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            iframe.src = url;
+            document.body.appendChild(iframe);
+
+            iframe.onload = () => {
+                try {
+                    iframe.contentWindow.focus();
+                    iframe.contentWindow.print();
+                    // Clean up after a delay to ensure print dialog appears
+                    setTimeout(() => {
+                        URL.revokeObjectURL(url);
+                        document.body.removeChild(iframe);
+                    }, 1000);
+                } catch (error) {
+                    console.error('Error printing PDF:', error);
+                    showToast('error', 'Failed to initiate print.');
+                }
+            };
+
+            iframe.onerror = () => {
+                console.error('Error loading PDF in iframe');
+                showToast('error', 'Failed to load PDF for printing.');
+                URL.revokeObjectURL(url);
+                document.body.removeChild(iframe);
+            };
+        } catch (error) {
+            console.error('Error processing PDF for print:', error);
+            showToast('error', 'Invalid PDF content.');
+        }
+    }
+
+    // Placeholder toast function (replace with actual implementation)
+    function showToast(type, message) {
+        // Assuming error_toast and success_toast are defined elsewhere
+        if (type === 'error') {
+            if (typeof error_toast === 'function') {
+                error_toast('error', message);
+            } else {
+                alert(message); // Fallback
+            }
+        } else if (type === 'success') {
+            if (typeof success_toast === 'function') {
+                success_toast('success', message);
+            } else {
+                alert(message); // Fallback
+            }
+        }
+    }
+
+    // Bind print button event listener
+    const printBtn = document.querySelector('.print-report');
+    if (printBtn && !printBtn.dataset.bound) {
+        printBtn.addEventListener('click', function () {
+            const selectedTestResults = Array.from(document.querySelectorAll('#testContainer .test-checkbox:checked'))
+                .map(checkbox => checkbox.closest('.test-item').dataset.testResultId)
+                .filter(id => id);
+
+            if (selectedTestResults.length === 0) {
+                showToast('error', 'Please select at least one test to print the report.');
+                return;
+            }
+
+            console.log('Selected Test Result IDs:', selectedTestResults);
+
+            $.ajax({
+                url: '{{ route("reports.pdf") }}',
+                method: 'POST',
+                data: {
+                    selected_test_results: selectedTestResults,
+                    _token: $('meta[name="csrf-token"]').attr('content')
+                },
+                beforeSend: () => {
+                    printBtn.disabled = true;
+                    printBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Generating...';
+                },
+                success: function (response) {
+                    console.log('AJAX Success:', response);
+                    if (response.reports && Array.isArray(response.reports) && response.reports.length > 0) {
+                        downloadReports(response.reports);
+                        showToast('success', 'Report generated successfully. Check your downloads.');
+                        // if (response.reports[0].content) {
+                        //     printReport(response.reports[0].content);
+                        // } else {
+                        //     showToast('error', 'No valid PDF content found in the response.');
+                        // }
+                    } else {
+                        showToast('error', 'No reports generated. Please try again.');
+                    }
+                },
+                error: function (xhr) {
+                    console.error('AJAX Error:', xhr.responseText);
+                    let errorMessage = 'Failed to generate the report. Please try again.';
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        errorMessage = xhr.responseJSON.message;
+                    }
+                    showToast('error', errorMessage);
+                },
+                complete: () => {
+                    printBtn.disabled = false;
+                    printBtn.innerHTML = '<i class="fas fa-print me-2"></i> Print';
+                }
+            });
+        });
+
+        printBtn.dataset.bound = 'true';
+    }
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', function (e) {
         if (e.ctrlKey && e.key === 'a') {
             e.preventDefault();
             selectAllTests(true);
         }
-        
-        // Ctrl+D to deselect all tests
         if (e.ctrlKey && e.key === 'd') {
             e.preventDefault();
             selectAllTests(false);
         }
-        
-        // Ctrl+P to print
         if (e.ctrlKey && e.key === 'p') {
             e.preventDefault();
-            window.print();
+            const btn = document.querySelector('.print-report');
+            if (btn) btn.click();
         }
     });
 </script>

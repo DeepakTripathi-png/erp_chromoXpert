@@ -27,7 +27,7 @@ date_default_timezone_set('Asia/Kolkata');
                  style="background: rgba(255,255,255,0.95); backdrop-filter: blur(14px);">
                 <div class="card-body p-4">
 
-                    <form action="{{ url('admin/appointments/store') }}" method="POST" enctype="multipart/form-data" id="registrationForm" novalidate>
+                    <form action="{{ url('admin/appointments/store') }}" method="POST" enctype="multipart/form-data" id="registrationForm">
                         @csrf
                         <div class="row g-4">
 
@@ -38,7 +38,7 @@ date_default_timezone_set('Asia/Kolkata');
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     <select class="form-select rounded-3 select2" id="lab_id" name="lab_id" 
-                                            style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
+                                            style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;" required>
                                         <option value="" {{ old('lab_id') ? '' : 'selected' }} disabled>Select Lab</option>
                                         @if(!empty($branches))
                                             @foreach ($branches as $branch)
@@ -122,8 +122,8 @@ date_default_timezone_set('Asia/Kolkata');
                                     <input type="tel" class="form-control rounded-3" id="phone" 
                                         name="phone" value="{{ old('phone') }}" placeholder=" " 
                                         pattern="\+91[0-9]{10}" title="Phone number must start with +91 followed by 10 digits"
-                                        style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
-                                    <label for="phone" style="color: #6267ae;">Phone Number (+91)</label>
+                                        style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;" required>
+                                    <label for="phone" style="color: #6267ae;">Phone Number*</label>
                                     @error('phone')
                                         <span class="text-danger" style="color: #cc235e;">{{ $message }}</span>
                                     @enderror
@@ -134,8 +134,8 @@ date_default_timezone_set('Asia/Kolkata');
                                 <div class="form-floating">
                                     <input type="text" class="form-control rounded-3" id="pet_owner_name" 
                                         name="pet_owner_name" value="{{ old('pet_owner_name') }}" placeholder=" " 
-                                        style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
-                                    <label for="pet_owner_name" style="color: #6267ae;">Pet Owner Name</label>
+                                        style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;" required>
+                                    <label for="pet_owner_name" style="color: #6267ae;">Pet Owner Name*</label>
                                     @error('pet_owner_name')
                                         <span class="text-danger" style="color: #cc235e;">{{ $message }}</span>
                                     @enderror
@@ -150,8 +150,8 @@ date_default_timezone_set('Asia/Kolkata');
                                 <div class="input-group">
                                     <div class="form-floating flex-grow-1">
                                         <select class="form-select rounded-3 select2" id="pet_id" name="pet_id" 
-                                                style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
-                                            <option value="" selected disabled>Select Pet</option>
+                                                style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;" required>
+                                            <option value="" selected disabled>Select Pet*</option>
                                             {{-- @if(!empty($pets))
                                                 @foreach ($pets as $pet)
                                                     <option value="{{ $pet->id }}">{{ $pet->name }}</option>
@@ -171,8 +171,8 @@ date_default_timezone_set('Asia/Kolkata');
                                 <div class="form-floating">
                                     <input type="text" class="form-control rounded-3" id="pet_code" 
                                         name="pet_code" value="{{ old('pet_code') }}" readonly 
-                                        style="background: #f8f9fa; color: #6267ae; border: 1px solid #f6b51d;">
-                                    <label for="pet_code" style="color: #6267ae;">Pet Code</label>
+                                        style="background: #f8f9fa; color: #6267ae; border: 1px solid #f6b51d;" required>
+                                    <label for="pet_code" style="color: #6267ae;">Pet Code*</label>
                                     @error('pet_code')
                                         <span class="text-danger" style="color: #cc235e;">{{ $message }}</span>
                                     @enderror
@@ -183,8 +183,8 @@ date_default_timezone_set('Asia/Kolkata');
                                 <div class="form-floating">
                                     <input type="text" class="form-control rounded-3" id="pet_type" 
                                         name="pet_type" value="{{ old('pet_type') }}" placeholder=" " 
-                                        style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
-                                    <label for="pet_type" style="color: #6267ae;">Pet Type/Breed</label>
+                                        style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;" required>
+                                    <label for="pet_type" style="color: #6267ae;">Pet Type/Breed*</label>
                                     @error('pet_type')
                                         <span class="text-danger" style="color: #cc235e;">{{ $message }}</span>
                                     @enderror
@@ -194,13 +194,13 @@ date_default_timezone_set('Asia/Kolkata');
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     <select class="form-select rounded-3" id="pet_gender" name="pet_gender" 
-                                            style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
+                                            style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;" required>
                                         <option value="" selected disabled>Select Gender</option>
                                         <option value="Male">Male</option>
                                         <option value="Female">Female</option>
                                         <option value="Other">Other</option>
                                     </select>
-                                    <label for="pet_gender" style="color: #6267ae;">Pet Gender</label>
+                                    <label for="pet_gender" style="color: #6267ae;">Pet Gender*</label>
                                     @error('pet_gender')
                                         <span class="text-danger" style="color: #cc235e;">{{ $message }}</span>
                                     @enderror
@@ -251,7 +251,7 @@ date_default_timezone_set('Asia/Kolkata');
                                 <div class="card border-0 shadow-lg rounded-4 test-search-card" 
                                      style="background: rgba(255,255,255,0.95); backdrop-filter: blur(14px); z-index: 10;">
                                     <div class="card-body p-3">
-                                        <div id="selectedTestsCount" class="text-muted mb-3">0 tests selected</div>
+                                        <div id="selectedTestsCount" class="text-muted mb-3">0 tests selected*</div>
                                         
                                         <div class="form-floating mb-3 position-relative">
                                             <input type="text" id="testSearch" class="form-control rounded-3" 
@@ -282,8 +282,8 @@ date_default_timezone_set('Asia/Kolkata');
                                                 <div class="form-floating">
                                                     <input type="number" step="0.01" class="form-control rounded-3" id="subtotal" 
                                                         name="subtotal" placeholder="0.00" readonly
-                                                        style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
-                                                    <label for="subtotal" style="color: #6267ae;">Subtotal (₹)</label>
+                                                        style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;" required>
+                                                    <label for="subtotal" style="color: #6267ae;">Subtotal (₹)*</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
@@ -302,8 +302,8 @@ date_default_timezone_set('Asia/Kolkata');
                                                 <div class="form-floating">
                                                     <input type="number" step="0.01" class="form-control rounded-3" id="total" 
                                                         name="total" placeholder="0.00" readonly
-                                                        style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
-                                                    <label for="total" style="color: #6267ae;">Total (₹)</label>
+                                                        style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;" required>
+                                                    <label for="total" style="color: #6267ae;">Total (₹)*</label>
                                                 </div>
                                             </div>
 
@@ -311,16 +311,16 @@ date_default_timezone_set('Asia/Kolkata');
                                                 <div class="form-floating">
                                                     <input type="number" step="0.01" class="form-control rounded-3" id="paid_amount" 
                                                         name="paid_amount" placeholder="0.00" 
-                                                        style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
-                                                    <label for="paid_amount" style="color: #6267ae;">Paid Amount (₹)</label>
+                                                        style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;" required>
+                                                    <label for="paid_amount" style="color: #6267ae;">Paid Amount (₹)*</label>
                                                 </div>
                                             </div>
 
                                             <div class="col-md-4">
                                                 <div class="form-floating">
                                                     <select class="form-select rounded-3" id="payment_mode" name="payment_mode" 
-                                                            style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
-                                                        <option value="" selected disabled>Select Payment Mode</option>
+                                                            style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;" required>
+                                                        <option value="" selected disabled>Select Payment Mode*</option>
                                                         <option value="Cash">Cash</option>
                                                         <option value="Card">Card</option>
                                                         <option value="UPI">UPI</option>
@@ -346,7 +346,7 @@ date_default_timezone_set('Asia/Kolkata');
                                             <div class="col-md-4">
                                                 <div class="form-floating">
                                                     <select class="form-select rounded-3" id="payment_status" name="payment_status" 
-                                                            style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
+                                                            style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;" required>
                                                         <option value="" selected disabled>Select Payment Status</option>
                                                         <option value="Pending">Pending</option>
                                                         <option value="Completed">Completed</option>
@@ -363,8 +363,8 @@ date_default_timezone_set('Asia/Kolkata');
                                                     <input type="datetime-local" class="form-control rounded-3" id="payment_date" 
                                                         name="payment_date" 
                                                         value="{{ old('payment_date', date('Y-m-d\TH:i')) }}" 
-                                                        style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
-                                                    <label for="payment_date" style="color: #6267ae;">Payment Date & Time</label>
+                                                        style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;" required>
+                                                    <label for="payment_date" style="color: #6267ae;">Payment Date & Time*</label>
                                                     @error('payment_date')
                                                         <span class="text-danger" style="color: #cc235e;">{{ $message }}</span>
                                                     @enderror
@@ -383,7 +383,7 @@ date_default_timezone_set('Asia/Kolkata');
                             <button type="submit" class="btn btn-success btn-lg rounded-pill shadow-sm px-4"
                                     style="background: #6267ae; color: #fff; border: none;" id="submitBtn">
                                 <span class="spinner-border spinner-border-sm d-none me-1" id="submitSpinner"></span>
-                                <i class="mdi mdi-content-save me-2"></i> Add Appointment
+                                <i class="mdi mdi-content-save me-2"></i> Register
                             </button>
                             <button type="reset" class="btn btn-secondary btn-lg rounded-pill shadow-sm px-4"
                                     style="background: #ac7fb6; color: #fff; border: none;">
@@ -1147,6 +1147,8 @@ $(document).ready(function () {
                 $btn.prop('disabled', false);
             }
         });
+
+        
     });
 
     $('#addRefereeDoctorModal').on('hidden.bs.modal', function () {

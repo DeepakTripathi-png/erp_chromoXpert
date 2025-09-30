@@ -1,3 +1,7 @@
+<?php
+date_default_timezone_set('Asia/Kolkata');
+?>
+
 @extends('Admin.Layouts.layout')
 @section('meta_title', 'Add New Registration | ChromoXpert')
 
@@ -80,7 +84,8 @@
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     <input type="date" class="form-control rounded-3" id="appointment_date" 
-                                        name="appointment_date" value="{{ old('appointment_date') }}" required
+                                        name="appointment_date" value="{{ old('appointment_date', date('Y-m-d')) }}" required
+                                        min="{{ date('Y-m-d') }}"
                                         style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;"
                                         onclick="this.showPicker()">
                                     <label for="appointment_date" style="color: #6267ae;">Appointment Date*</label>
@@ -89,10 +94,11 @@
                                     @enderror
                                 </div>
                             </div>
+
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     <input type="time" class="form-control rounded-3" id="appointment_time" 
-                                        name="appointment_time" value="{{ old('appointment_time') }}" required
+                                        name="appointment_time" value="{{ old('appointment_time', date('H:i')) }}" required
                                         style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;"
                                         onclick="this.showPicker()">
                                     <label for="appointment_time" style="color: #6267ae;">Appointment Time*</label>
@@ -113,11 +119,12 @@
 
                             <div class="col-md-6">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control rounded-3" id="pet_owner_name" 
-                                        name="pet_owner_name" value="{{ old('pet_owner_name') }}" placeholder=" " 
+                                    <input type="tel" class="form-control rounded-3" id="phone" 
+                                        name="phone" value="{{ old('phone') }}" placeholder=" " 
+                                        pattern="\+91[0-9]{10}" title="Phone number must start with +91 followed by 10 digits"
                                         style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
-                                    <label for="pet_owner_name" style="color: #6267ae;">Pet Owner Name</label>
-                                    @error('pet_owner_name')
+                                    <label for="phone" style="color: #6267ae;">Phone Number (+91)</label>
+                                    @error('phone')
                                         <span class="text-danger" style="color: #cc235e;">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -125,12 +132,11 @@
 
                             <div class="col-md-6">
                                 <div class="form-floating">
-                                    <input type="tel" class="form-control rounded-3" id="phone" 
-                                        name="phone" value="{{ old('phone') }}" placeholder=" " 
-                                        pattern="\+91[0-9]{10}" title="Phone number must start with +91 followed by 10 digits"
+                                    <input type="text" class="form-control rounded-3" id="pet_owner_name" 
+                                        name="pet_owner_name" value="{{ old('pet_owner_name') }}" placeholder=" " 
                                         style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
-                                    <label for="phone" style="color: #6267ae;">Phone Number (+91)</label>
-                                    @error('phone')
+                                    <label for="pet_owner_name" style="color: #6267ae;">Pet Owner Name</label>
+                                    @error('pet_owner_name')
                                         <span class="text-danger" style="color: #cc235e;">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -146,12 +152,12 @@
                                         <select class="form-select rounded-3 select2" id="pet_id" name="pet_id" 
                                                 style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
                                             <option value="" selected disabled>Select Pet</option>
-                                            @if(!empty($pets))
+                                            {{-- @if(!empty($pets))
                                                 @foreach ($pets as $pet)
                                                     <option value="{{ $pet->id }}">{{ $pet->name }}</option>
                                                 @endforeach
-                                            @endif
-                                            <option value="new">Add New Pet</option>
+                                            @endif --}}
+                                            {{-- <option value="new">Add New Pet</option> --}}
                                         </select>
                                         <label for="pet_id" style="color: #6267ae;">Pet</label>
                                     </div>
@@ -205,10 +211,27 @@
                                 <div class="form-floating">
                                     <input type="date" class="form-control rounded-3" id="pet_dob" 
                                         name="pet_dob" value="{{ old('pet_dob') }}" placeholder=" " 
-                                        style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
+                                        max="{{ date('Y-m-d') }}"
+                                        style="background: rgba(255,255,255,0.95); border: 1px solid #f6b51d;">
                                     <label for="pet_dob" style="color: #6267ae;">Pet Date of Birth</label>
                                     @error('pet_dob')
-                                        <span class="text-danger" style="color: #cc235e;">{{ $message }}</span>
+                                        <span class="text-danger small mt-1" style="color: #cc235e;">
+                                            <i class="mdi mdi-alert-circle me-1"></i> {{ $message }}
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control rounded-3" id="pet_age" 
+                                        name="pet_age" value="{{ old('pet_age') }}" placeholder=" " 
+                                        style="background: rgba(255,255,255,0.95); border: 1px solid #f6b51d;">
+                                    <label for="pet_age" style="color: #6267ae;">Pet Age</label>
+                                    @error('pet_age')
+                                        <span class="text-danger small mt-1" style="color: #cc235e;">
+                                            <i class="mdi mdi-alert-circle me-1"></i> {{ $message }}
+                                        </span>
                                     @enderror
                                 </div>
                             </div>
@@ -225,41 +248,25 @@
                             </div>
 
                             <div class="col-12 mt-4">
-                                <div class="card border-0 shadow-lg rounded-4" 
-                                     style="background: rgba(255,255,255,0.95); backdrop-filter: blur(14px);">
+                                <div class="card border-0 shadow-lg rounded-4 test-search-card" 
+                                     style="background: rgba(255,255,255,0.95); backdrop-filter: blur(14px); z-index: 10;">
                                     <div class="card-body p-3">
                                         <div id="selectedTestsCount" class="text-muted mb-3">0 tests selected</div>
-                                        <div class="input-group mb-3" id="testSearchGroup" style="display: none;">
-                                            <input type="text" class="form-control" id="testSearchInput" placeholder="Search tests..." style="border: 1px solid #f6b51d;">
-                                            <button class="btn btn-outline-secondary" type="button" id="clearSearch" style="border-color: #f6b51d; color: #6267ae;">
-                                                <i class="mdi mdi-close"></i>
-                                            </button>
-                                        </div>
-                                        <div class="table-responsive">
-                                            <table id="testsDataTable" class="table align-middle table-hover" style="width:100%;">
-                                                <thead style="background: linear-gradient(135deg, #ac7fb6 0%, #f6b51d 100%); color: #fff;">
-                                                    <tr>
-                                                        <th></th>
-                                                        <th>Test Name</th>
-                                                        <th>Price (₹)</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @if($tests)
-                                                        @foreach ($tests as $test)
-                                                            <tr>
-                                                                <td><input type="checkbox" class="test-checkbox" name="tests[]" value="{{ $test->id ?? '' }}" data-price="{{ $test->base_price ?? 0 }}"></td>
-                                                                <td>{{ $test->name ?? '' }}</td>
-                                                                <td>{{ $test->base_price ?? '' }}</td>
-                                                            </tr>  
-                                                        @endforeach
-                                                    @endif
-                                                </tbody>
-                                            </table>
+                                        
+                                        <div class="form-floating mb-3 position-relative">
+                                            <input type="text" id="testSearch" class="form-control rounded-3" 
+                                                placeholder="Search Test"
+                                                style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
+                                            <label for="testSearch" style="color: #6267ae;">Search Test</label>
+
+                                            <!-- Suggestions -->
+                                            <ul id="testSuggestions" 
+                                                class="list-group position-absolute w-100 mt-1 shadow-sm"
+                                                style="z-index: 1000; display: none;" onclick="hideSuggestions()">
+                                            </ul>
                                         </div>
 
-                                        <div class="mt-4">
-                                            {{ $tests->links('vendor.pagination.bootstrap-5') }}
+                                        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3" id="testCards">
                                         </div>
                                     </div>
                                 </div>
@@ -267,7 +274,7 @@
 
                             <div class="col-12 mt-4">
                                 <div class="card border-0 shadow-lg rounded-4" 
-                                    style="background: rgba(255,255,255,0.95); backdrop-filter: blur(14px);">
+                                     style="background: rgba(255,255,255,0.95); backdrop-filter: blur(14px);">
                                     <div class="card-body p-3">
                                         <h5 class="fw-bold mb-3" style="color: #6267ae;">Receipt</h5>
                                         <div class="row g-3">
@@ -290,6 +297,7 @@
                                                     @enderror
                                                 </div>
                                             </div>
+
                                             <div class="col-md-4">
                                                 <div class="form-floating">
                                                     <input type="number" step="0.01" class="form-control rounded-3" id="total" 
@@ -298,6 +306,16 @@
                                                     <label for="total" style="color: #6267ae;">Total (₹)</label>
                                                 </div>
                                             </div>
+
+                                            <div class="col-md-4">
+                                                <div class="form-floating">
+                                                    <input type="number" step="0.01" class="form-control rounded-3" id="paid_amount" 
+                                                        name="paid_amount" placeholder="0.00" 
+                                                        style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
+                                                    <label for="paid_amount" style="color: #6267ae;">Paid Amount (₹)</label>
+                                                </div>
+                                            </div>
+
                                             <div class="col-md-4">
                                                 <div class="form-floating">
                                                     <select class="form-select rounded-3" id="payment_mode" name="payment_mode" 
@@ -342,16 +360,17 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-floating">
-                                                    <input type="date" class="form-control rounded-3" id="payment_date" 
-                                                        name="payment_date" value="{{ old('payment_date') }}" 
-                                                        style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;"
-                                                        onclick="this.showPicker()">
-                                                    <label for="payment_date" style="color: #6267ae;">Payment Date</label>
+                                                    <input type="datetime-local" class="form-control rounded-3" id="payment_date" 
+                                                        name="payment_date" 
+                                                        value="{{ old('payment_date', date('Y-m-d\TH:i')) }}" 
+                                                        style="background: #fff; color: #6267ae; border: 1px solid #f6b51d;">
+                                                    <label for="payment_date" style="color: #6267ae;">Payment Date & Time</label>
                                                     @error('payment_date')
                                                         <span class="text-danger" style="color: #cc235e;">{{ $message }}</span>
                                                     @enderror
                                                 </div>
                                             </div>
+
                                             <input type="hidden" id="total_amount" name="total_amount" value="">
                                         </div>
                                     </div>
@@ -405,33 +424,12 @@
                                 @enderror
                             </div>
                         </div>
-                        <!-- Pet Parent Gender -->
-                        <div class="col-md-6">
-                            <div class="form-floating">
-                                <select class="form-select rounded-3" id="owner_gender" name="owner_gender" required
-                                        style="background: rgba(255,255,255,0.95); border: 1px solid #f6b51d;">
-                                    <option value="" selected disabled>Select Gender</option>
-                                    <option value="Male">Male</option>
-                                    <option value="Female">Female</option>
-                                    <option value="Other">Other</option>
-                                </select>
-                                <label for="owner_gender" style="color: #6267ae;">Owner Gender*</label>
-                                @error('owner_gender')
-                                    <span class="text-danger small mt-1" style="color: #cc235e;">
-                                        <i class="mdi mdi-alert-circle me-1"></i> {{ $message }}
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
                         <!-- Pet Parent Email -->
                         <div class="col-md-6">
                             <div class="form-floating">
                                 <input type="email" class="form-control rounded-3" id="owner_email" name="owner_email" 
                                        required style="background: rgba(255,255,255,0.95); border: 1px solid #f6b51d;">
                                 <label for="owner_email" style="color: #6267ae;">Owner Email*</label>
-                                <div class="text-danger small mt-1 d-none" id="email_existence_message">
-                                    <i class="mdi mdi-alert-circle me-1"></i> This Email has already been taken
-                                </div>
                                 @error('owner_email')
                                     <span class="text-danger small mt-1" style="color: #cc235e;">
                                         <i class="mdi mdi-alert-circle me-1"></i> {{ $message }}
@@ -442,10 +440,11 @@
                         <!-- Pet Parent Mobile -->
                         <div class="col-md-6">
                             <div class="form-floating">
-                                <input type="tel" class="form-control rounded-3" id="owner_mobile" name="owner_mobile" 
-                                       pattern="\+91[0-9]{10}" title="Phone number must start with +91 followed by 10 digits"
-                                       required style="background: rgba(255,255,255,0.95); border: 1px solid #f6b51d;">
-                                <label for="owner_mobile" style="color: #6267ae;">Owner Mobile (+91)*</label>
+                                <input type="tel" 
+                                    class="form-control rounded-3" id="owner_mobile" name="owner_mobile" pattern="(\+91)?[0-9]{10}" 
+                                    title="Phone number must be 10 digits, with or without +91" required 
+                                    style="background: rgba(255,255,255,0.95); border: 1px solid #f6b51d;">
+                                <label for="owner_mobile" style="color: #6267ae;">Owner Mobile*</label>
                                 @error('owner_mobile')
                                     <span class="text-danger small mt-1" style="color: #cc235e;">
                                         <i class="mdi mdi-alert-circle me-1"></i> {{ $message }}
@@ -481,14 +480,6 @@
                                         <i class="mdi mdi-alert-circle me-1"></i> {{ $message }}
                                     </span>
                                 @enderror
-                            </div>
-                        </div>
-                        <!-- Pet Code (Readonly) -->
-                        <div class="col-md-6">
-                            <div class="form-floating">
-                                <input type="text" class="form-control rounded-3" id="pet_code" name="pet_code" 
-                                       readonly style="background: #f8f9fa; border: 1px solid #f6b51d;">
-                                <label for="pet_code" style="color: #6267ae;">Pet Code</label>
                             </div>
                         </div>
                         <!-- Pet Species -->
@@ -598,18 +589,6 @@
                                     </span>
                                 @enderror
                             </div>
-                        </div>
-                        <!-- Pet Image -->
-                        <div class="col-12">
-                            <label class="form-label fw-semibold" style="color: #6267ae;">Pet Image</label>
-                            <input type="file" data-plugins="dropify" name="pet_image" id="pet_image" 
-                                   accept="image/*" style="border: 1px solid #f6b51d;" />
-                            <p class="text-center mt-2 mb-0 text-muted">Pet Profile Image</p>
-                            @error('pet_image')
-                                <span class="text-danger small mt-1" style="color: #cc235e;">
-                                    <i class="mdi mdi-alert-circle me-1"></i> {{ $message }}
-                                </span>
-                            @enderror
                         </div>
                     </div>
                 </form>
@@ -848,43 +827,23 @@
     .form-floating .select2-container--default .select2-selection--single .select2-selection__rendered {
         margin-top: -0.5rem;
     }
-    #testsDataTable th:first-child, #testsDataTable td:first-child {
-        width: 5%;
+    .test-search-card {
+        z-index: 10 !important;
     }
-    #testsDataTable th:nth-child(2), #testsDataTable td:nth-child(2) {
-        width: 70%;
+    #testSuggestions {
+        z-index: 1000 !important;
     }
-    #testsDataTable th:nth-child(3), #testsDataTable td:nth-child(3) {
-        width: 25%;
+    #testCards .card {
+        transition: transform 0.2s, box-shadow 0.2s;
+        position: relative;
     }
-    .test-checkbox {
-        margin: 0;
+    #testCards .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(98, 103, 174, 0.2);
     }
-    .dataTables_paginate .pagination {
-        margin-top: 1rem;
-        justify-content: center;
-    }
-    .dataTables_paginate .pagination .page-link {
-        border-radius: 50%;
-        margin: 0 4px;
-        padding: 8px 14px;
-        color: #6267ae;
-        font-weight: 600;
-        border: none;
-        background: rgba(255,255,255,0.95);
-        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        transition: all 0.3s ease;
-    }
-    .dataTables_paginate .pagination .page-link:hover {
-        background: #f6b51d;
-        color: #fff;
-    }
-    .dataTables_paginate .pagination .page-item.active .page-link {
-        background: linear-gradient(135deg, #6267ae 0%, #cc235e 100%);
-        color: #fff;
-    }
-    .dataTables_wrapper .dataTables_filter {
-        display: none; 
+    #testCards .card .form-check-input:checked + .form-check-label {
+        color: #cc235e;
+        font-weight: bold;
     }
     #testSearchInput:focus {
         border-color: #f6b51d;
@@ -898,6 +857,26 @@
         background: #cc235e;
         color: #fff;
     }
+    .remove-test-btn {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        background: #cc235e;
+        color: #fff;
+        border: none;
+        border-radius: 50%;
+        width: 25px;
+        height: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.875rem;
+        z-index: 1;
+        transition: background 0.2s;
+    }
+    .remove-test-btn:hover {
+        background: #a81c47;
+    }
 </style>
 @endsection
 
@@ -905,50 +884,24 @@
 <script src="{{ asset('assets/libs/inputmask/jquery.inputmask.min.js') }}"></script>
 <script src="{{ asset('assets/libs/toastr/toastr.min.js') }}"></script>
 <script src="{{ asset('assets/libs/select2/js/select2.min.js') }}"></script>
-<script src="{{ asset('assets/libs/datatable/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset('assets/libs/datatable/dataTables.bootstrap5.min.js') }}"></script>
 <script src="{{ asset('assets/libs/dropify/js/dropify.min.js') }}"></script>
 
 <script>
 $(document).ready(function () {
-    // Initialize DataTable for tests
-    let testsTable;
-    if ($.fn.DataTable.isDataTable('#testsDataTable')) {
-        $('#testsDataTable').DataTable().destroy();
-    }
-
-    testsTable = $('#testsDataTable').DataTable({
-        paging: false,
-        info: false,
-        searching: true,
-        ordering: false,
-        destroy: true,
-        language: {
-            search: "",
-            searchPlaceholder: "Search tests..."
-        },
-        columnDefs: [
-            { orderable: false, targets: 0 }
-        ]
-    });
-
-    // Search functionality
-    $('#testSearchInput').on('keyup', function () {
-        testsTable.search(this.value).draw();
-    });
-
-    // Clear search
-    $('#clearSearch').on('click', function () {
-        $('#testSearchInput').val('');
-        testsTable.search('').draw();
+    // Initialize Dropify
+    $('#pet_image').dropify({
+        messages: {
+            'default': 'Drag and drop an image here or click',
+            'replace': 'Drag and drop or click to replace',
+            'remove': 'Remove',
+            'error': 'Oops, something went wrong.'
+        }
     });
 
     // Update total function
     function updateTotal() {
         let subtotal = 0;
-        const selectedTests = $('.test-checkbox:checked');
-        
-        selectedTests.each(function () {
+        $('input[name="tests[]"]').each(function () {
             const price = parseFloat($(this).data('price')) || 0;
             subtotal += price;
         });
@@ -966,24 +919,31 @@ $(document).ready(function () {
         $('#subtotal').val(subtotal.toFixed(2));
         $('#total_amount').val(total.toFixed(2));
         $('#total').val(total.toFixed(2));
+        // Pre-fill paid_amount with total value
+        $('#paid_amount').val(total.toFixed(2));
 
-        const selectedCount = selectedTests.length;
+        const selectedCount = $('input[name="tests[]"]').length;
         $('#selectedTestsCount').text(`${selectedCount} test${selectedCount !== 1 ? 's' : ''} selected`);
     }
-
-    // Event listeners for checkbox changes
-    $('#testsDataTable').on('change', '.test-checkbox', function () {
-        updateTotal();
-    });
 
     // Event listener for discount input
     $('#discount').on('input', function () {
         updateTotal();
     });
 
+    // Event listener for paid_amount to prevent exceeding total
+    $('#paid_amount').on('input', function () {
+        const paidAmount = parseFloat($(this).val()) || 0;
+        const total = parseFloat($('#total').val()) || 0;
+        if (paidAmount > total) {
+            $(this).val(total.toFixed(2));
+            toastr.warning('Paid amount cannot exceed total amount.');
+        }
+    });
+
     // Form validation
     $('#registrationForm').on('submit', function (e) {
-        if ($('.test-checkbox:checked').length === 0) {
+        if ($('input[name="tests[]"]').length === 0) {
             e.preventDefault();
             toastr.error('Please select at least one test.');
             return false;
@@ -991,16 +951,6 @@ $(document).ready(function () {
 
         $('#submitSpinner').removeClass('d-none');
         $('#submitBtn').prop('disabled', true);
-    });
-
-    // Initialize Dropify
-    $('#pet_image').dropify({
-        messages: {
-            'default': 'Drag and drop an image here or click',
-            'replace': 'Drag and drop or click to replace',
-            'remove': 'Remove',
-            'error': 'Oops, something went wrong.'
-        }
     });
 
     // Breed data for species
@@ -1027,31 +977,65 @@ $(document).ready(function () {
         }
     });
 
-    // Email existence check with debounce
-    let emailCheckTimeout;
-    $('#owner_email').on('input', function() {
-        clearTimeout(emailCheckTimeout);
-        emailCheckTimeout = setTimeout(() => {
-            $.ajax({
-                type: 'GET',
-                url: '{{ url("/admin/system-user/check-user-exist") }}',
-                data: { email: $(this).val() },
-                success: function(response) {
-                    if (response.trim() === 'true') {
-                        $('#savePet').attr('disabled', true);
-                        $('#email_existence_message').removeClass('d-none');
-                    } else {
-                        $('#savePet').removeAttr('disabled');
-                        $('#email_existence_message').addClass('d-none');
-                    }
-                },
-                error: function() {
-                    $('#email_existence_message').addClass('d-none');
-                    $('#savePet').removeAttr('disabled');
+    // Initialize DOB and Age handling for a given DOB and Age input pair
+    function initializeAgeHandling(dobSelector, ageSelector) {
+        const $dobInput = $(dobSelector);
+        const $ageInput = $(ageSelector);
+
+        // Handle DOB change
+        $dobInput.on('change', function() {
+            const dobVal = $(this).val();
+            if (dobVal) {
+                const dob = new Date(dobVal);
+                if (!isNaN(dob.getTime())) {
+                    const age = calculateAgeFromDOB(dob);
+                    const ageStr = formatAgeString(age.years, age.months, age.days);
+                    $ageInput.val(ageStr).prop('readonly', true).css('background', '#f8f9fa');
+                } else {
+                    $ageInput.val('').prop('readonly', false).css('background', 'rgba(255,255,255,0.95)');
                 }
-            });
-        }, 300);
-    });
+            } else {
+                $ageInput.val('').prop('readonly', false).css('background', 'rgba(255,255,255,0.95)');
+            }
+        });
+
+        // Handle Age input
+        $ageInput.on('blur', function() {
+            if (!$(this).prop('readonly')) {
+                const ageStr = $(this).val();
+                if (ageStr.trim() === '') {
+                    $dobInput.val('');
+                    return;
+                }
+                const age = parseAgeInput(ageStr);
+                if (age.years === 0 && age.months === 0 && age.days === 0) {
+                    toastr.error('Please enter age in format like "1 year 2 months 10 days" or "10 days" etc.');
+                    return;
+                }
+                const dob = calculateDOBFromAge(age.years, age.months, age.days);
+                const yyyy = dob.getFullYear();
+                const mm = ('0' + (dob.getMonth() + 1)).slice(-2);
+                const dd = ('0' + dob.getDate()).slice(-2);
+                $dobInput.val(`${yyyy}-${mm}-${dd}`);
+                const formattedAge = formatAgeString(age.years, age.months, age.days);
+                $ageInput.val(formattedAge).prop('readonly', true).css('background', '#f8f9fa');
+            }
+        });
+
+        // Allow editing age by clicking if readonly
+        $ageInput.on('click', function() {
+            if ($(this).prop('readonly')) {
+                $(this).prop('readonly', false).css('background', 'rgba(255,255,255,0.95)').val('');
+                $dobInput.val('');
+            }
+        });
+    }
+
+    // Initialize for modal
+    initializeAgeHandling('#addPetModal #pet_dob', '#addPetModal #pet_age');
+
+    // Initialize for main form
+    initializeAgeHandling('#pet_dob', '#pet_age');
 
     // Parse age input (e.g., "1 year 2 months 10 days")
     function parseAgeInput(ageStr) {
@@ -1106,52 +1090,6 @@ $(document).ready(function () {
         }
         return dob;
     }
-
-    // DOB and Age handling
-    $('#pet_dob').on('change', function() {
-        const dobVal = $(this).val();
-        if (dobVal) {
-            const dob = new Date(dobVal);
-            if (!isNaN(dob.getTime())) {
-                const age = calculateAgeFromDOB(dob);
-                const ageStr = formatAgeString(age.years, age.months, age.days);
-                $('#pet_age').val(ageStr).prop('readonly', true).css('background', '#f8f9fa');
-            } else {
-                $('#pet_age').val('').prop('readonly', false).css('background', 'rgba(255,255,255,0.95)');
-            }
-        } else {
-            $('#pet_age').val('').prop('readonly', false).css('background', 'rgba(255,255,255,0.95)');
-        }
-    });
-
-    $('#pet_age').on('blur', function() {
-        if (!$(this).prop('readonly')) {
-            const ageStr = $(this).val();
-            if (ageStr.trim() === '') {
-                $('#pet_dob').val('');
-                return;
-            }
-            const age = parseAgeInput(ageStr);
-            if (age.years === 0 && age.months === 0 && age.days === 0) {
-                toastr.error('Please enter age in format like "1 year 2 months 10 days" or "10 days" etc.');
-                return;
-            }
-            const dob = calculateDOBFromAge(age.years, age.months, age.days);
-            const yyyy = dob.getFullYear();
-            const mm = ('0' + (dob.getMonth() + 1)).slice(-2);
-            const dd = ('0' + dob.getDate()).slice(-2);
-            $('#pet_dob').val(`${yyyy}-${mm}-${dd}`);
-            const formattedAge = formatAgeString(age.years, age.months, age.days);
-            $('#pet_age').val(formattedAge).prop('readonly', true).css('background', '#f8f9fa');
-        }
-    });
-
-    $('#pet_age').on('click', function() {
-        if ($(this).prop('readonly')) {
-            $(this).prop('readonly', false).css('background', 'rgba(255,255,255,0.95)').val('');
-            $('#pet_dob').val('');
-        }
-    });
 
     // Weight validation
     $('#pet_weight').on('input', function() {
@@ -1209,6 +1147,8 @@ $(document).ready(function () {
                 $btn.prop('disabled', false);
             }
         });
+
+        
     });
 
     $('#addRefereeDoctorModal').on('hidden.bs.modal', function () {
@@ -1291,12 +1231,14 @@ $(document).ready(function () {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function (data) {
+                    console.log(data);
                     $('#pet_code').val(data.pet_code);
                     $('#pet_type').val(data.type || data.pet_type);
                     $('#pet_gender').val(data.gender || data.pet_gender);
                     $('#pet_dob').val(data.dob || data.pet_dob);
                     $('#pet_owner_name').val(data.owner_name);
                     $('#phone').val(data.owner_phone || data.phone);
+                    $('#pet_age').val(data.age || data.pet_age);
                 },
                 error: function () {
                     toastr.error('Error fetching pet details.');
@@ -1306,6 +1248,7 @@ $(document).ready(function () {
                     $('#pet_dob').val('');
                     $('#pet_owner_name').val('');
                     $('#phone').val('');
+                    $('#pet_age').val();
                 }
             });
         } else {
@@ -1315,6 +1258,7 @@ $(document).ready(function () {
             $('#pet_dob').val('');
             $('#pet_owner_name').val('');
             $('#phone').val('');
+            $('#pet_age').val();
         }
     });
 
@@ -1388,4 +1332,144 @@ $(document).ready(function () {
     updateTotal();
 });
 </script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    let searchInput = document.getElementById("testSearch");
+    let suggestionsBox = document.getElementById("testSuggestions");
+    let testCards = document.getElementById("testCards");
+    let selectedTestsCount = document.getElementById("selectedTestsCount");
+
+    let selectedTests = [];
+    let searchTimeout;
+
+    // Set minimum date for appointment_date to today (client-side for accuracy)
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = ('0' + (today.getMonth() + 1)).slice(-2);
+    const dd = ('0' + today.getDate()).slice(-2);
+    const todayStr = `${yyyy}-${mm}-${dd}`;
+    const appointmentDateInput = document.getElementById("appointment_date");
+    appointmentDateInput.setAttribute("min", todayStr);
+
+    // Search input event with debouncing
+    searchInput.addEventListener("keyup", function () {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+            let query = this.value.trim();
+            if (query.length < 2) {
+                suggestionsBox.style.display = "none";
+                return;
+            }
+
+            fetch("{{ route('tests.search') }}?q=" + encodeURIComponent(query))
+                .then(response => response.json())
+                .then(data => {
+                    suggestionsBox.innerHTML = "";
+                    if (data.length > 0) {
+                        data.forEach(test => {
+                            let li = document.createElement("li");
+                            li.classList.add("list-group-item", "list-group-item-action");
+                            li.style.cursor = "pointer";
+                            li.textContent = `${test.name} (${test.test_code ?? ''}) - ₹${test.base_price}`;
+                            li.dataset.id = test.id;
+                            li.dataset.name = test.name;
+                            li.dataset.price = test.base_price;
+
+                            li.addEventListener("click", function () {
+                                addTestCard(test);
+                                searchInput.value = "";
+                                suggestionsBox.style.display = "none";
+                            });
+
+                            suggestionsBox.appendChild(li);
+                        });
+                        suggestionsBox.style.display = "block";
+                    } else {
+                        suggestionsBox.style.display = "none";
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching tests:', error);
+                    suggestionsBox.style.display = "none";
+                });
+        }, 300);
+    });
+
+    // Hide suggestions when clicking outside
+    document.addEventListener("click", function (e) {
+        if (!searchInput.contains(e.target) && !suggestionsBox.contains(e.target)) {
+            suggestionsBox.style.display = "none";
+        }
+    });
+
+    function addTestCard(test) {
+        if (selectedTests.includes(test.id)) {
+            toastr.warning('Test already added.');
+            return;
+        }
+
+        selectedTests.push(test.id);
+
+        let card = document.createElement("div");
+        card.classList.add("col");
+        card.innerHTML = `
+            <div class="card border-0 shadow rounded-3 h-100">
+                <div class="card-body">
+                    <h6 class="card-title mb-2">${test.name}</h6>
+                    <p class="text-muted small mb-1">Code: ${test.test_code ?? ''}</p>
+                    <p class="fw-bold mb-0">₹${test.base_price}</p>
+                    <input type="hidden" name="tests[]" value="${test.id}" data-price="${test.base_price}">
+                    <button class="btn btn-sm btn-danger mt-2 remove-test-btn float-end" title="Remove Test">X</button>
+                </div>
+            </div>
+        `;
+
+        card.querySelector(".remove-test-btn").addEventListener("click", function () {
+            card.remove();
+            selectedTests = selectedTests.filter(id => id !== test.id);
+            updateCount();
+            updateTotal();
+        });
+
+        testCards.appendChild(card);
+        updateCount();
+        updateTotal();
+    }
+
+    function updateCount() {
+        selectedTestsCount.textContent = `${selectedTests.length} test${selectedTests.length !== 1 ? 's' : ''} selected`;
+    }
+
+    // Update total function
+    function updateTotal() {
+        let subtotal = 0;
+        
+        $('input[name="tests[]"]').each(function () {
+            const price = parseFloat($(this).data('price')) || 0;
+            subtotal += price;
+        });
+
+        let discount = parseFloat($('#discount').val()) || 0;
+
+        if (discount > subtotal) {
+            discount = subtotal;
+            $('#discount').val(discount.toFixed(2));
+            toastr.warning('Discount cannot exceed subtotal.');
+        }
+
+        let total = Math.max(0, subtotal - discount);
+
+        $('#subtotal').val(subtotal.toFixed(2));
+        $('#total_amount').val(total.toFixed(2));
+        $('#total').val(total.toFixed(2));
+        // Pre-fill paid_amount with total value
+        $('#paid_amount').val(total.toFixed(2));
+
+        const selectedCount = $('input[name="tests[]"]').length;
+        $('#selectedTestsCount').text(`${selectedCount} test${selectedCount !== 1 ? 's' : ''} selected`);
+    }
+});
+</script>
+
 @endsection

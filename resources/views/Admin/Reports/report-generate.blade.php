@@ -92,6 +92,7 @@
                                                                 </td>
                                                             </tr>
                                                         @elseif($param->row_type === 'component')
+                                                           
                                                             {{-- Find the corresponding TestResultComponent for this parameter and test --}}
                                                             @php
                                                                 $testResult = $report->where('test_id', $test->id)->first();
@@ -102,10 +103,23 @@
                                                                 <td>{{ $param->unit }}</td>
                                                                 <td>{{ $param->reference_range }}</td>
                                                                 <td>
+                                                                    @if($param->result_type === 'select')
+                                                                        <select name="results[{{ $test->id }}][{{ $param->id }}]" 
+                                                                                class="form-select form-select-sm">
+                                                                            <option value="" {{ !$component || !$component->result ? 'selected' : '' }}>Select option</option>
+                                                                            @foreach($param->options as $option)
+                                                                                <option value="{{ $option->option_value }}" 
+                                                                                        {{ $component && $component->result === $option->option_value ? 'selected' : '' }}>
+                                                                                    {{ $option->option_value }}
+                                                                                </option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                    @else
                                                                     <input type="text" 
                                                                            name="results[{{ $test->id }}][{{ $param->id }}]" 
                                                                            class="form-control form-control-sm" 
                                                                            value="{{ $component ? $component->result : '' }}" />
+                                                                    @endif
                                                                 </td>
                                                                 <td>
                                                                     <select name="status[{{ $test->id }}][{{ $param->id }}]" 

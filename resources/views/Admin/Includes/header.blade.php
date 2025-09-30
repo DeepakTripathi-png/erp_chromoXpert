@@ -1,9 +1,5 @@
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <title>@yield('meta_title')</title> 
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="" name="description" />
     <meta content="" name="author" />
@@ -37,5 +33,4 @@
     <!-- summer note Css -->
     <link rel="stylesheet" href="{{URL::asset('package_assets/libs/summernote/summernote.min.css')}}" />
 
-    @yield('css')
-</head>
+    {{-- @yield('css') --}}

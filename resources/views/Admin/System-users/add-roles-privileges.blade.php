@@ -25,7 +25,7 @@
             <div class="card border-0 shadow-lg rounded-4"
                  style="background: rgba(255,255,255,0.85); backdrop-filter: blur(14px);">
                 <div class="card-body p-4">
-                    <form action="{{ route('roles-previllages.store') }}" method="post">
+                    <form action="{{ route('roles-privileges.store') }}" method="post">
                         @csrf
                         <input type="hidden" class="form-control" id="id" name="id" value="{{ !empty($role_privileges) ? $role_privileges->id : '' }}">
 

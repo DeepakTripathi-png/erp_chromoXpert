@@ -53,6 +53,14 @@ $(function () {
             },
 
             {
+                data: 'status',
+                name: 'status',
+                orderable: false,
+                searchable: false
+            },
+
+
+            {
                 data: 'done',
                 name: 'done'
             },
@@ -62,6 +70,9 @@ $(function () {
                 name: 'signed'
             },
 
+
+          
+               
 
             {
                 data: 'action',

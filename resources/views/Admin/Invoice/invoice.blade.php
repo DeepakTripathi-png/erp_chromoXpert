@@ -7,7 +7,7 @@
     <style>
         @page {
             size: A5;
-            margin: 0.5cm;
+            margin: 0.2cm;
         }
         
         body {
@@ -24,20 +24,20 @@
             width: 100%;
             max-width: 14.8cm;
             margin: 0 auto;
-            padding: 8px;
+            padding: 4px;
             box-sizing: border-box;
         }
         
         .header {
             text-align: center;
-            margin-bottom: 8px;
-            padding-bottom: 5px;
+            margin-bottom: 5px;
+            padding-bottom: 3px;
             border-bottom: 1px solid #000;
         }
         
         .header h2 {
             font-size: 16px;
-            margin: 0 0 3px 0;
+            margin: 2px 0;
         }
         
         .header p {
@@ -54,18 +54,18 @@
         
         .invoice-info td {
             border: none;
-            padding: 0;
+            padding: 0 5px 0 0;
             vertical-align: top;
         }
         
         .info-group {
-            width: 100%; /* Full width within td */
+            width: 100%;
         }
         
         .info-item {
-            margin: 3px 0;
-            font-size: 10px;
-            line-height: 1.3;
+            margin: 2px 0;
+            font-size: 9px;
+            line-height: 1.2;
             padding: 1px 0;
         }
         
@@ -91,33 +91,58 @@
             text-align: right;
         }
         
-        .amount-summary {
+        .bottom-section {
             margin-top: 10px;
-            font-size: 10px;
             border-top: 1px solid #000;
             padding-top: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        
+        .amounts-and-print {
+            flex: 1;
+            padding-right: 10px;
+        }
+        
+        .amount-summary {
+            font-size: 10px;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
         }
         
         .amount-item {
-            margin: 3px 0;
-            display: flex;
-            justify-content: space-between;
-            width: 200px;
-            margin-left: auto;
+            margin: 0;
+            flex: 1;
+            text-align: left;
+            padding: 0 5px;
         }
         
-        .footer {
-            margin-top: 15px;
+        .amount-item span {
+            margin-left: 5px;
+        }
+        
+        .print-date {
             font-size: 9px;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            border-top: 1px solid #000;
-            padding-top: 8px;
         }
         
-        .footer .signature {
+        .signature {
             text-align: right;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+        
+        .signature img {
+            height: 60px; /* Reduced from 80px to make it more compact */
+            margin-right: 0;
+            margin-bottom: 5px;
+        }
+        
+        .signature p {
+            margin: 2px 0;
         }
         
         @media print {
@@ -137,33 +162,35 @@
 <body>
     <div class="container">
         <div class="header">
+            <img src="{{ public_path('package_assets/images/logo.png') }}" alt="ChromoXpert Diagnostics Logo" style="height: 50px; margin-bottom: 5px;">
             <h2>ChromoXpert Diagnostics</h2>
             <p>Advanced Diagnostic Testing for Pets</p>
             <p>Navi Mumbai, India | Helpline: 7506193580</p>
-            <p>Email: info@chromoxpert.com | Web: http://chromoxpert.com/</p>
+            <p>Email: info@chromoxpert.com | Web: www.chromoxpert.com</p>
         </div>
 
         <div class="invoice-info">
             <table>
                 <tr>
-                    <td style="width: 50%;">
-                        <!-- Left column -->
+                    <td style="width: 33%;">
                         <div class="info-group">
                             <div class="info-item"><strong>Invoice No:</strong> {{ $appointmentDetails->invoice_no ?? 'APT' . str_pad($appointmentDetails->id, 3, '0', STR_PAD_LEFT) }}</div>
-                            <div class="info-item"><strong>Date:</strong> {{ $appointmentDetails->appointment_date ?? now()->format('d M Y, h:i A') }}</div>
-                            <div class="info-item"><strong>Pet ID:</strong> {{ $appointmentDetails->pet->pet_id ?? 'N/A' }}</div>
-                            <div class="info-item"><strong>Lab ID:</strong> {{ $appointmentDetails->branch->lab_id ?? 'N/A' }}</div>
+                            <div class="info-item"><strong>Pet ID:</strong> {{ $appointmentDetails->pet->pet_code ?? 'N/A' }}</div>
+                            <div class="info-item"><strong>Lab ID:</strong> {{ $appointmentDetails->branch->lab_code ?? 'N/A' }}</div>
                         </div>
                     </td>
-                    <td style="width: 50%;">
-                        <!-- Right column -->
+                    <td style="width: 33%;">
                         <div class="info-group">
                             <div class="info-item"><strong>Pet Name:</strong> {{ $appointmentDetails->pet->name ?? 'N/A' }}</div>
                             <div class="info-item"><strong>Owner Name:</strong> {{ $appointmentDetails->pet->petParent->name ?? 'N/A' }}</div>
-                            <div class="info-item"><strong>Contact:</strong> {{ $appointmentDetails->pet->petParent->contact ?? 'N/A' }}</div>
+                            <div class="info-item"><strong>Contact:</strong> {{ $appointmentDetails->pet->petParent->mobile ?? 'N/A' }}</div>
+                        </div>
+                    </td>
+                    <td style="width: 33%;">
+                        <div class="info-group">
                             <div class="info-item"><strong>Species:</strong> {{ $appointmentDetails->pet->species ?? 'N/A' }}</div>
                             <div class="info-item"><strong>Age:</strong> {{ $appointmentDetails->pet->age ?? 'N/A' }} {{ $appointmentDetails->pet->age_unit ?? 'days' }}</div>
-                            <div class="info-item"><strong>Referred By:</strong> {{ $appointmentDetails->refereeDoctor->name ?? 'N/A' }}</div>
+                            <div class="info-item"><strong>Referred By:</strong> {{ $appointmentDetails->refereeDoctor->doctor_name ?? 'N/A' }}</div>
                         </div>
                     </td>
                 </tr>
@@ -198,26 +225,28 @@
             </tbody>
         </table>
 
-        <div class="amount-summary">
-            <div class="amount-item">
-                <strong>Payable Amount (Rs):</strong> 
-                <span>{{ number_format($total, 2) }}</span>
-            </div>
-            <div class="amount-item">
-                <strong>Amount Paid (Rs):</strong> 
-                <span>{{ number_format($appointmentDetails->paid_amount ?? $total, 2) }}</span>
-            </div>
-            <div class="amount-item">
-                <strong>Due Amount (Rs):</strong> 
-                <span>{{ number_format($total - ($appointmentDetails->paid_amount?? $total), 2) }}</span>
-            </div>
-        </div>
-
-        <div class="footer">
-            <div>
-                <p>Print Date: {{ now()->format('d-M-Y h:i A') }}</p>
+        <div class="bottom-section">
+            <div class="amounts-and-print">
+                <div class="amount-summary">
+                    <div class="amount-item">
+                        <strong>Payable Amount (Rs):</strong> 
+                        <span>{{ number_format($total, 2) }}</span>
+                    </div>
+                    <div class="amount-item">
+                        <strong>Amount Paid (Rs):</strong> 
+                        <span>{{ number_format($appointmentDetails->paid_amount ?? $total, 2) }}</span>
+                    </div>
+                    <div class="amount-item">
+                        <strong>Due Amount (Rs):</strong> 
+                        <span>{{ number_format($total - ($appointmentDetails->paid_amount?? $total), 2) }}</span>
+                    </div>
+                </div>
+                <div class="print-date">
+                    <p>Print Date: {{ now()->format('d-M-Y h:i A') }}</p>
+                </div>
             </div>
             <div class="signature">
+                <img src="{{ public_path('package_assets/images/stamp.png') }}" alt="Signature"/><br/>
                 <p>__________________________</p>
                 <p>Authorized Signatory</p>
             </div>

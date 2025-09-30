@@ -20,9 +20,29 @@ class Helper {
     public static function getTimeFormat($time){
         return Carbon::createFromTimestamp(strtotime($time))->format('h:i A');
     }
-    public static function getRoleName(){
-        return Role_privilege::where('status', 'active')->where('id', Auth::guard('master_admins')->user()->role_id)->first()->role_name;
+
+
+    // public static function getRoleName(){
+    //     return Role_privilege::where('status', 'active')->where('id', Auth::guard('master_admins')->user()->role_id)->first()->role_name;
+    // }
+
+
+    public static function getRoleName()
+    {
+        if (Auth::guard('master_admins')->check()) {
+            $user = Auth::guard('master_admins')->user();
+            return Role_privilege::where('status', 'active')->where('id', $user->role_id)->first()->role_name ?? 'Unknown Role';
+        } elseif (Auth::guard('doctor')->check()) {
+            $user = Auth::guard('doctor')->user();
+            return Role_privilege::where('status', 'active')->where('id', $user->role_id)->first()->role_name ?? 'Doctor';
+        } elseif (Auth::guard('branch')->check()) {
+            $user = Auth::guard('branch')->user();
+            return Role_privilege::where('status', 'active')->where('id', $user->role_id)->first()->role_name ?? 'Branch Manager';
+        }
+        return 'Guest';
     }
+
+
     public static function getVisualImages(){
         return Visual_setting::where('status', 'active')->first();
     }

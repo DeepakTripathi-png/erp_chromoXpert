@@ -20,7 +20,7 @@ class InvoiceController extends Controller
         }
         
         $pdf = Pdf::loadView('Admin.Invoice.invoice', compact('appointmentDetails'))
-                ->setPaper('a5', 'portrait');
+                ->setPaper('A4', 'portrait');
 
         return $pdf->download('invoice_' . $id . '.pdf');
     }
